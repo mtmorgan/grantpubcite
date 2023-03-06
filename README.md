@@ -6,11 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The ‘grantpubcite’ package is used to query the \[NIH Reporter\]\[\]
-database for funded grants and, optionally, publications associated with
-grants in NIH Reporter. The citation history of publications can
-discovered using \[iCite\]\[\]. The ‘grantpubcite’ package help pages
-and resources make extensive use of ‘tidyverse’ concepts.
+The ‘grantpubcite’ package is used to query the [NIH
+Reporter](https://reporter.nih.gov/) database for funded grants and,
+optionally, publications associated with grants in NIH Reporter. The
+citation history of publications can discovered using
+[iCite](https://icite.od.nih.gov/). The ‘grantpubcite’ package help
+pages and resources make extensive use of ‘tidyverse’ concepts.
 
 Install the development version of grantpubcite from
 [github](https://github.com/mtmorgan/grantpubcite).
@@ -58,7 +59,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] grantpubcite_0.0.0.9001 dplyr_1.1.0            
+#> [1] grantpubcite_0.0.0.9003 dplyr_1.1.0            
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] vctrs_0.5.2      httr_1.4.5       cli_3.6.0        knitr_1.42      

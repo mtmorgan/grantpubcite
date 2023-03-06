@@ -378,8 +378,8 @@ citations <- left_join(publications, citations)
 ```
 
 The `r nrow(citations)` publications have `r pull(citations,
-citation_count) |> sum() |> as.integer()` total citations; 
-`r filter(citations, citation_count == 0) |> nrow()` publications 
+citation_count) |> sum() |> as.integer()` total citations;
+`r filter(citations, citation_count == 0) |> nrow()` publications
 have not been cited; not surprisingly uncited publications are recent.
 
 ```{r}

@@ -30,7 +30,6 @@ Core tidyverse functions used in this article include:
 - `slice()` -- row selection.
 - `pull()` -- extract a single column as a vector.
 
-
 [NIH Reporter]: https://reporter.nih.gov/
 [iCite]: https://icite.od.nih.gov/
 
@@ -161,7 +160,7 @@ icite(slice(publications, 1L)) |>
     glimpse()
 ```
 
-Identify fields of interest, and query for all publications associated the 
+Identify fields of interest, and query for all publications associated the
 
 ```{r}
 include_fields <- c(
