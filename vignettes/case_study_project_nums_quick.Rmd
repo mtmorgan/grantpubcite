@@ -60,8 +60,9 @@ projects |>
     group_by(core_project_num) |>
     summarize(
         foa = unique(full_foa),
-        first_funding = min(fiscal_year),
-        last_funding = max(fiscal_year)
+        first_year = min(fiscal_year),
+        last_year = max(fiscal_year),
+        project_title = unique(project_title)
     ) |>
     datatable()
 ```
@@ -77,13 +78,23 @@ core_project_nums <-
 publications <- reporter_publications(core_project_nums = core_project_nums)
 ```
 
-The numbers of publications associated with each grant are
+The number of publications associated with each grant are as follows:
 
 ```{r}
 publications |>
     count(coreproject) |>
     datatable()
 ```
+
+Many publications were attributed to both grants
+
+```{r}
+publications |>
+    count(pmid, name = "cited_by") |>
+    count(cited_by) |>
+    datatable()
+```
+
 
 # Citations
 
@@ -94,7 +105,8 @@ publication) using the `publications` tibble
 citations <- icite(publications)
 ```
 
-Explore these interactively
+There are `r nrow(citations)` citation records, one for each
+publication. Explore these interactively
 
 ```{r}
 citations |>
