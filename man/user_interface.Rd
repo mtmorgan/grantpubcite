@@ -47,10 +47,10 @@ Query projects, publications and citations
 \details{
 The NIH reporter API used for \code{reporter_projects()} and
 \code{reporter_publications()} is documented at
-https://api.reporter.nih.gov/.
+\url{https://api.reporter.nih.gov/}.
 
 The \code{icite()} API is described at
-https://icite.od.nih.gov/api.
+\url{https://icite.od.nih.gov/api}.
 }
 \examples{
 foas <- c(        # one or more criteria, e.g., foa number(s)

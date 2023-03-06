@@ -54,3 +54,23 @@ camelize <-
 {
     jmespath(x, path) |> fromJSON()
 }
+
+#' this is a non-exported convenience function used in the vignette to
+#' (a) provides a consistent presentation of DT::datatable without
+#' rownames and with pageLength of 5, which means that long tables
+#' don't overwhelm articles, and (b) only transforms the table when
+#' not interactive, so I can see the standard tibble in my
+#' editor. Articles use this as `datatable <-
+#' grantpubcite:::datatable()` in a code chunk with `include = FALSE`,
+#' so that the user sees only `datatable()` when evaluated
+#'
+#' @noRd
+datatable <-
+    function(x, ...)
+{
+    if (interactive()) {
+        x
+    } else {
+        DT::datatable(x, ..., rownames = FALSE, options = list(pageLength = 5))
+    }
+}

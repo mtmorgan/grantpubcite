@@ -11,16 +11,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-  )
-datatable <-
-    function(x, ...)
-{
-    if (interactive()) {
-        x
-    } else {
-        DT::datatable(x, ..., rownames = FALSE, options = list(pageLength = 5))
-    }
-}
+)
+datatable <- grantpubcite:::datatable
 ```
 
 This article illustrates how one might explore specific project
