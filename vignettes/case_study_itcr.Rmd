@@ -26,40 +26,76 @@ datatable <-
 <!-- badges: start -->
 <!-- badges: end -->
 
+# Summary
+
+Note that this is way outside my area of expertise, so I have
+undoubtedly made terrible blunders.
+
 The 'grantpubcite' package can be used to query the [NIH Reporter][]
 database for funded grants and, optionally, publications associated
 with grants in NIH Reporter. The citation history of publications can
-discovered using [iCite][].  The 'grantpubcite' package help pages and
-resources make extensive use of 'tidyverse' concepts.
+discovered using [iCite][].
+
+As a case study, suppose we are interested in grants funded under the
+Information Technology in Cancer Research ([ITCR][]) program.
+
+[ITCR]: https://itcr.cancer.gov/
+
+The [Project information][] section shows that I found 87 projects (a
+useful sanity check?). The first figure shows that projects funded for
+more fiscal years received more funding (not too surprising!). At this
+stage and subsequently I found it useful, using the datatables on the
+web page, to search for ‘my’ project (U24CA180996, Cancer Genomics:
+Integrative and Scalable Solutions in R/Bioconductor) and compare how
+we were doing relative to other projects. Frankly, I did not know
+where we stood; now I do.
+ 
+I then focused on projects receiving funding in 2020.
+ 
+The [Maturing projects?][] subsection uses project title and contact PI
+to ask whether projects graduate between funding activities. Three
+(led by Griffith, Karchin, and Liu) seem to have, all from
+‘Early-stage’ to ‘Advanced’. I was a little disappointed that there
+were not more smaller projects maturing.
+ 
+In the [Publications][] section, we see a positive relationship
+between funding (amount or duration) and publication. Again this is
+not surprising, but speaks to the notion that scientific software
+projects are playing by the same rules as ‘wet lab’ projects; it would
+be interesting to identify a comparable wet-lab program for
+comparison. There are some outliers, including one project with a
+surprisingly large number of publications for the period of the grant,
+as well as projects with only a handful of publications even after
+multiple years of funding. The [ITCR collaboration][] section shows
+that 5 projects collaborated closely enough with each other to be
+acknowledged in the same publication.
+ 
+The figure in the [Citations][] section shows what I imagine is a
+pretty typical pattern, with most publications having moderate (<100)
+citations, and a few having many citations. Scanning the datatable
+immediately below the figure indicates that the highly cited
+publications are biologically driven, where the paper authors have
+presumably cited the relevant software; the three most-cited
+publications are all from U24CA180922, which funds the Trinity
+software. When I look at the five most highly cited of ‘my’ project
+publications (U24CA180996), they are more modestly successful (181 to
+337 citations); interestingly, 4 of the 5 publications emphasize
+software per se, rather than strictly biological insight.
+ 
+The [ITCR collaborations][] subsection takes a second look at
+collaboration, in the sense of ITCR projects citing the works of one
+another. 37 projects cite work of 22 other projects.
 
 [NIH Reporter]: https://reporter.nih.gov/
 [iCite]: https://icite.od.nih.gov/
 
-See the "Introduction to 'grantpubcite'" article for installation and
-basic use.
+# Getting started
 
-Core tidyverse functions used in this article include:
+See the [Introduction to 'grantpubcite'][grantpubcite] article for
+installation, basic use, and a brief introduction to 'tidyverse'
+operations.
 
-- `tibble()` -- representation of a `data.frame`, with better display
-  of long and wide data frames. `tribble()` constructs a tibble in a
-  way that makes the relationship between data across rows more
-  transparent.
-- `glimpse()` -- providing a quick look into the columns and data in
-  the tibble by transposing the tibble and display each 'column' on a
-  single line.
-- `select()` -- column selection.
-- `filter()`, `slice()` -- row selection.
-- `pull()` -- extract a single column as a vector.
-- `mutate()` -- column transformation.
-- `count()` -- count occurences in one or more columns.
-- `arrange()` -- order rows by values in one or more columns.
-- `distinct()` -- reduce a tibble to only unique rows.
-- `group_by()` -- perform computations on groups defined by one or
-  several columns.
-- `summarize()` -- calculate summary statstics for groups.
-- `left_join()`, `right_join()` -- merge two tibbles based on shared
-  columns, preserving all rows in the first (`left_join()`) or second
-  (`right_join()`) tibble.
+[grantpubcite]: articles/grantpubcite.html
 
 Load the library and other packages to be used in this article.
 
@@ -68,11 +104,6 @@ library(grantpubcite)
 library(ggplot2)
 library(DT)
 ```
-
-As a case study, suppose we are interested in grants funded under the
-Information Technology in Cancer Research ([ITCR][]) program.
-
-[ITCR]: https://itcr.cancer.gov/
 
 # Project information
 
