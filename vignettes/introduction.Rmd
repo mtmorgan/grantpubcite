@@ -1,0 +1,184 @@
+---
+title: "01. Introduction to 'grantpubcite'"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{01. Introduction to 'grantpubcite'}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The 'grantpubcite' package can be used to query the [NIH Reporter][]
+database for funded grants and, optionally, publications associated
+with grants in NIH Reporter. The citation history of publications can
+discovered using [iCite][].  The 'grantpubcite' package help pages and
+resources make extensive use of 'tidyverse' concepts.
+
+Core tidyverse functions used in this article include:
+
+- `tibble()` -- representation of a `data.frame`, with better display
+  of long and wide data frames.
+- `glimpse()` -- providing a quick look into the columns and data in
+  the tibble by transposing the tibble and display each 'column' on a
+  single line.
+- `slice()` -- row selection.
+- `pull()` -- extract a single column as a vector.
+
+
+[NIH Reporter]: https://reporter.nih.gov/
+[iCite]: https://icite.od.nih.gov/
+
+# Installation and loading
+
+Install the development version of grantpubcite from [github][].
+
+[github]: https://github.com/mtmorgan/grantpubcite
+
+```{r, eval = FALSE}
+devtools::install_github("mtmorgan/grantpubcite")
+```
+
+Load the library and other packages to be used in the vignette.
+
+```{r setup, message = FALSE}
+library(grantpubcite)
+```
+
+# NIH Reporter projects
+
+`reporter_projects()` queries the 'projects' endpoint; see the
+technical description of the NIH Reporter [project search API][NIH
+search] for details, paying particular attention to the 'schema'
+present in the executable example..
+
+[NIH search]: https://api.reporter.nih.gov/#!/Search/Projects
+
+For illustration we start by identifying Funding Opportunity
+Announcemments (FOA) that might be of interest, in this case current
+FOA under the Information Technology in Cancer Research ([ITCR][])
+program.
+
+[ITCR]: https://itcr.cancer.gov/
+
+```{r}
+foas <- c(        # one or more criteria, e.g., foa number(s)
+    "PAR-15-334", # ITCR (R21)”
+    "PAR-15-332", # ITCR Early-Stage Development (U01)
+    "PAR-15-331", # ITCR Advanced Development (U24)
+    "PAR-15-333"  # ITCR Sustained Support (U24)
+)
+```
+
+Use `reporter_projects()` by providing criteria to be used to query
+the NIH Reporter projects endpoint. The criteria are provided as named
+arguments to `reporter_projects()`. To query for projects awarded
+under the FOA of interest, use the argument `foa =`. Initially, use
+the `limit = 1` argument to retrieve just a single record.
+
+```{r}
+reporter_projects(foa = foas, limit = 1L) |>
+    glimpse()
+```
+
+This shows that the return value of `reporter_projects()` is a
+`tibble` (the tidyverse representation of a `data.frame`) with a
+single row corresponding to the requested record, and all possible
+fields returned by the query.
+
+Inspect the fields for those that might be of interest, and define a
+variable to reference these.
+
+```{r}
+include_fields <- c(
+    "full_foa",
+    "core_project_num",
+    "fiscal_year",
+    "award_amount",
+    "contact_pi_name",
+    "project_title",
+    "project_start_date",
+    "project_end_date"
+)
+```
+
+Now execute the `reporter_projects()` query on all of our FOA of
+interest, including only the fields of interest in the response.
+
+```{r}
+projects <- reporter_projects(foa = foas, include_fields = include_fields)
+projects
+```
+
+In an interactive session, a useful way to visually navigate this data
+is to use the [DT][] package, `DT::datatable(projects)`.
+
+[DT]: https://cran.r-project.org/package=DT
+
+# NIH Reporter publications
+
+The NIH Reporter [publication search API][] provides a way to retrieve
+publications reported as grant-supported. The search criteria are
+complicated, but the return value is always a tibble with columns
+`coreproject`, `pmid`, and `applid`. Here we search for all citations
+from the projects funded by current ITCR FOAs.
+
+[publication search API]: https://api.reporter.nih.gov/#!/Search/Publications
+
+```{r}
+core_project_nums <-
+    pull(projects, "core_project_num") |>
+    unique()
+publications <- reporter_publications(core_project_nums = core_project_nums)
+publications
+```
+
+Note that some projects were funded by previous ITCR FOA, so that
+publications can appear to be from 'before' funding under the current
+FOA.
+
+# iCite publication citations
+
+The NIH [iCite][] resource and [API][iCite API] can be used to map
+PMID ids from NIH Reporter to detailed information about publications,
+including citations and derived citation measures that account for,
+e.g., time since publication.
+
+[iCite API]: https://icite.od.nih.gov/api
+
+Discover available fields by querying iCite using the first row of the
+`publications` tibble obtained from NIH Reporter. `iCite()` takes as
+its first argument any tibble, provided it has a column `pmid`.
+
+```{r}
+## which fields are available in icite?
+icite(slice(publications, 1L)) |>
+    glimpse()
+```
+
+Identify fields of interest, and query for all publications associated the 
+
+```{r}
+include_fields <- c(
+    "pmid", "year", "citation_count", "relative_citation_ratio",
+    "doi"
+)
+icite(publications, include_fields)
+```
+
+# Next steps
+
+See the Case Studies articles for examples of working with this data.
+
+# Session information
+
+The following summarizes packages in use when this article was compiled.
+
+```{r}
+sessionInfo()
+```

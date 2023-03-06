@@ -1,0 +1,529 @@
+---
+title: "02. Case Study: ITCR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{02. Case Study: ITCR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+  )
+datatable <-
+    function(x, ...)
+{
+    if (interactive()) {
+        x
+    } else {
+        DT::datatable(x, ..., rownames = FALSE, options = list(pageLength = 5))
+    }
+}
+```
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The 'grantpubcite' package can be used to query the [NIH Reporter][]
+database for funded grants and, optionally, publications associated
+with grants in NIH Reporter. The citation history of publications can
+discovered using [iCite][].  The 'grantpubcite' package help pages and
+resources make extensive use of 'tidyverse' concepts.
+
+See the "Introduction to 'grantpubcite'" article for installation and
+basic use.
+
+Core tidyverse functions used in this article include:
+
+- `tibble()` -- representation of a `data.frame`, with better display
+  of long and wide data frames. `tribble()` constructs a tibble in a
+  way that makes the relationship between data across rows more
+  transparent.
+- `glimpse()` -- providing a quick look into the columns and data in
+  the tibble by transposing the tibble and display each 'column' on a
+  single line.
+- `select()` -- column selection.
+- `filter()`, `slice()` -- row selection.
+- `pull()` -- extract a single column as a vector.
+- `mutate()` -- column transformation.
+- `count()` -- count occurences in one or more columns.
+- `arrange()` -- order rows by values in one or more columns.
+- `distinct()` -- reduce a tibble to only unique rows.
+- `group_by()` -- perform computations on groups defined by one or
+  several columns.
+- `summarize()` -- calculate summary statstics for groups.
+- `left_join()`, `right_join()` -- merge two tibbles based on shared
+  columns, preserving all rows in the first (`left_join()`) or second
+  (`right_join()`) tibble.
+
+Load the library and other packages to be used in this article.
+
+```{r setup, message = FALSE}
+library(grantpubcite)
+library(ggplot2)
+library(DT)
+```
+
+As a case study, suppose we are interested in grants funded under the
+Information Technology in Cancer Research ([ITCR][]) program.
+
+[ITCR]: https://itcr.cancer.gov/
+
+# Project information
+
+The relevant funding opportunity announcements (FOA) are summarized in
+a `tibble` (the 'tidy' version of `data.frame`)
+
+```{r}
+foas <- tribble(
+    ~full_foa,    ~reissue_of,  ~foa_tag,      ~description,
+    ## current FOAs
+    "PAR-15-331", "PAR-13-294", "Advanced",    "Advanced Development of Informatics Technologies for Cancer Research and Management (U24)",
+    "PAR-15-332", "PAR-12-288", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management (U01)",
+    "PAR-15-333", NA,           "Sustained",   "Sustained Support for Informatics Resources for Cancer Research and Management (U24)",
+    "PAR-15-334", NA,           "Innovative",  "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21)",
+    ## earlier FOAs
+    "PAR-13-294", "PAR-12-287", "Advanced",    "Advanced Development of Informatics Technology (U24)",
+    "PAR-12-287", NA,           "Advanced",    "Advanced Development of Informatics Technology (U24)",
+    "PAR-12-288", NA,           "Early-Stage", "Early-Stage Development of Informatics Technology (U01)"
+    ## FIXME: add 'Revsion of...' FOAs
+)
+foas <- select(foas, -reissue_of) # drop 'reissue_of' for clarity
+```
+
+The NIH Reporter contains quite a bit of information about each
+grant. Get a sense of this by using `reporter_projects()` to query for
+all fields of a single record; most fields included in the result can
+also be used for queries.
+
+```{r}
+reporter_projects(foa = pull(foas, "full_foa"), limit = 1) |>
+    glimpse()
+```
+
+For our purpose we restrict fields to a few of particular interest; a
+fuller description of fields available as criteria for querying and
+inclusion in the response are available in the technical description
+of the NIH Reporter [project search API][NIH search].
+
+[NIH search]: https://api.reporter.nih.gov/#!/Search/Projects
+
+```{r}
+include_fields <- c(
+    "full_foa",
+    "core_project_num",
+    "fiscal_year",
+    "award_amount",
+    "contact_pi_name",
+    "project_title"
+)
+```
+
+Retrieve these fields for all projects in NIH reporter associated with
+the funding announcements of interest. Perform some minor data
+cleaning by removing leading and trailing whitespace from contact PI
+names
+
+```{r}
+projects <-
+    reporter_projects(
+        foa = foas$full_foa,
+        include_fields = include_fields
+    ) |>
+    mutate(contact_pi_name = trimws(contact_pi_name))
+```
+
+The result is a tidyverse `tibble`, and we use 'tidy' semantics to
+explore the data. For instance, although there are `r nrow(projects)`
+returned by NIH Reporter, each project is associated with funding over
+multiple fiscal years and perhaps mechanisms (e.g., through
+administrative supplements).
+
+```{r}
+projects |>
+    distinct(full_foa, core_project_num) |>
+    left_join(foas, by = "full_foa") |>
+    datatable()
+```
+
+The number of projects funded by each FOA is
+
+```{r}
+projects |>
+    left_join(foas) |>
+    distinct(foa_tag, core_project_num) |>
+    count(foa_tag)
+```
+
+The number of projects funded per fiscal year is
+
+```{r}
+projects |>
+    distinct(full_foa, core_project_num, fiscal_year) |>
+    count(fiscal_year)
+```
+
+A few projects changed names within the same award; for convenience we
+create a table of most-recent project titles
+
+```{r}
+project_titles_h <-
+    projects |>
+    select(fiscal_year, core_project_num, project_title) |>
+    arrange(desc(fiscal_year)) |>
+    filter(!duplicated(core_project_num)) |>
+    select(core_project_num, project_title)
+```
+
+The `r nrow(project_titles_h)` projects funded by ITCR are
+
+```{r}
+datatable(project_titles_h)
+```
+
+We update `projects` to use harmonized project titles.
+
+```{r}
+projects <-
+    projects |>
+    select(-project_title) |>
+    left_join(project_titles_h, by = "core_project_num")
+```
+
+Three project numbers have been funded under more than one FOA.
+
+```{r}
+projects |>
+    distinct(full_foa, core_project_num) |>
+    count(core_project_num, sort =  TRUE) |>
+    filter(n > 1L) |>
+    left_join(project_titles_h)
+```
+
+The following summarizes project funding across years; there are likely many
+caveats to this.
+
+```{r}
+project_summaries <-
+    projects |>
+    group_by(core_project_num) |>
+    summarize(
+        n_years = length(unique(fiscal_year)),
+        amount = sum(award_amount)
+    ) |>
+    left_join(project_titles_h, by = "core_project_num") |>
+    arrange(desc(n_years))
+
+project_summaries |>
+    ggplot(aes(n_years, amount)) +
+    geom_point() + geom_smooth(method = "lm") +
+    scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
+    labs(x = "Fiscal years of award", y = "Total funding")
+datatable(project_summaries)
+```
+
+## Maturing projects?
+
+A unique aspect of the ITCR FOA structure is that it envisions
+projects starting at one FOA and 'maturing' to the next FOA, e.g., an
+`Early-Stage` U01 matures to an `Advanced` U24. It is not possible to
+assess this by tracking a project number through full FOA, because the
+project number changes with FOA. Are there projects with the same
+contact PI that have received awards from different FOA tags?
+
+```{r}
+tagged_pis <-
+    projects |>
+    distinct(full_foa, core_project_num, contact_pi_name) |>
+    left_join(foas, by = "full_foa") |>
+    select(foa_tag, contact_pi_name) |>
+    distinct()
+```
+
+```{r}
+maturing_pis <-
+    tagged_pis |>
+    count(contact_pi_name, sort = TRUE) |>
+    filter(n > 1L) |>
+    select(-n) |>
+    left_join(
+        projects |>
+        distinct(full_foa, core_project_num, contact_pi_name, project_title),
+        multiple = "all"
+    ) |>
+    left_join(foas, by = "full_foa") |>
+    select(contact_pi_name, project_title, foa_tag) |>
+    arrange(contact_pi_name, project_title, foa_tag)
+DT::datatable(maturing_pis)
+```
+
+Direct inspection suggests that three contact PIs (Giffith, Karchin,
+Liu) have each seen one project mature. All are from 'Early-stage' to
+'Advanced'.
+
+# Publications
+
+Grantees report publications associated with their grants, and this
+information can be retrieved from NIH reporter. Queries are formulated
+in a way similar to projects, as described on the NIH Reporter
+[publication search API][], a rich set of query criteria can be used,
+but fields included in the return are strictly limited.
+
+[publication search API]: https://api.reporter.nih.gov/#!/Search/Publications
+
+Projects funded in 2020 are
+
+```{r}
+projects_2020 <-
+    projects |>
+    filter(fiscal_year == "2020") |>
+    left_join(project_summaries) |>
+    distinct(
+        full_foa, core_project_num,
+        n_years, amount, project_title
+    )
+```
+
+There are `r nrow(projects_2020)` projects receiving funds in fiscal
+year 2020. Publications associated with these projects are obtained with
+
+```{r}
+publications <- reporter_publications(
+    core_project_nums = pull(projects_2020, "core_project_num")
+) |>
+    select(-applid) # we won't use 'applid'
+```
+
+There are `r nrow(publications |> distinct(pmid))` distinct
+publications (not all published in 2020).
+
+## Project publication and funding
+
+The most prolific projects are
+
+```{r}
+publications_by_project <-
+    publications |>
+    count(coreproject, sort = TRUE) |>
+    left_join(
+        projects_2020,
+        by = c(coreproject = "core_project_num"),
+        multiple = "last"
+    )
+datatable(publications_by_project)
+```
+
+An exceptional number of publications are reported by project number
+'U01CA239055'. The relationship between publication and funding period
+and amount are visualized as follows.
+
+```{r, fig.show="hold", out.width="45%"}
+publications_by_project |>
+    ggplot(aes(n_years, n)) +
+    geom_point() + geom_smooth(method = "lm") +
+    scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
+    labs(x = "Fiscal years of award", y = "Number of publications")
+
+publications_by_project |>
+    ggplot(aes(amount, n)) +
+    geom_point() + geom_smooth(method = "lm") +
+    labs(x = "Total funding", y = "Number of publications")
+```
+
+## ITCR collaboration
+
+ITCR emphasizes collaboration between funded projects. Are there
+examples of collaboration at the level of publication, i.e., `pmid`
+associated with more than one project number?
+
+```{r}
+collaborative_pmid <-
+    publications |>
+    count(pmid, sort = TRUE, name = "n_collab") |>
+    filter(n_collab > 1)
+collaborative_pmid
+```
+
+Which projects are collaborating through shared publication?
+
+```{r}
+collaborative_pmid |>
+    left_join(publications, multiple = "all") |>
+    count(coreproject, sort = TRUE, name = "n_collab") |>
+    left_join(project_summaries, by = c(coreproject = "core_project_num")) |>
+    select(core_project_num = coreproject, n_collab, project_title) |>
+    distinct() |>
+    filter(n_collab > 1) |>
+    datatable()
+```
+
+# Citations
+
+Query [iCite][] for all citations to the publications associated with
+ITCR projects funded in 2020, restricting output to include fields of
+interest.
+
+[iCite]: https://icite.od.nih.gov/
+
+```{r}
+include_fields <- c(
+    "pmid", "year", "citation_count", "relative_citation_ratio",
+    "year", "title", "authors", "journal", "doi"
+)
+citations <- icite(publications, include_fields)
+citations <- left_join(publications, citations)
+```
+
+The `r nrow(citations)` publications have `r pull(citations,
+citation_count) |> sum() |> as.integer()` total citations; 
+`r filter(citations, citation_count == 0) |> nrow()` publications 
+have not been cited; not surprisingly uncited publications are recent.
+
+```{r}
+citations |>
+    group_by(year) |>
+    summarize(
+        n_projects = length(unique(coreproject)),
+        n_pub = n(),
+        n_uncite = sum(citation_count == 0L),
+        citn_count = sum(citation_count)
+    ) |>
+    DT::datatable()
+```
+
+Citations follow a very familiar pattern, with a few
+publications cited frequently.
+
+```{r}
+citations |>
+    filter(citation_count > 0) |>
+    ggplot(aes(x = citation_count)) +
+    scale_x_log10() +
+    geom_density() +
+    xlab("Number of citations") + ylab("Number of publications")
+```
+
+Highly cited publications are in high-impact journals, and emphasize
+science-related results rather than a software tool *per se* -- the
+tool has been used in an important study, and the authors of the study
+have acknowledged the tool.
+
+```{r}
+citations |>
+    arrange(desc(citation_count)) |>
+    select(coreproject, pmid, year, citation_count, journal, title) |>
+    datatable()
+```
+
+Citations per project are summarized below.
+
+```{r}
+citations |>
+    group_by(coreproject) |>
+    summarize(
+        n_pub = n(),
+        n_uncite = sum(citation_count == 0L),
+        citn_count = sum(citation_count)
+    ) |>
+    arrange(desc(citn_count)) |>
+    left_join(project_summaries, by = c(coreproject = "core_project_num")) |>
+    datatable()
+```
+
+## ITCR collaborations
+
+An opportunity for (indirect) collaboration occurs when one project
+cites the work of another project. Thus we query [iCite][] for the
+publications that cited ITCR publications, and exclude publications
+that are not themselves ITCR publications.
+
+```{r}
+include_fields <- c("pmid", "cited_by")
+cited_by <- icite(publications, include_fields)
+
+## 'cited_by' is a space-delimited character vector of pmid ids; expand these...
+cited_by_pmids <-
+    pull(cited_by, "cited_by") |>
+    lapply(strsplit, "[[:blank:]]") |>
+    unlist(recursive = FALSE)
+
+## ...construct a tibble of pmid / cited_by pmid
+pmid_cited_by_itcr <-
+    tibble(
+        pmid = rep(pull(cited_by, "pmid"), lengths(cited_by_pmids)),
+        cited_by = unlist(cited_by_pmids) |> as.integer()
+    ) |>
+    ## and exclude citations by non-ITCR publications
+    filter(cited_by %in% pmid)
+```
+
+There are `r nrow(pmid_cited_by_itcr)` citations of ITCR publications
+by ITCR projects.
+
+```{r}
+core_project_citations <-
+    pmid_cited_by_itcr |>
+    ## map pmid to coreproject
+    left_join(publications, multiple = "all") |>
+    rename(core_project_num = coreproject) |>
+    ## map cited_by to coreproject
+    left_join(
+        publications,
+        by = c(cited_by = "pmid"),
+        multiple = "all"
+    ) |>
+    rename(cited_by_core_project = coreproject)
+```
+
+The following summarizes citations at the project level
+
+```{r}
+project_project_citations <-
+    core_project_citations |>
+    count(core_project_num, cited_by = cited_by_core_project, name = "n_citns")
+```
+
+Self-citations are
+
+```{r}
+project_project_citations |>
+    filter(core_project_num == cited_by) |>
+    arrange(desc(n_citns)) |>
+    left_join(project_summaries) |>
+    select(-cited_by) |>
+    rename(self_citn = "n_citns") |>
+    datatable()
+```
+
+One can view collaboration as the number of projects that cite a
+particular project...
+
+```{r}
+project_project_citations |>
+    filter(core_project_num != cited_by) |>
+    group_by(core_project_num) |>
+    summarize(n_collaborators = length(unique(cited_by))) |>
+    arrange(desc(n_collaborators)) |>
+    left_join(project_titles_h) |>
+    datatable()
+```
+
+...or the number of projects a project cites
+
+```{r}
+project_project_citations |>
+    filter(core_project_num != cited_by) |>
+    group_by(cited_by) |>
+    summarize(n_collaborators = length(unique(core_project_num))) |>
+    arrange(desc(n_collaborators)) |>
+    left_join(project_titles_h, by = c(cited_by = "core_project_num")) |>
+    datatable()
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
