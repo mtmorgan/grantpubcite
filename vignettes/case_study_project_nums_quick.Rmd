@@ -1,0 +1,118 @@
+---
+title: "Case study: specific projects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case study: specific projects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+  )
+datatable <-
+    function(x, ...)
+{
+    if (interactive()) {
+        x
+    } else {
+        DT::datatable(x, ..., rownames = FALSE, options = list(pageLength = 5))
+    }
+}
+```
+
+This article illustrates how one might explore specific project
+numbers. Start by attaching our package and others we will use.
+
+```{r setup, message = FALSE}
+library(grantpubcite)
+library(DT)
+```
+
+Suppose one is interested in specific projects, and the grant project
+numbers are known. Define and search for them.
+
+# Projects
+
+Query the NIH Reporter for the projects of interest. The use of
+`project_nums=` for the argument required some reflection on the API
+schema provided at the end of the [API projects endpoint][project
+api].
+
+[project api]: https://api.reporter.nih.gov/#!/Search/Projects
+
+```{r project-numbers}
+project_nums = c("U01CA190234", "U24CA194354")
+projects <- reporter_projects(project_nums = project_nums)
+```
+
+Explore the data, for instance finding the Funding Opportunity
+Announcement the grants were reward under, and the fiscal years in
+which they were active.
+
+```{r project-fiscal-years}
+projects |>
+    group_by(core_project_num) |>
+    summarize(
+        foa = unique(full_foa),
+        first_funding = min(fiscal_year),
+        last_funding = max(fiscal_year)
+    ) |>
+    datatable()
+```
+
+# Publications
+
+Use the core project numbers to retrieve known publications
+
+```{r}
+core_project_nums <-
+    pull(projects, "core_project_num") |>
+    unique()
+publications <- reporter_publications(core_project_nums = core_project_nums)
+```
+
+The numbers of publications associated with each grant are
+
+```{r}
+publications |>
+    count(coreproject) |>
+    datatable()
+```
+
+# Citations
+
+Obtain citation information (including information about the orginal
+publication) using the `publications` tibble
+
+```{r}
+citations <- icite(publications)
+```
+
+Explore these interactively
+
+```{r}
+citations |>
+    select(pmid, citation_count, relative_citation_ratio, year, title) |>
+    datatable()
+```
+
+Use a 'join' between tables to associate publications and citations
+
+```{r}
+left_join(publications, citations) |>
+    group_by(coreproject, year) |>
+    summarize(
+        n_publications = n(),
+        total_citations = sum(citation_count)
+    ) |>
+    datatable()
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
