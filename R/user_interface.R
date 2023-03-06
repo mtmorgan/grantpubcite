@@ -8,6 +8,8 @@ REPORTER_PROJECTS <- paste0(REPORTER_URL, "/v2/projects/search")
 
 REPORTER_PUBLICATIONS <- paste0(REPORTER_URL, "/v2/publications/search")
 
+REPORTER_LIMIT <- 10000L
+
 #' @importFrom jsonlite unbox toJSON fromJSON
 #'
 #' @importFrom dplyr as_tibble select all_of bind_rows
@@ -53,6 +55,23 @@ reporter_endpoint <-
             message(
                 offset + .jmespath(response, "length(results)"), " of ",
                 .jmespath(response, "meta.total"), " records"
+            )
+        }
+        too_many_records <-
+            ## first iteration only
+            offset == 0L &&
+            .jmespath(response, "meta.total") > REPORTER_LIMIT
+        if (too_many_records) {
+            txt <- paste0(
+                "More than ", REPORTER_LIMIT, " records would be returned by ",
+                "this query; a likely cause is that the argument names do not ",
+                "match allowed criteria defined in the API documentation. ",
+                if (!verbose)
+                    "Using `verbose = TRUE` may help to understand the query."
+            )
+            stop(
+                paste(strwrap(txt, exdent = 4L), collapse = "\n"),
+                call. = FALSE
             )
         }
 
