@@ -59,7 +59,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] grantpubcite_0.0.0.9003 dplyr_1.1.0            
+#> [1] grantpubcite_0.0.0.9004 dplyr_1.1.0            
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] vctrs_0.5.2      httr_1.4.5       cli_3.6.0        knitr_1.42      
