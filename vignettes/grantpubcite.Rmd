@@ -40,7 +40,9 @@ Install the development version of grantpubcite from [github][].
 [github]: https://github.com/mtmorgan/grantpubcite
 
 ```{r, eval = FALSE}
-devtools::install_github("mtmorgan/grantpubcite")
+if (!nzchar(system.file(package = "remotes")))
+    install.package("remotes", repos = "https://cran.r-project.org")
+remotes::install_github("mtmorgan/grantpubcite")
 ```
 
 Load the library and other packages to be used in the vignette.

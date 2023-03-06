@@ -32,7 +32,9 @@ Install the development version of grantpubcite from [github][].
 [github]: https://github.com/mtmorgan/grantpubcite
 
 ```{r, eval = FALSE}
-devtools::install_github("mtmorgan/grantpubcite")
+if (!nzchar(system.file(package = "remotes")))
+    install.package("remotes", repos = "https://cran.r-project.org")
+remotes::install_github("mtmorgan/grantpubcite")
 ```
 
 Load the library and other packages to be used in the vignette.
@@ -45,7 +47,7 @@ See
 
 - [Get started][] for an introduction to the package.
 - [Case study: ITCR][] for an illustration of package use analysing
-  grants in the NIH Information in Technology in Cancer Research
+  grants in the NIH Information Technology in Cancer Research
   portfolio of grants.
 
 [Get started]: articles/grantpubcite.html
@@ -53,9 +55,3 @@ See
 
 Please note that I am not experienced in this sort of analysis, so any
 conclusions should be viewed with great skepticism.
-
-This site was processed using the following software:
-
-```{r}
-sessionInfo()
-```
