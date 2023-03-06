@@ -97,21 +97,11 @@ foas <- select(foas, -reissue_of) # drop 'reissue_of' for clarity
 ```
 
 The NIH Reporter contains quite a bit of information about each
-grant. Get a sense of this by using `reporter_projects()` to query for
-all fields of a single record; most fields included in the result can
-also be used for queries.
+grant. Following the [Get started][] article, we query the
+`reporter_projects()` endpoint, restricting fields included in the
+return value to a few of particular interest.
 
-```{r}
-reporter_projects(foa = pull(foas, "full_foa"), limit = 1) |>
-    glimpse()
-```
-
-For our purpose we restrict fields to a few of particular interest; a
-fuller description of fields available as criteria for querying and
-inclusion in the response are available in the technical description
-of the NIH Reporter [project search API][NIH search].
-
-[NIH search]: https://api.reporter.nih.gov/#!/Search/Projects
+[Get started]: articles/grantpubcite.html
 
 ```{r}
 include_fields <- c(
