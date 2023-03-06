@@ -76,7 +76,7 @@ reporter_endpoint <-
 #'
 #' @details The NIH reporter API used for `reporter_projects()` and
 #'     `reporter_publications()` is documented at
-#'     https://api.reporter.nih.gov/.
+#'     \url{https://api.reporter.nih.gov/}.
 #'
 #' @param ... named arguments descrbing fields in the query. Values
 #'     are from the 'Schema' linked to the API description.
@@ -185,7 +185,7 @@ icite_one_chunk <-
 #' @rdname user_interface
 #'
 #' @details The `icite()` API is described at
-#'     https://icite.od.nih.gov/api.
+#'     \url{https://icite.od.nih.gov/api}.
 #'
 #' @param tbl For `icite()`, `tbl` must contain a column `pmid` with
 #'     PubMed ids, for instance as in the tibble derived from

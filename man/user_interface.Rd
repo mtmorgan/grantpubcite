@@ -60,9 +60,11 @@ foas <- c(        # one or more criteria, e.g., foa number(s)
     "PAR-15-333"  # ITCR Sustained Support (U24)
 )
 
-## use `limit = 1` and `verbose = TRUE` to see return fields.
-#' first_record <- reporter_projects(foa = foa, limit = 1L, verbose = TRUE)
+## use `limit = 1` to see possible values for fields to be included
+reporter_projects(foa = foas, limit = 1L) |>
+    glimpse()
 
+## select fields of interest
 include_fields <- c(
     "full_foa",
     "core_project_num",

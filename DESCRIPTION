@@ -1,6 +1,6 @@
 Package: grantpubcite
 Title: Query 'NIH Reporter' and 'iCite' for Grant and Publication Information
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person(
         "Martin", "Morgan",
@@ -22,5 +22,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    DT,
+    ggplot2
 VignetteBuilder: knitr

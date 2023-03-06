@@ -1,8 +1,8 @@
 ---
-title: "01. Introduction to 'grantpubcite'"
+title: "Introduction to 'grantpubcite'"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{01. Introduction to 'grantpubcite'}
+  %\VignetteIndexEntry{Introduction to 'grantpubcite'}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
