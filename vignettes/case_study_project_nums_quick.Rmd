@@ -31,10 +31,14 @@ library(grantpubcite)
 library(DT)
 ```
 
+# Projects
+
 Suppose one is interested in specific projects, and the grant project
 numbers are known. Define and search for them.
 
-# Projects
+```{r}
+project_nums <- c("U01CA190234", "U24CA194354")
+```
 
 Query the NIH Reporter for the projects of interest. The use of
 `project_nums=` for the argument required some reflection on the API
@@ -44,7 +48,6 @@ api].
 [project api]: https://api.reporter.nih.gov/#!/Search/Projects
 
 ```{r project-numbers}
-project_nums = c("U01CA190234", "U24CA194354")
 projects <- reporter_projects(project_nums = project_nums)
 ```
 
