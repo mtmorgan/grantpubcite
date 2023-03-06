@@ -32,9 +32,13 @@ See
 
 -   [Get started](articles/grantpubcite.html) for an introduction to the
     package.
--   [Case study: ITCR](articles/case_study_itcr) for an illustration of
-    package use analysing grants in the NIH Information Technology in
-    Cancer Research portfolio of grants.
+-   [Case study: ITCR](articles/case_study_itcr.html) for an
+    illustration of package use analysing grants in the NIH Information
+    Technology in Cancer Research portfolio of grants.
+-   [Case study: specific
+    projects](articles/case_study_project_nums_quick.html) provides a
+    quick explorartion of publications and citations arising from two
+    related grants.
 
 Please note that I am not experienced in this sort of analysis, so any
 conclusions should be viewed with great skepticism.
