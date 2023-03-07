@@ -35,7 +35,7 @@ Information Technology in Cancer Research ([ITCR][]) program.
 
 [ITCR]: https://itcr.cancer.gov/
 
-The [Project information][] section shows that I found 87 projects (a
+The [Project information][] section shows that I found 146 projects (a
 useful sanity check?). The first figure shows that projects funded for
 more fiscal years received more funding (not too surprising!). At this
 stage and subsequently I found it useful, using the datatables on the
@@ -91,7 +91,7 @@ See the [Introduction to 'grantpubcite'][grantpubcite] article for
 installation, basic use, and a brief introduction to 'tidyverse'
 operations.
 
-[grantpubcite]: articles/grantpubcite.html
+[grantpubcite]: ./grantpubcite.html
 
 Load the library and other packages to be used in this article.
 
@@ -156,7 +156,7 @@ grant. Following the [Get started][] article, we query the
 `reporter_projects()` endpoint, restricting fields included in the
 return value to a few of particular interest.
 
-[Get started]: articles/grantpubcite.html
+[Get started]: ./grantpubcite.html
 
 ```{r}
 include_fields <- c(
@@ -184,10 +184,10 @@ projects <-
 ```
 
 The result is a tidyverse `tibble`, and we use 'tidy' semantics to
-explore the data. For instance, although there are `r nrow(projects)`
-returned by NIH Reporter, each project is associated with funding over
-multiple fiscal years and perhaps mechanisms (e.g., through
-administrative supplements).
+explore the data. There are `r nrow(projects)` returned by NIH
+Reporter, and each project is associated with funding over multiple
+fiscal years and mechanisms (e.g., through administrative
+supplements).
 
 ```{r}
 projects |>

@@ -1,8 +1,11 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9010) Update 'Getting started' link and number of projects
+  mentioned in summary of ITCR case study. Thanks Juli Klemm.
+
 - (v. 0.0.0.9009) Add missing FOAs (RFA-*) from 2019+; now 146 grants
-    with more evidence of project maturation. Thanks to Satish
-    Viswanath for pointing out the missing FOAs.
+   with more evidence of project maturation. Thanks to Satish
+   Viswanath for pointing out the missing FOAs.
 
 - (v. 0.0.0.9008) Add downloadable projects data. Thanks to Andrey
   Fedorov for comments leading to this and the preceeding change.
