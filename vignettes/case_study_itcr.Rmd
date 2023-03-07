@@ -536,10 +536,24 @@ project_project_citations |>
     datatable()
 ```
 
-## All ITCR publications and citations
+# Data download
 
-As a resource, it is useful to extract all publications from all
-grants
+All project information can be downloaded with the following table
+
+```{r}
+projects |>
+    DT::datatable(
+        extensions = "Buttons",
+        options = list(
+            scrollX = TRUE,
+            pageLength = 5,
+            dom = 'Bftp',
+            buttons = c('copy', 'csv', 'excel')
+        )
+    )
+```
+
+Publications from all grants are obtained with
 
 ```{r}
 all_publications <- reporter_publications(

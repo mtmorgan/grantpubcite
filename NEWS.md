@@ -1,5 +1,7 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9008) Add downloadable projects data
+
 - (v. 0.0.0.9007) Add downloadable table of all ITCR publications /
   citations.
 
