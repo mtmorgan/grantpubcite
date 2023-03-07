@@ -46,11 +46,13 @@ where we stood; now I do.
  
 I then focused on projects receiving funding in 2020.
  
-The [Maturing projects?][] subsection uses project title and contact PI
-to ask whether projects graduate between funding activities. Three
-(led by Griffith, Karchin, and Liu) seem to have, all from
-‘Early-stage’ to ‘Advanced’. I was a little disappointed that there
-were not more smaller projects maturing.
+The [Maturing projects?][] subsection uses project title and contact
+PI to ask whether projects graduate between funding activities. One
+(Campbell) has matured from 'Innovative' to 'Early-Stage', three
+Griffith, Karchin, and Liu) have matured from ‘Early-stage’ to
+‘Advanced’, and tow have matured from 'Advanced' to 'Sustained'. I was
+a little disappointed that there were not more smaller projects
+maturing.
  
 In the [Publications][] section, we see a positive relationship
 between funding (amount or duration) and publication. Again this is
@@ -61,7 +63,7 @@ comparison. There are some outliers, including one project with a
 surprisingly large number of publications for the period of the grant,
 as well as projects with only a handful of publications even after
 multiple years of funding. The [ITCR collaboration][] section shows
-that 5 projects collaborated closely enough with each other to be
+that 15 projects collaborated closely enough with each other to be
 acknowledged in the same publication.
  
 The figure in the [Citations][] section shows what I imagine is a
@@ -78,7 +80,7 @@ software per se, rather than strictly biological insight.
  
 The [ITCR collaborations][] subsection takes a second look at
 collaboration, in the sense of ITCR projects citing the works of one
-another. 37 projects cite work of 22 other projects.
+another. 38 projects cite work of 30 other projects.
 
 [NIH Reporter]: https://reporter.nih.gov/
 [iCite]: https://icite.od.nih.gov/
@@ -106,16 +108,44 @@ a `tibble` (the 'tidy' version of `data.frame`)
 
 ```{r}
 foas <- tribble(
-    ~full_foa,    ~reissue_of,  ~foa_tag,      ~description,
-    ## current FOAs
-    "PAR-15-331", "PAR-13-294", "Advanced",    "Advanced Development of Informatics Technologies for Cancer Research and Management (U24)",
-    "PAR-15-332", "PAR-12-288", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management (U01)",
-    "PAR-15-333", NA,           "Sustained",   "Sustained Support for Informatics Resources for Cancer Research and Management (U24)",
-    "PAR-15-334", NA,           "Innovative",  "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21)",
-    ## earlier FOAs
-    "PAR-13-294", "PAR-12-287", "Advanced",    "Advanced Development of Informatics Technology (U24)",
-    "PAR-12-287", NA,           "Advanced",    "Advanced Development of Informatics Technology (U24)",
-    "PAR-12-288", NA,           "Early-Stage", "Early-Stage Development of Informatics Technology (U01)"
+    ~full_foa,       ~reissue_of,     ~foa_tag,      ~description,
+    ## current PARs
+    "PAR-15-334",    NA,              "Innovative",  "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21)",
+    "PAR-15-332",    "PAR-12-288",    "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management (U01)",
+    "PAR-15-331",    "PAR-13-294",    "Advanced",    "Advanced Development of Informatics Technologies for Cancer Research and Management (U24)",
+    "PAR-15-333",    NA,              "Sustained",   "Sustained Support for Informatics Resources for Cancer Research and Management (U24)",
+
+    ## RFAs
+    "RFA-CA-23-014", "RFA-CA-22-021", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
+    "RFA-CA-23-015", "RFA-CA-22-022", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
+    "RFA-CA-23-016", "RFA-CA-22-023", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-23-017", "RFA-CA-22-024", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+
+    "RFA-CA-22-021", "RFA-CA-21-013", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
+    "RFA-CA-22-022", "RFA-CA-21-014", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
+    "RFA-CA-22-023", "RFA-CA-21-015", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-22-024", "RFA-CA-21-016", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+
+    "RFA-CA-21-013", "RFA-CA-20-007", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
+    "RFA-CA-21-014", "RFA-CA-20-008", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
+    "RFA-CA-21-015", "RFA-CA-20-009", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-21-016", "RFA-CA-20-010", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+
+    "RFA-CA-20-008", "RFA-CA-19-039", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
+    "RFA-CA-20-007", "RFA-CA-19-038", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
+    "RFA-CA-20-009", "RFA-CA-19-040", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-20-010", "RFA-CA-19-041", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+
+    "RFA-CA-19-039", NA,              "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
+    "RFA-CA-19-038", NA,              "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
+    "RFA-CA-19-040", NA,              "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-19-041", NA,              "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
+    "RFA-CA-19-042", NA,              "Education", "Informatics Technology for Cancer Research Education Resource (UE5 Clinical Trial Not Allowed)",
+
+    ## earlier PARs
+    "PAR-13-294",    "PAR-12-287",    "Advanced",    "Advanced Development of Informatics Technology (U24)",
+    "PAR-12-287",    NA,              "Advanced",    "Advanced Development of Informatics Technology (U24)",
+    "PAR-12-288",    NA,              "Early-Stage", "Early-Stage Development of Informatics Technology (U01)"
     ## FIXME: add 'Revsion of...' FOAs
 )
 foas <- select(foas, -reissue_of) # drop 'reissue_of' for clarity
@@ -283,9 +313,20 @@ maturing_pis <-
 DT::datatable(maturing_pis)
 ```
 
-Direct inspection suggests that three contact PIs (Giffith, Karchin,
-Liu) have each seen one project mature. All are from 'Early-stage' to
-'Advanced'.
+Direct inspection suggests the following:
+
+```{r maturing projects}
+tribble(
+    ~contact_pi_name, ~from,         ~to,
+    "Campbell",       "Early-Stage", "Innovative",
+    "Griffith",       "Early-Stage", "Advanced",
+    "Karchin",        "Early-Stage", "Advanced",
+    "Liu",            "Early-Stage", "Advanced",
+    "Marcus",         "Advanced",    "Sustained",
+    "Mesirov",        "Advanced",    "Sustained"
+)
+## FIXME: Kavraki, Narzisi?
+```
 
 # Publications
 
@@ -318,6 +359,10 @@ publications <- reporter_publications(
     core_project_nums = pull(projects_2020, "core_project_num")
 ) |>
     select(-applid) # we won't use 'applid'
+```
+
+```{r, echo = FALSE}
+datatable(publications)
 ```
 
 There are `r nrow(publications |> distinct(pmid))` distinct
