@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 datatable <- grantpubcite:::datatable
 ```
 
+Compiled: `r Sys.Date()`
+
 This article illustrates how one might explore specific project
 numbers. Start by attaching our package and others we will use.
 

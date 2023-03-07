@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+Compiled: `r Sys.Date()`
+
 The 'grantpubcite' package can be used to query the [NIH Reporter][]
 database for funded grants and, optionally, publications associated
 with grants in NIH Reporter. The citation history of publications can

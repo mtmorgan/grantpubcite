@@ -18,6 +18,8 @@ datatable <- grantpubcite:::datatable
 <!-- badges: start -->
 <!-- badges: end -->
 
+Compiled: `r Sys.Date()`
+
 # Summary
 
 Note that this is way outside my area of expertise, so I have
@@ -195,7 +197,7 @@ project_titles_h <-
 
 The `r nrow(project_titles_h)` projects funded by ITCR are
 
-```{r}
+```{r, echo = FALSE}
 datatable(project_titles_h)
 ```
 
@@ -237,6 +239,9 @@ project_summaries |>
     geom_point() + geom_smooth(method = "lm") +
     scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
     labs(x = "Fiscal years of award", y = "Total funding")
+```
+
+```{r, echo = FALSE}
 datatable(project_summaries)
 ```
 
@@ -272,6 +277,9 @@ maturing_pis <-
     left_join(foas, by = "full_foa") |>
     select(contact_pi_name, project_title, foa_tag) |>
     arrange(contact_pi_name, project_title, foa_tag)
+```
+
+```{r, echo = FALSE}
 DT::datatable(maturing_pis)
 ```
 
@@ -328,6 +336,9 @@ publications_by_project <-
         by = c(coreproject = "core_project_num"),
         multiple = "last"
     )
+```
+
+```{r, echo = FALSE}
 datatable(publications_by_project)
 ```
 
@@ -540,10 +551,11 @@ project_project_citations |>
 
 All project information can be downloaded with the following table
 
-```{r}
+```{r, echo = FALSE}
 projects |>
     DT::datatable(
         extensions = "Buttons",
+        rownames = FALSE,
         options = list(
             scrollX = TRUE,
             pageLength = 5,
@@ -582,9 +594,9 @@ all_citations <-
     mutate(pmid = as.integer(pmid))
 ```
 
-The project citation data, including download link are:
+The project citation data are:
 
-```{r}
+```{r, echo = FALSE}
 all_publications |>
     left_join(all_citations, by = "pmid", multiple = "all") |>
     ## put many-authored publications at the end, to make the display
@@ -593,6 +605,7 @@ all_publications |>
     arrange(nchar(authors)) |>
     DT::datatable(
         extensions = "Buttons",
+        rownames = FALSE,
         options = list(
             scrollX = TRUE,
             pageLength = 5,
