@@ -1,5 +1,8 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9007) Add downloadable table of all ITCR publications /
+  citations.
+
 - (v. 0.0.0.9006) Provide higher-level narrative summary to 'Case
   study: ITCR' article.
 

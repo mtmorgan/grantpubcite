@@ -536,6 +536,58 @@ project_project_citations |>
     datatable()
 ```
 
+## All ITCR publications and citations
+
+As a resource, it is useful to extract all publications from all
+grants
+
+```{r}
+all_publications <- reporter_publications(
+    core_project_nums = pull(projects, "core_project_num") |> unique()
+) |>
+    mutate(pmid = as.integer(pmid)) |>
+    select(-applid) # we won't use 'applid'
+```
+
+There are
+`r nrow(all_publications)` project / publication combinations from
+`r length(unique(pull(all_publications, "coreproject")))` projects and
+`r length(unique(pull(all_publications, "pmid")))` publications.
+
+[iCite][] extended citation measures for these publications are
+
+```{r}
+include_fields <- c(
+    "pmid", "year",
+    "citation_count", "citations_per_year", "expected_citations_per_year",
+    "field_citation_rate", "relative_citation_ratio", "nih_percentile",
+    "year", "title", "authors", "journal", "doi"
+)
+all_citations <-
+    icite(all_publications, include_fields = include_fields) |>
+    mutate(pmid = as.integer(pmid))
+```
+
+The project citation data, including download link are:
+
+```{r}
+all_publications |>
+    left_join(all_citations, by = "pmid", multiple = "all") |>
+    ## put many-authored publications at the end, to make the display
+    ## of the first few pages not too terrible -- a hack for visual
+    ## effect
+    arrange(nchar(authors)) |>
+    DT::datatable(
+        extensions = "Buttons",
+        options = list(
+            scrollX = TRUE,
+            pageLength = 5,
+            dom = 'Bftp',
+            buttons = c('copy', 'csv', 'excel')
+        )
+    )
+```
+
 # Session information
 
 ```{r}
