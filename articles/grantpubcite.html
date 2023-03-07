@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">grantpubcite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,6 +126,9 @@ tibbles based on shared columns, preserving all rows in the first
 (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>) or second (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code>)
 tibble.</li>
 </ul>
+<p>In an interactive session, a useful way to visually navigate the
+sometimes large tibbles is to use the <a href="https://cran.r-project.org/package=DT" class="external-link">DT</a> package, e.g.,
+<code>DT::datatable(projects)</code>.</p>
 <div class="section level2">
 <h2 id="installation-and-loading">Installation and loading<a class="anchor" aria-label="anchor" href="#installation-and-loading"></a>
 </h2>
@@ -249,9 +252,6 @@ response.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 176 more rows, and abbreviated variable names ¹​fiscal_year,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​award_amount, ³​contact_pi_name, ⁴​project_title, ⁵​project_start_date,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁶​project_end_date</span></span></span></code></pre></div>
-<p>In an interactive session, a useful way to visually navigate this
-data is to use the <a href="https://cran.r-project.org/package=DT" class="external-link">DT</a> package,
-<code>DT::datatable(projects)</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="nih-reporter-publications">NIH Reporter publications<a class="anchor" aria-label="anchor" href="#nih-reporter-publications"></a>
@@ -335,7 +335,7 @@ associated the</p>
 <span>    <span class="st">"doi"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/user_interface.html">icite</a></span><span class="op">(</span><span class="va">publications</span>, <span class="va">include_fields</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 819 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 820 × 5</span></span></span>
 <span><span class="co">#&gt;        pmid  year citation_count relative_citation_ratio doi                    </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 19<span style="text-decoration: underline;">898</span>898  <span style="text-decoration: underline;">2</span>010             32                    0.8  10.1245/s10434-009-079…</span></span>
@@ -348,7 +348,7 @@ associated the</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 26<span style="text-decoration: underline;">594</span>663  <span style="text-decoration: underline;">2</span>015            139                    4.62 10.1016/j.cels.2015.10…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 26<span style="text-decoration: underline;">638</span>175  <span style="text-decoration: underline;">2</span>015            139                    4.17 10.1016/j.molcel.2015.…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 26<span style="text-decoration: underline;">644</span>347  <span style="text-decoration: underline;">2</span>015             26                    0.81 10.1038/ncomms9726     </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 809 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 810 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
@@ -381,7 +381,7 @@ compiled.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] grantpubcite_0.0.0.9006 dplyr_1.1.0            </span></span>
+<span><span class="co">#&gt; [1] grantpubcite_0.0.0.9007 dplyr_1.1.0            </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] bslib_0.4.2       compiler_4.2.2    pillar_1.8.1      jquerylib_0.1.4  </span></span>
