@@ -318,7 +318,7 @@ Direct inspection suggests the following:
 ```{r maturing projects}
 tribble(
     ~contact_pi_name, ~from,         ~to,
-    "Campbell",       "Early-Stage", "Innovative",
+    "Campbell",       "Innovative",  "Early-Stage",
     "Griffith",       "Early-Stage", "Advanced",
     "Karchin",        "Early-Stage", "Advanced",
     "Liu",            "Early-Stage", "Advanced",

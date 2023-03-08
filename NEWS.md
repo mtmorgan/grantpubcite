@@ -1,5 +1,8 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9011) Correct 'maturing' order from 'Innovative' to
+  'Early-stage'
+
 - (v. 0.0.0.9010) Update 'Getting started' link and number of projects
   mentioned in summary of ITCR case study. Thanks Juli Klemm.
 
