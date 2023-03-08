@@ -17,12 +17,13 @@ knitr::opts_chunk$set(
 Compiled: `r Sys.Date()`
 
 The 'grantpubcite' package can be used to query the [NIH Reporter][]
-database for funded grants and, optionally, publications associated
-with grants in NIH Reporter. The citation history of publications can
-discovered using [iCite][].  The 'grantpubcite' package help pages and
-resources make extensive use of 'tidyverse' concepts.
+database for funded grants and the publications associated with those
+grants. The citation history of publications can be discovered using
+[iCite][].
 
-Core tidyverse functions used in the articles include:
+The 'grantpubcite' package help pages and resources make extensive use
+of 'tidyverse' concepts. Core tidyverse functions used in the articles
+include:
 
 - `tibble()` -- representation of a `data.frame`, with better display
   of long and wide data frames. `tribble()` constructs a tibble in a
@@ -49,10 +50,9 @@ In an interactive session, a useful way to visually navigate the
 sometimes large tibbles is to use the [DT][] package, e.g.,
 `DT::datatable(projects)`.
 
-[DT]: https://cran.r-project.org/package=DT
-
 [NIH Reporter]: https://reporter.nih.gov/
 [iCite]: https://icite.od.nih.gov/
+[DT]: https://cran.r-project.org/package=DT
 
 # Installation and loading
 

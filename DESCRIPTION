@@ -1,19 +1,21 @@
 Package: grantpubcite
 Title: Query 'NIH Reporter' and 'iCite' for Grant and Publication Information
 Version: 0.0.0.9011
-Authors@R: 
+Authors@R: c(
     person(
         "Martin", "Morgan",
         email = "mtmorgan.bioc@gmail.com",
         role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-5874-8148")
-    )
+    ),
+    person(
+        "NIH NCI ITCR U24CA180996",
+        role = "fnd"
+    ))
 Description: The 'grantpubcite' package can be used to query the 'NIH
-    Reporter' database for funded grants and, optionally, publications
-    associated with grants in NIH Reporter. The citation history of
-    publications can discovered using 'iCite'.  The 'grantpubcite'
-    package help pages and resources make extensive use of 'tidyverse'
-    concepts.
+    Reporter' database for funded grants and the publications
+    associated with those grants. The citation history of publications
+    can be discovered using 'iCite'.
 License: Artistic-2.0
 Depends: dplyr
 Imports: httr, jsonlite, readr, rjsoncons

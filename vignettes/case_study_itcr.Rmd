@@ -26,9 +26,9 @@ Note that this is way outside my area of expertise, so I have
 undoubtedly made terrible blunders.
 
 The 'grantpubcite' package can be used to query the [NIH Reporter][]
-database for funded grants and, optionally, publications associated
-with grants in NIH Reporter. The citation history of publications can
-discovered using [iCite][].
+database for funded grants, and the publications associated with those
+grants. The citation history of publications can be discovered using
+[iCite][].
 
 As a case study, suppose we are interested in grants funded under the
 Information Technology in Cancer Research ([ITCR][]) program.
@@ -49,8 +49,8 @@ I then focused on projects receiving funding in 2020.
 The [Maturing projects?][] subsection uses project title and contact
 PI to ask whether projects graduate between funding activities. One
 (Campbell) has matured from 'Innovative' to 'Early-Stage', three
-Griffith, Karchin, and Liu) have matured from ‘Early-stage’ to
-‘Advanced’, and tow have matured from 'Advanced' to 'Sustained'. I was
+(Griffith, Karchin, and Liu) have matured from ‘Early-stage’ to
+‘Advanced’, and two have matured from 'Advanced' to 'Sustained'. I was
 a little disappointed that there were not more smaller projects
 maturing.
  

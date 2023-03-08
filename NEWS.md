@@ -1,7 +1,11 @@
 # grantpubcite v0.0.1
 
-- (v. 0.0.0.9011) Correct 'maturing' order from 'Innovative' to
-  'Early-stage'
+- (v. 0.0.0.9012) Add 'fnd' (funding) role to DESCRIPTION,
+  acknowledging NIH NCI ITCR U24CA180996, and additional minor changes
+  to articles.
+
+- (v. 0.0.0.9011) Correct 'Innovative' / 'Early-stage' maturing
+  order.
 
 - (v. 0.0.0.9010) Update 'Getting started' link and number of projects
   mentioned in summary of ITCR case study. Thanks Juli Klemm.
@@ -14,7 +18,7 @@
   Fedorov for comments leading to this and the preceeding change.
 
 - (v. 0.0.0.9007) Add downloadable table of all ITCR publications /
-  citations. Thanns
+  citations. Thanks Andrey Fedorov for the prompt.
 
 - (v. 0.0.0.9006) Provide higher-level narrative summary to 'Case
   study: ITCR' article.
