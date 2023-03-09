@@ -442,7 +442,9 @@ include_fields <- c(
     "pmid", "year", "citation_count", "relative_citation_ratio",
     "year", "title", "authors", "journal", "doi"
 )
-citations <- icite(publications, include_fields)
+citations <-
+    icite(publications, include_fields) |>
+    distinct()
 citations <- left_join(publications, citations)
 ```
 
