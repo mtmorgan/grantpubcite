@@ -71,6 +71,13 @@ datatable <-
     if (interactive()) {
         x
     } else {
-        DT::datatable(x, ..., rownames = FALSE, options = list(pageLength = 5))
+        DT::datatable(
+                x, ...,
+                rownames = FALSE,
+                options = list(
+                    pageLength = 5,
+                    scrollX = TRUE
+                )
+            )
     }
 }
