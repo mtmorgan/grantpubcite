@@ -1,5 +1,7 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9012) Add IOTN case study.
+
 - (v. 0.0.0.9012) Add 'fnd' (funding) role to DESCRIPTION,
   acknowledging NIH NCI ITCR U24CA180996, and additional minor changes
   to articles.

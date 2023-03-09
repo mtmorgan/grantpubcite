@@ -1,6 +1,6 @@
 Package: grantpubcite
 Title: Query 'NIH Reporter' and 'iCite' for Grant and Publication Information
-Version: 0.0.0.9011
+Version: 0.0.0.9012
 Authors@R: c(
     person(
         "Martin", "Morgan",
