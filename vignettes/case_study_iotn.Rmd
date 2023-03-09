@@ -1,0 +1,270 @@
+---
+title: "Case study: IOTN"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case study: IOTN}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+datatable <- grantpubcite:::datatable
+```
+
+Compiled: `r Sys.Date()`
+
+Note that this is way outside my area of expertise, so I have
+undoubtedly made terrible blunders.
+
+# Introduction
+
+The 'grantpubcite' package can be used to query the [NIH Reporter][]
+database for funded grants, and the publications associated with those
+grants. The citation history of publications can be discovered using
+[iCite][].
+
+[NIH Reporter]: https://reporter.nih.gov/
+[iCite]: https://icite.od.nih.gov/
+
+In this case study we look at the Immuno-Oncology Translational
+Network ([IOTN][]), a consortium supported by the [NIH Cancer Moonshot][]
+to accelerate translation of basic discoveries to clinical
+applications to improve immunotherapy outcomes.
+
+[IOTN]: https://www.iotnmoonshot.org/en/
+[NIH Cancer Moonshot]: https://www.cancer.gov/research/key-initiatives/moonshot-cancer-initiative
+
+# Getting started
+
+See the [Introduction to 'grantpubcite'][grantpubcite] article for
+installation, basic use, and a brief introduction to 'tidyverse'
+operations.
+
+[grantpubcite]: ./grantpubcite.html
+
+Load the library and other packages to be used in this case study.
+
+```{r setup, message = FALSE}
+library(grantpubcite)
+library(ggplot2)
+library(DT)
+```
+
+# Projects
+
+Funding Opportunity Announcements for IOTN are as follows:
+
+```{r}
+foas <- tribble(
+    ~full_foa,       ~tag,      ~description,
+    "RFA-CA-19-044", "U01",     "Advancing Cancer Immunotherapy by Mitigating Immune-Related Adverse Events (irAE) (U01 Clinical Trial Not Allowed)",
+
+    "RFA-CA-19-012", "UG3/UH3", "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (UG3/UH3 Clinical Trials Not Allowed)",
+    "RFA-CA-19-013", "U54",     "Immuno-Oncology Translation Network (IOTN): Immuno-engineering to Improve Immunotherapy (i3) Centers (U54 Clinical Trial Not Allowed)",
+    "RFA-CA-19-014", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (U01 Clinical Trial Not Allowed)",
+    "RFA-CA-19-015", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunotherapy Research Projects (U01 Clinical Trial Not Allowed)",
+
+    "RFA-CA-17-045", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunotherapy Research Projects (U01)",
+    "RFA-CA-17-046", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (U01)",
+    "RFA-CA-17-047", "DMRC",    "Immuno-Oncology Translation Network (IOTN): Data Management and Resource-Sharing Center (DMRC) (U24)",
+    "RFA-CA-17-048", "CIDR",    "Immuno-Oncology Translation Network (IOTN): Cellular Immunotherapy Data Resource (CIDR) (U24)"
+) |>
+    mutate(
+        tag = factor(tag, levels = c("UG3/UH3", "U01", "DMRC", "CIDR", "U54"))
+    )
+```
+
+Discover projects funded through these FOAs by querying NIH Reporter,
+and use the information returned by a the query to summarize the
+projects.
+
+```{r}
+include_fields <- c(
+    "full_foa", "core_project_num",
+    "fiscal_year", "award_amount",
+    "contact_pi_name", "project_title",
+    "project_start_date", "project_end_date"
+)
+projects <- reporter_projects(
+    foa = foas$full_foa,
+    include_fields = include_fields
+) |>
+    mutate(
+        contact_pi_name = trimws(contact_pi_name),
+        project_start_date = as.Date(project_start_date),
+        project_end_date = as.Date(project_end_date)
+    )
+
+project_summary <-
+    projects |>
+    ## hack to place overall project ahead of 'cores' in program
+    ## project grants
+    arrange(desc(nchar(project_title))) |>
+    group_by(full_foa, project_num = core_project_num) |>
+    summarize(
+        start_date = min(project_start_date, na.rm = TRUE),
+        end_date = max(project_end_date, na.rm = TRUE),
+        amount = sum(award_amount) |> as.integer(),
+        contact_pi_name = head(contact_pi_name, 1L),
+        project_title = head(project_title, 1L)
+    ) |>
+    left_join(foas |> select(full_foa, tag), by = "full_foa") |>
+    select(full_foa, tag, everything())
+```
+
+```{r, echo = FALSE}
+project_summary |>
+    datatable()
+```
+
+There are `r nrow(project_summary)` projects. The projects include
+large U54, resource sharing and management centers, as well as U01 and
+UG3 awards.
+
+```{r, echo = FALSE}
+project_summary |>
+    ggplot(aes(tag, amount)) +
+    scale_y_continuous(labels = scales::comma) +
+    geom_boxplot(outlier.color = NA) + geom_jitter() + coord_flip() +
+    xlab("Funding type") + ylab("Amount ($)")
+```
+
+# Publications
+
+Publications associated with projects are discovered using NIH Reporter
+
+```{r}
+publications <- reporter_publications(
+    core_project_nums = pull(project_summary, "project_num")
+) |>
+    select(-applid) |>
+    rename(project_num = "coreproject")
+```
+
+There are `r publications |> select(pmid) |> distinct() |> NROW()`
+publications.
+
+```{r, echo = FALSE}
+publications |>
+    count(project_num, name = "n_pub") |>
+    left_join(project_summary, by = "project_num") |>
+    select(-project_title) |>
+    datatable()
+```
+
+About 10% of publications involved collaboration between projects; one
+publication represented an extensive collaboration.
+
+```{r}
+publications |>
+    count(pmid, name = "n_collaborators") |>
+    count(n_collaborators, name = "n_publications")
+```
+
+# Citations
+
+Citations to each publication are obtained using `icite()`.
+
+```{r}
+include_fields <- c(
+    "pmid", "year", "citation_count", "relative_citation_ratio",
+    "year", "title", "authors", "journal", "doi"
+)
+citations <-
+    icite(publications, include_fields = include_fields) |>
+    distinct()
+
+citations <- 
+    left_join(publications, citations, by = "pmid") |>
+    arrange(desc(citation_count))
+```
+
+```{r, echo = FALSE}
+citations |>
+    ## don't display 'author' field and truncate publication title;
+    ## long fields are not handled well by datatable
+    select( -authors ) |>
+    mutate(title = paste0(substring(title, 1, 20), "...")) |>
+    rename(
+        n_citn = "citation_count",
+        rcr = "relative_citation_ratio"
+    ) |>
+    datatable()
+```
+
+Project U01DK124165 had a very important publication with PMID 32839624. The
+figure below shows publications per year...
+
+```{r}
+citations |>
+    ggplot(aes(factor(year))) +
+    geom_bar() +
+    xlab("Year") + ylab("Number of publications")
+```
+
+...and the distribution of citations per publication
+
+```{r}
+citations |>
+    filter(citation_count > 0) |>
+    ggplot(aes(citation_count)) +
+    scale_x_log10() +
+    geom_density() +
+    xlab("Number of citations") + ylab("Number of publications")
+```
+
+Project-level citations are summarized by the number of publications,
+the total citation count, and the sum of the 'relative citation
+index', a measure provided by iCite standardizing the impact of
+publications by year and field of study.
+
+```{r}
+citations_by_project <-
+    citations |>
+    group_by(project_num) |>
+    summarize(
+        n_pub = n(),
+        n_citn = sum(citation_count),
+        total_rcr = sum(relative_citation_ratio, na.rm = TRUE)
+    ) |>
+    left_join(project_summary, by = "project_num") |>
+    arrange(desc(total_rcr))
+```
+
+```{r, echo = FALSE}
+citations_by_project |>
+    datatable()
+```
+
+The relationship between amount of funding and relative citation ratio
+is show in the figure below; mousing over points shows the underlying
+data and associated core project number. Large 'U54' projects do not
+emphasize publication.
+
+```{r, echo = FALSE}
+plot <-
+    citations_by_project |>
+    mutate(`Start date` = format(start_date, "%Y")) |>
+    ggplot(
+        aes(
+            amount, total_rcr,
+            label = project_num,
+            color = `Start date`
+        )
+    ) +
+    geom_point() +
+    xlab("Award amount ($)") +
+    ylab("Total relative citation ratio")
+
+plotly::ggplotly(plot)
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```

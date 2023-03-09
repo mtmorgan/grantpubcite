@@ -26,7 +26,8 @@ Suggests:
     knitr,
     rmarkdown,
     DT,
-    ggplot2
+    ggplot2,
+    plotly
 VignetteBuilder: knitr
 URL: https://mtmorgan.github.io/grantpubcite/
 BugReports: https://github.com/mtmorgan/grantpubcite/issues
