@@ -1,8 +1,6 @@
 ---
 title: "Case study: ITCR"
-output: 
-  html_document:
-    code_folding: hide
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Case study: ITCR}
   %\VignetteEngine{knitr::rmarkdown}
@@ -273,9 +271,12 @@ project_summaries <-
 
 plot <-
     project_summaries |>
-    ggplot(aes(n_years, amount)) +
+    ggplot(aes(n_years, amount, text = project_title)) +
     geom_point() +
-    geom_smooth(method = "lm", formula = y ~ x) +
+    geom_smooth(
+        method = "lm", formula = y ~ x,
+        inherit.aes = FALSE, aes(n_years, amount)
+    ) +
     scale_y_continuous(labels = scales::comma) +
     scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
     labs(x = "Fiscal years of award", y = "Total funding ($)")
@@ -411,20 +412,19 @@ by the group were immediately useful in completing projects at the
 image analysis center. The relationship between publication and
 funding period and amount are visualized as follows.
 
-```{r, fig.show="hold", out.width="45%", echo = FALSE}
-publications_by_project |>
-    ggplot(aes(n_years, n)) +
+```{r, echo = FALSE}
+plot <-
+    publications_by_project |>
+    mutate(short_title = sprintf("%.40s...", project_title)) |>
+    ggplot(aes(amount, n, text = short_title)) +
     geom_point() +
-    geom_smooth(method = "lm", formula = y ~ x) +
-    scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
-    labs(x = "Fiscal years of award", y = "Number of publications")
-
-publications_by_project |>
-    ggplot(aes(amount, n)) +
-    geom_point() +
-    geom_smooth(method = "lm", formula = y ~ x) +
+    geom_smooth(
+        method = "lm", formula = y ~ x,
+        inherit.aes = FALSE, aes(amount, n)
+    ) +
     scale_x_continuous(labels = scales::comma) +
     labs(x = "Total funding ($)", y = "Number of publications")
+plotly::ggplotly(plot)
 ```
 
 ## ITCR collaboration

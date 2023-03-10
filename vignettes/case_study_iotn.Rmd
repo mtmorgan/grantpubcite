@@ -267,6 +267,7 @@ plot <-
         )
     ) +
     geom_point() +
+    scale_x_continuous(labels = scales::comma) +
     xlab("Award amount ($)") +
     ylab("Total relative citation ratio")
 
