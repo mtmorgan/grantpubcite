@@ -53,5 +53,17 @@ e.g., with different commentators pointing out that I'd originally
 missed almost 1/2 the ITCR-funded programs and then that I'd got them
 all.
 
+There are other relevant packages. [repoRter.nih][] provides a very
+nice interface to the NIH Reporter project search api, and includes
+functions that help the user formulate queries; the vignette is
+really well done, and I should probably have used this package instead
+of writing my own code. The [iCiteR][iCiteR] package provides a
+mechanism to query iCite. It also looks like a good package, but has
+recently been archived on CRAN and does not appear to be actively
+maintained.
+
+[repoRter.nih]: https://cran.r-project.org/package=repoRter.nih
+[iCiteR]: https://github.com/riddlet/iCiteR
+
 The package and case studies have been fun to develop! Now I just need
 a hex sticker...
