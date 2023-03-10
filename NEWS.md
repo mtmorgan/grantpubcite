@@ -1,5 +1,8 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.0.9014) Add 'Implementation notes' to share enabling
+  sources.
+
 - (v. 0.0.0.9012) Add IOTN case study.
 
 - (v. 0.0.0.9012) Add 'fnd' (funding) role to DESCRIPTION,

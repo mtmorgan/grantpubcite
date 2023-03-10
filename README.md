@@ -46,6 +46,9 @@ See
     projects](articles/case_study_project_nums_quick.html) provides a
     quick explorartion of publications and citations arising from two
     related grants.
+-   [Implementation notes](articles/implementation_notes.html) provides
+    brief notes on implementation, to highligth the great packages &
+    people contributing indirectly to the package.
 
 Please note that I am not experienced in this sort of analysis, so any
 conclusions should be viewed with great skepticism.

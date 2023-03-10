@@ -1,0 +1,57 @@
+---
+title: "Implementation notes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Implementation notes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Compiled: `r Sys.Date()`
+
+The 'grantpubcite' package uses [httr][] to interact with the [NIH
+Reporter][] and [iCite][] APIs. The package was developed using
+[devtools][], and documented using [roxygen][]. Vignettes ('articles')
+are processed by [knitr][] and [rmarkdown][]. Vignettes use
+[ggplot2][] and [plotly][] for figures, and [DT][] (wrapping the
+JavaScript [datatables][] library) for interactive tables. The package
+web site is made with [pkgdown][] using GitHub actions to update on
+push. These are really amazing packages!
+
+[httr]: https://cran.r-project.org/package=httr
+[NIH Reporter]: https://reporter.nih.gov/
+[iCite]: https://icite.od.nih.gov/
+[devtools]: https://cran.r-project.org/package=devtools
+[roxygen]: https://cran.r-project.org/package=roxygen
+[knitr]: https://cran.r-project.org/package=knitr
+[rmarkdown]: https://cran.r-project.org/package=rmarkdown
+[ggplot2]: https://cran.r-project.org/package=ggplot2
+[plotly]: https://cran.r-project.org/package=plotly
+[DT]: https://cran.r-project.org/package=DT
+[datatables]: https://datatables.net/
+[pkgdown]: https://cran.r-project.org/package=pkgdown
+
+The original 'inspiration' for the work came from an email chain
+referencing the following article about incentives for academic
+software development (ironically not available without a subscription)
+
+- Merow, C., Boyle, B., Enquist, B.J. et al. Better incentives are
+  needed to reward academic software development. Nat Ecol Evol
+  (2023). https://doi.org/10.1038/s41559-023-02008-w
+  
+The email made me wonder about 'standard' academic incentives,
+particularly the grant / publish / cite / grant / ... cycle that funds
+wet-lab programs. The ITCR seemed to offer a different perspective,
+and the NIH Reporter / iCite data some 'hard' and programatically
+accessible metrics.
+
+Package development relied on previous knowledge I'd
+learned from Philippa Doherty and Tau Liu about grant-funded
+publications and citations, and Kayla Interdonato about DT /
+datatable. The package benefited greatly from public development,
+e.g., with different commentators pointing out that I'd originally
+missed almost 1/2 the ITCR-funded programs and then that I'd got them
+all.
+
+The package and case studies have been fun to develop! Now I just need
+a hex sticker...
