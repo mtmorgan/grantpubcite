@@ -54,10 +54,14 @@ library(ggplot2)
 library(DT)
 ```
 
+This document is written in Rmarkdown; code chunks used to generate
+each table or figure can be shown by toggling the 'Details' widget.
+
 # Projects
 
 Funding Opportunity Announcements for IOTN are as follows:
 
+<details>
 ```{r}
 foas <- tribble(
     ~full_foa,       ~tag,      ~description,
@@ -77,11 +81,17 @@ foas <- tribble(
         tag = factor(tag, levels = c("UG3/UH3", "U01", "DMRC", "CIDR", "U54"))
     )
 ```
+</details>
+
+```{r, echo = FALSE}
+datatable(foas)
+```
 
 Discover projects funded through these FOAs by querying NIH Reporter,
 and use the information returned by a the query to summarize the
 projects.
 
+<details>
 ```{r}
 include_fields <- c(
     "full_foa", "core_project_num",
@@ -115,6 +125,7 @@ project_summary <-
     left_join(foas |> select(full_foa, tag), by = "full_foa") |>
     select(full_foa, tag, everything())
 ```
+</details>
 
 ```{r, echo = FALSE}
 project_summary |>
@@ -135,8 +146,9 @@ project_summary |>
 
 # Publications
 
-Publications associated with projects are discovered using NIH Reporter
+Publications associated with projects are discovered using NIH Reporter.
 
+<details>
 ```{r}
 publications <- reporter_publications(
     core_project_nums = pull(project_summary, "project_num")
@@ -144,6 +156,7 @@ publications <- reporter_publications(
     select(-applid) |>
     rename(project_num = "coreproject")
 ```
+<details>
 
 There are `r publications |> select(pmid) |> distinct() |> NROW()`
 publications.
@@ -169,6 +182,7 @@ publications |>
 
 Citations to each publication are obtained using `icite()`.
 
+<details>
 ```{r}
 include_fields <- c(
     "pmid", "year", "citation_count", "relative_citation_ratio",
@@ -182,6 +196,7 @@ citations <-
     left_join(publications, citations, by = "pmid") |>
     arrange(desc(citation_count))
 ```
+</details>
 
 ```{r, echo = FALSE}
 citations |>
@@ -199,7 +214,7 @@ citations |>
 Project U01DK124165 had a very important publication with PMID 32839624. The
 figure below shows publications per year...
 
-```{r}
+```{r, echo = FALSE}
 citations |>
     ggplot(aes(factor(year))) +
     geom_bar() +
@@ -222,6 +237,7 @@ the total citation count, and the sum of the 'relative citation
 index', a measure provided by iCite standardizing the impact of
 publications by year and field of study.
 
+<details>
 ```{r}
 citations_by_project <-
     citations |>
@@ -234,6 +250,7 @@ citations_by_project <-
     left_join(project_summary, by = "project_num") |>
     arrange(desc(total_rcr))
 ```
+</details>
 
 ```{r, echo = FALSE}
 citations_by_project |>

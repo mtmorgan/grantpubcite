@@ -1,5 +1,8 @@
 # grantpubcite v0.0.1
 
+- (v. 0.0.1) Initial version. Don't show case study code by default,
+  so the reports are more readble.
+
 - (v. 0.0.0.9014) Add 'Implementation notes' to share enabling
   sources.
 
