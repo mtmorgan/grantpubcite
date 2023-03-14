@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-  )
+)
 ```
 
 <!-- badges: start -->
@@ -96,7 +96,7 @@ Load the library and other packages to be used in this article.
 
 ```{r setup, message = FALSE}
 library(grantpubcite)
-library(ggplot2)
+library(ggplot2) # also plotly::ggplotly()
 library(DT)
 ```
 
@@ -218,14 +218,48 @@ projects <-
 ```
 </details>
 
-The number of projects funded by each FOA is
+Funded projects are (`contact_pi` is the most recent)
+
+```{r, echo = FALSE}
+projects |>
+    arrange(fiscal_year) |>
+    group_by(core_project_num) |>
+    summarize(
+        project_start_date = min(project_start_date),
+        project_end_date = max(project_end_date),
+        years = length(unique(fiscal_year)),
+        award_amount = sum(award_amount),
+        contact_pi_name = tail(contact_pi_name, 1L),
+        project_title = unique(project_title)
+    ) |>
+    gpc_datatable()
+```
+
+The number of projects funded by each type of FOA, and the total
+amount allcoated to date, is
 
 ```{r, echo = FALSE}
 projects |>
     left_join(foas, by = "full_foa") |>
-    distinct(foa_tag, core_project_num) |>
-    count(foa_tag) |>
+    group_by(foa_tag) |>
+    summarize(
+        n_projects = length(unique(core_project_num)),
+        amount = sum(award_amount)
+    ) |>
     gpc_datatable()
+```
+
+```{r, echo = FALSE}
+projects |>
+    left_join(foas, by = "full_foa") |>
+    ## filter(foa_tag != "Education") |>
+    group_by(foa_tag, core_project_num) |>
+    summarize(amount = sum(award_amount), .groups = "drop") |>
+    ggplot(aes(foa_tag, amount)) +
+    geom_boxplot(outlier.color = NA) +
+    geom_jitter() +
+    scale_y_continuous(labels = scales::comma) +
+    labs(x = "Type of FOA", y = "Amount awarded ($)")
 ```
 
 The number of projects funded per fiscal year is
@@ -255,8 +289,7 @@ projects |>
     gpc_datatable()
 ```
 
-The following summarizes project funding across years; there are likely many
-caveats to this.
+The following summarizes project funding across years
 
 ```{r, echo = FALSE}
 project_summaries <-
@@ -589,7 +622,7 @@ by ITCR projects.  Self-citations are
 project_project_citations |>
     filter(core_project_num == cited_by) |>
     arrange(desc(n_citns)) |>
-    left_join(project_summaries) |>
+    left_join(project_summaries, by = "core_project_num") |>
     select(-cited_by) |>
     rename(self_citn = "n_citns") |>
     gpc_datatable()
@@ -604,7 +637,7 @@ project_project_citations |>
     group_by(core_project_num) |>
     summarize(n_collaborators = length(unique(cited_by))) |>
     arrange(desc(n_collaborators)) |>
-    left_join(project_titles_h) |>
+    left_join(project_titles_h, by = "core_project_num") |>
     gpc_datatable()
 ```
 
