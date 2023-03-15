@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
   )
-datatable <- grantpubcite:::datatable
 ```
 
 <!-- badges: start -->
@@ -168,7 +167,7 @@ foas <-
 
 ```{r, echo = FALSE}
 foas |>
-    datatable()
+    gpc_datatable()
 ```
 
 The NIH Reporter contains quite a bit of information about each
@@ -191,6 +190,8 @@ same award; these have been standardized to the most-recent name.
 include_fields <- c(
     "full_foa",
     "core_project_num",
+    "project_start_date",
+    "project_end_date",
     "fiscal_year",
     "award_amount",
     "contact_pi_name",
@@ -201,8 +202,7 @@ projects <-
     reporter_projects(
         foa = foas$full_foa,
         include_fields = include_fields
-    ) |>
-    mutate(contact_pi_name = trimws(contact_pi_name))
+    )
 
 ## harmonize titles
 project_titles_h <-
@@ -227,7 +227,7 @@ projects |>
     left_join(foas, by = "full_foa") |>
     distinct(foa_tag, core_project_num) |>
     count(foa_tag) |>
-    datatable()
+    gpc_datatable()
 ```
 
 The number of projects funded per fiscal year is
@@ -236,14 +236,14 @@ The number of projects funded per fiscal year is
 projects |>
     distinct(full_foa, core_project_num, fiscal_year) |>
     count(fiscal_year) |>
-    datatable()
+    gpc_datatable()
 ```
 
 The `r nrow(project_titles_h)` projects funded by ITCR are
 
 ```{r, echo = FALSE}
 project_titles_h |>
-    datatable()
+    gpc_datatable()
 ```
 
 Three project numbers have been funded under more than one FOA.
@@ -254,7 +254,7 @@ projects |>
     count(core_project_num, sort =  TRUE) |>
     filter(n > 1L) |>
     left_join(project_titles_h, by = "core_project_num") |>
-    datatable()
+    gpc_datatable()
 ```
 
 The following summarizes project funding across years; there are likely many
@@ -284,7 +284,7 @@ plotly::ggplotly(plot)
 
 ```{r, echo = FALSE}
 project_summaries |>
-    datatable()
+    gpc_datatable()
 ```
 
 ## Maturing projects?
@@ -324,7 +324,7 @@ maturing_pis <-
 
 ```{r, echo = FALSE}
 maturing_pis |>
-    datatable()
+    gpc_datatable()
 ```
 
 Direct inspection suggests the following transitions:
@@ -339,7 +339,7 @@ tribble(
     "Marcus",         "Advanced",    "Sustained",
     "Mesirov",        "Advanced",    "Sustained"
 ) |>
-    datatable()
+    gpc_datatable()
 ## FIXME: Kavraki, Narzisi?
 ```
 
@@ -378,7 +378,7 @@ year 2020. Publications associated with these projects are obtained
 with
 
 ```{r, echo = FALSE}
-datatable(publications)
+gpc_datatable(publications)
 ```
 
 There are `r nrow(publications |> distinct(pmid))` distinct
@@ -402,7 +402,7 @@ publications_by_project <-
 </details>
 
 ```{r, echo = FALSE}
-datatable(publications_by_project)
+gpc_datatable(publications_by_project)
 ```
 
 The large number of publications reported by projects 'U01CA239055'
@@ -444,7 +444,7 @@ collaborative_pmid <-
 
 ```{r, echo = FALSE}
 collaborative_pmid |>
-    datatable()
+    gpc_datatable()
 ```
 
 Which projects are collaborating through shared publication?
@@ -457,7 +457,7 @@ collaborative_pmid |>
     select(core_project_num = coreproject, n_collab, project_title) |>
     distinct() |>
     filter(n_collab > 1) |>
-    datatable()
+    gpc_datatable()
 ```
 
 # Citations
@@ -517,7 +517,7 @@ have acknowledged the tool.
 citations |>
     arrange(desc(citation_count)) |>
     select(coreproject, pmid, year, citation_count, journal, title) |>
-    datatable()
+    gpc_datatable()
 ```
 
 Citations per project are summarized below.
@@ -532,7 +532,7 @@ citations |>
     ) |>
     arrange(desc(citn_count)) |>
     left_join(project_summaries, by = c(coreproject = "core_project_num")) |>
-    datatable()
+    gpc_datatable()
 ```
 
 ## ITCR collaborations
@@ -592,7 +592,7 @@ project_project_citations |>
     left_join(project_summaries) |>
     select(-cited_by) |>
     rename(self_citn = "n_citns") |>
-    datatable()
+    gpc_datatable()
 ```
 
 One can view collaboration as the number of projects that cite a
@@ -605,7 +605,7 @@ project_project_citations |>
     summarize(n_collaborators = length(unique(cited_by))) |>
     arrange(desc(n_collaborators)) |>
     left_join(project_titles_h) |>
-    datatable()
+    gpc_datatable()
 ```
 
 ...or the number of projects a project cites
@@ -617,7 +617,7 @@ project_project_citations |>
     summarize(n_collaborators = length(unique(core_project_num))) |>
     arrange(desc(n_collaborators)) |>
     left_join(project_titles_h, by = c(cited_by = "core_project_num")) |>
-    datatable()
+    gpc_datatable()
 ```
 
 # Data download

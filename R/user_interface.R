@@ -27,7 +27,7 @@ reporter_endpoint <-
     query <- c(
         list(criteria = list(...)),
         if (!is.null(include_fields))
-            list(include_fields = camelize(include_fields))
+            list(include_fields = gpc_camelize(include_fields))
     )
 
     offset <- 0L
@@ -86,7 +86,8 @@ reporter_endpoint <-
         offset <- offset + page_limit
     }
 
-    result
+    result |>
+        gpc_columns_clean()
 }
 
 #' @rdname user_interface

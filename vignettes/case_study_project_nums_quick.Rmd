@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-datatable <- grantpubcite:::datatable
 ```
 
 Compiled: `r Sys.Date()`
@@ -58,7 +57,7 @@ projects |>
         last_year = max(fiscal_year),
         project_title = unique(project_title)
     ) |>
-    datatable()
+    gpc_datatable()
 ```
 
 # Publications
@@ -77,7 +76,7 @@ The number of publications associated with each grant are as follows:
 ```{r}
 publications |>
     count(coreproject) |>
-    datatable()
+    gpc_datatable()
 ```
 
 Many publications were attributed to both grants
@@ -86,7 +85,7 @@ Many publications were attributed to both grants
 publications |>
     count(pmid, name = "cited_by") |>
     count(cited_by) |>
-    datatable()
+    gpc_datatable()
 ```
 
 
@@ -105,7 +104,7 @@ publication. Explore these interactively
 ```{r}
 citations |>
     select(pmid, citation_count, relative_citation_ratio, year, title) |>
-    datatable()
+    gpc_datatable()
 ```
 
 Use a 'join' between tables to associate publications and citations
@@ -117,7 +116,7 @@ left_join(publications, citations) |>
         n_publications = n(),
         total_citations = sum(citation_count)
     ) |>
-    datatable()
+    gpc_datatable()
 ```
 
 # Session information

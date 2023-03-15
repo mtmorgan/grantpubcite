@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-datatable <- grantpubcite:::datatable
 ```
 
 Compiled: `r Sys.Date()`
@@ -84,7 +83,7 @@ foas <- tribble(
 </details>
 
 ```{r, echo = FALSE}
-datatable(foas)
+gpc_datatable(foas)
 ```
 
 Discover projects funded through these FOAs by querying NIH Reporter,
@@ -102,19 +101,14 @@ include_fields <- c(
 projects <- reporter_projects(
     foa = foas$full_foa,
     include_fields = include_fields
-) |>
-    mutate(
-        contact_pi_name = trimws(contact_pi_name),
-        project_start_date = as.Date(project_start_date),
-        project_end_date = as.Date(project_end_date)
-    )
+)
 
 project_summary <-
     projects |>
     ## hack to place overall project ahead of 'cores' in program
     ## project grants
     arrange(desc(nchar(project_title))) |>
-    group_by(full_foa, project_num = core_project_num) |>
+    group_by(full_foa, core_project_num) |>
     summarize(
         start_date = min(project_start_date, na.rm = TRUE),
         end_date = max(project_end_date, na.rm = TRUE),
@@ -129,7 +123,7 @@ project_summary <-
 
 ```{r, echo = FALSE}
 project_summary |>
-    datatable()
+    gpc_datatable()
 ```
 
 There are `r nrow(project_summary)` projects. The projects include
@@ -151,10 +145,9 @@ Publications associated with projects are discovered using NIH Reporter.
 <details>
 ```{r}
 publications <- reporter_publications(
-    core_project_nums = pull(project_summary, "project_num")
+    core_project_nums = pull(project_summary, "core_project_num")
 ) |>
-    select(-applid) |>
-    rename(project_num = "coreproject")
+    select(-applid)
 ```
 <details>
 
@@ -163,10 +156,10 @@ publications.
 
 ```{r, echo = FALSE}
 publications |>
-    count(project_num, name = "n_pub") |>
-    left_join(project_summary, by = "project_num") |>
+    count(coreproject, name = "n_pub") |>
+    left_join(project_summary, by = c(coreproject = "core_project_num")) |>
     select(-project_title) |>
-    datatable()
+    gpc_datatable()
 ```
 
 About 10% of publications involved collaboration between projects; one
@@ -208,7 +201,7 @@ citations |>
         n_citn = "citation_count",
         rcr = "relative_citation_ratio"
     ) |>
-    datatable()
+    gpc_datatable()
 ```
 
 Project U01DK124165 had a very important publication with PMID 32839624. The
@@ -241,20 +234,20 @@ publications by year and field of study.
 ```{r}
 citations_by_project <-
     citations |>
-    group_by(project_num) |>
+    group_by(coreproject) |>
     summarize(
         n_pub = n(),
         n_citn = sum(citation_count),
         total_rcr = sum(relative_citation_ratio, na.rm = TRUE)
     ) |>
-    left_join(project_summary, by = "project_num") |>
+    left_join(project_summary, by = c(coreproject = "core_project_num")) |>
     arrange(desc(total_rcr))
 ```
 </details>
 
 ```{r, echo = FALSE}
 citations_by_project |>
-    datatable()
+    gpc_datatable()
 ```
 
 The relationship between amount of funding and relative citation ratio
@@ -269,7 +262,7 @@ plot <-
     ggplot(
         aes(
             amount, total_rcr,
-            label = project_num,
+            label = coreproject,
             color = `Start date`
         )
     ) +

@@ -1,3 +1,9 @@
+# grantpubcite v0.0.2
+
+- (v. 0.0.1.9001) Add `gpc_*()` helper functions to standardize
+  the user API, processing of reporter return values, and shorten
+  column names during display.
+
 # grantpubcite v0.0.1
 
 - (v. 0.0.1) Initial version. Don't show case study code by default,
