@@ -16,7 +16,7 @@ define the program.}
 \item{by}{character(1) indicating how program projects are
 summarized -- by \code{full_foa} so that projects funded by more
 than one FOA are reported for each FOA, or \code{core_project_num}
-so that the summary is by project number..}
+so that the summary is by project number.}
 }
 \value{
 \code{program_summary()} returns a tibble ordered by fiscal year

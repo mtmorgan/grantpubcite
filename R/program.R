@@ -34,7 +34,10 @@
 #'
 #' program_summary(foas)
 #'
-#' @importFrom dplyr full_join .data
+#' @importFrom dplyr summarize group_by arrange rename left_join
+#'     full_join .data
+#'
+#' @importFrom utils tail
 #'
 #' @export
 program_summary <-
@@ -93,7 +96,7 @@ program_summary <-
     program_awards |>
         full_join(program_citations, by = "fiscal_year") |>
         mutate(fiscal_year = as.integer(.data$fiscal_year)) |>
-        arrange(fiscal_year)
+        arrange(.data$fiscal_year)
 }
 
 ## program_projects
@@ -112,6 +115,7 @@ program_projects_by_foa <-
         )
 }
 
+#' @importFrom dplyr everything
 program_projects_by_project_num <-
     function(projects)
 {
@@ -136,7 +140,7 @@ program_projects_by_project_num <-
 #' @param by character(1) indicating how program projects are
 #'     summarized -- by `full_foa` so that projects funded by more
 #'     than one FOA are reported for each FOA, or `core_project_num`
-#'     so that the summary is by project number..
+#'     so that the summary is by project number.
 #'
 #' @details `program_projects()` provides a single row for each
 #'     project. It chooses as `full_foa` the most recent FOA under
@@ -171,6 +175,7 @@ program_projects <-
     )
 
     ## summary
+
     if (identical(by, "full_foa")) {
         program_projects_by_foa(projects)
     } else {
