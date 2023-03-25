@@ -13,8 +13,9 @@ REPORTER_LIMIT <- 10000L
 #' @importFrom jsonlite unbox toJSON fromJSON
 #'
 #' @importFrom dplyr as_tibble select all_of bind_rows
+
 reporter_endpoint <-
-    function(url, ..., include_fields, limit, verbose)
+    memoise::memoise(function(url, ..., include_fields, limit, verbose)
 {
     stopifnot(
         `all '...' arguments must be named` =
@@ -88,9 +89,9 @@ reporter_endpoint <-
 
     result |>
         gpc_columns_clean()
-}
+})
 
-#' @rdname user_interface
+#' @rdname reporter_and_icite
 #'
 #' @title Query projects, publications and citations
 #'
@@ -151,7 +152,7 @@ reporter_projects <-
     )
 }
 
-#' @rdname user_interface
+#' @rdname reporter_and_icite
 #'
 #' @return `reporter_publications()` returns a tibble with columns
 #'     `coreproject`, `pmid`, and `applid`.
@@ -182,7 +183,7 @@ ICITE_PUBS <- paste0(ICITE_URL, "/pubs")
 #' @importFrom readr read_csv
 
 icite_one_chunk <-
-    function(pmids, include_fields, verbose)
+    memoise::memoise(function(pmids, include_fields, verbose)
 {
     ## formulate query
     fl <- ifelse (is.null(include_fields), "", "&fl=")
@@ -200,9 +201,9 @@ icite_one_chunk <-
         tbl <- select(tbl, all_of(include_fields))
 
     tbl
-}
+})
 
-#' @rdname user_interface
+#' @rdname reporter_and_icite
 #'
 #' @details The `icite()` API is described at
 #'     \url{https://icite.od.nih.gov/api}.
@@ -237,7 +238,7 @@ icite <-
         is.null(include_fields) || is_character(include_fields),
         is_scalar_logical(verbose)
     )
-    pmids <- pull(tbl, "pmid")
+    pmids <- unique(pull(tbl, "pmid"))
 
     ## limit 1000 per request
     result <- NULL

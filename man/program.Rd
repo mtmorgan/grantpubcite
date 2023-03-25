@@ -3,24 +3,66 @@
 \name{program_summary}
 \alias{program_summary}
 \alias{program_projects}
+\alias{program_publications}
 \title{Program-level queries and summaries}
 \usage{
 program_summary(tbl)
 
-program_projects(tbl, by = c("full_foa", "core_project_num"))
+program_projects(tbl, by = c("foa", "project"))
+
+program_publications(tbl)
 }
 \arguments{
 \item{tbl}{A tibble with column \code{full_foa} giving the FOAs that
 define the program.}
 
 \item{by}{character(1) indicating how program projects are
-summarized -- by \code{full_foa} so that projects funded by more
-than one FOA are reported for each FOA, or \code{core_project_num}
-so that the summary is by project number.}
+summarized -- by \code{foa} so that projects funded by more than one
+FOA are reported for each FOA, or \code{project} so that the summary
+is by project number across FOA.}
 }
 \value{
 \code{program_summary()} returns a tibble ordered by fiscal year
-summarizing project activity.
+summarizing project activity. Columns are
+\itemize{
+\item \code{year}: integer() year of program.
+\item \code{project}: integer() number of active projects.
+\item \code{amount}: integer() award amount to active projects.
+\item \code{publications}: integer() number of publications.
+\item \code{citation_count}: integer() citations to publications in year.
+\item \code{relative_citation_ratio}: numeric() sum of relative citation
+ratios for all publications in year.
+}
+
+\code{program_projects()} returns a tibble summarizing projects
+funded under the FOAs. With \code{by = "full_foa"} (default),
+columns are:
+\itemize{
+\item \code{foa}: character() full FOA funding the project.
+\item \code{project}: character() core project number.
+\item \code{years}: integer() fiscal years of funding; may differ from
+project duration.
+\item \code{amount}: integer() award amount across fiscal years.
+\item \code{contact_pi}: character() name of most-recent contact PI for FOA
+and core project number.
+\item \code{title}: character() project title.
+}
+
+With \code{by = "project"}, columns are the same but with
+\code{amount} and most recent contact PI and project title
+summarized over all FOAs under which a project was funded.
+
+\code{program_publications()} returns a tibble with columns:
+\itemize{
+\item \code{foa}: character() full FOA funding the project.
+\item \code{project}: character() core project number.
+\item \code{pmid}: integer() PubMed identifier.
+\item \code{year}, \code{title}, \code{authors}, \code{journal},\code{doi}: publication information.
+\item \code{citation_count}: integer() number of publicatons citing this
+publication, from \code{icite()}.
+\item \code{relative_citation_ratio}: relative citation ratio, as defined by
+\code{icite()}.
+}
 }
 \description{
 \code{program_summary()} finds all projects, publications,
@@ -31,6 +73,9 @@ citation ratio.
 
 \code{program_projects()} returns a tibble of project
 numbers and standardized contact PI name and project title.
+
+\code{program_publications()} retrieves basic information
+for all projects in the program.
 }
 \details{
 \code{program_summary()} can return rows corresponding to years
@@ -60,5 +105,28 @@ foas <- tribble(
 program_summary(foas)
 
 program_projects(foas)
+
+pubs <- program_publications(foas)
+
+## note that individual publications can be represented by more
+## than one project
+pubs
+
+## unique publications
+unique_pubs <-
+    pubs |>
+    select(-c("foa", "project")) |>
+    distinct()
+unique_pubs
+
+## publications per project
+pubs |>
+    count(project, sort = TRUE) |>
+    left_join(program_projects(foas, by = "project"), by = "project")
+
+## collaborations; see `?copublication`, `?cocitation`
+pubs |>
+    count(pmid, sort = TRUE, name = "n_collab") |>
+    left_join(unique_pubs, by = "pmid")
 
 }

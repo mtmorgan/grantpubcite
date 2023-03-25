@@ -30,9 +30,8 @@ column names.}
 \code{gpc_camelize()} takes an input 'snake_case' vector
 and transforms it to CamelCase.
 
-\code{gpc_columns_clean()} is used internally to ensure no
-leading or trailing whitespace on 'character' columns, and to
-coerce columns whose name ends with \verb{_date} with \code{as.Date()}.
+\code{gpc_columns_clean()} is used internally to ensure
+consistent column formatting.
 
 \code{gpc_colnames_standardize()} transforms column names
 to shorter equivalents, primary useful for (horizontal)
@@ -48,6 +47,16 @@ interface to the API, where the input 'include_fields' are
 CamelCase in the API, but the return values are
 snake_case. Using \code{gpc_camelize()} (internally) allows the user
 to interact with the API using a consistent \code{snake_case} style.
+
+\code{gpc_columns_clean()} performs the following:
+\itemize{
+\item Remove leading or trailing whitespace on 'character' columns.
+\item Coerce columns whose name ends with \verb{_date} to \code{as.Date()}.
+\item Coerce 'pmid', 'year' / 'fiscal year' and 'citation_count' to
+integer()
+\item Remove 'group' annotation from tibbles created during
+processing.
+}
 
 \code{gpc_datatable()} is a convenience function used in
 vignettes to (a) standardize column names for better
@@ -65,15 +74,15 @@ not code.
 gpc_camelize(c("full_foa", "core_project_num"))
 
 projects <- tribble(
-    ~contact_pi_name, ~project_start_date,
-    "Ima Pi ",        "2018-07-15T12:07:00Z",
-    "Iman Other ",    "2021-01-14T12:01:00Z"
+    ~contact_pi_name, ~project_start_date,    ~pmid,
+    "Ima Pi ",        "2018-07-15T12:07:00Z", "123",
+    "Iman Other ",    "2021-01-14T12:01:00Z", "456"
 )
 
 clean <-
     projects |>
     gpc_columns_clean()
-clean                    # no trailing whitespace; dates as Date objects
+clean           # no trailing whitespace; dates as Date objects;
 
 gpc_colnames_standardize()      # summarize column name standardization
 gpc_colnames_standardize(clean) # shorter column names

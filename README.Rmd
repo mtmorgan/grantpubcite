@@ -46,6 +46,9 @@ library(grantpubcite)
 See
 
 - [Get started][] for an introduction to the package.
+- [Case study: IOTN][] looks at the NIH NCI Immuno-Oncology
+  Translation Network portfolio of grants; the IOTN servers as an
+  interesting 'wet-lab' comparison for ITCR.
 - [Case study: ITCR][] for an illustration of package use analysing
   grants in the NIH Information Technology in Cancer Research
   portfolio of grants. The ITCR is particularly interesting because of
@@ -53,9 +56,6 @@ See
   and sequence of grants representing a progression from small grants
   emphasizing innovation to large grants to sustain essential
   resources.
-- [Case study: IOTN][] looks at the NIH NCI Immuno-Oncology
-  Translation Network portfolio of grants; the IOTN servers as an
-  interesting 'wet-lab' comparison for ITCR.
 - [Case study: specific projects][] provides a quick explorartion of
   publications and citations arising from two related grants.
 - [Implementation notes][] provides brief notes on implementation, to

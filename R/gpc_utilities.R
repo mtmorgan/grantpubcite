@@ -76,23 +76,30 @@ gpc_camelize <-
 
 #' @rdname gpc_utilities
 #'
-#' @description `gpc_columns_clean()` is used internally to ensure no
-#'     leading or trailing whitespace on 'character' columns, and to
-#'     coerce columns whose name ends with `_date` with `as.Date()`.
+#' @description `gpc_columns_clean()` is used internally to ensure
+#'     consistent column formatting.
 #'
-#' @importFrom dplyr mutate across ends_with
+#' @details `gpc_columns_clean()` performs the following:
+#' - Remove leading or trailing whitespace on 'character' columns.
+#' - Coerce columns whose name ends with `_date` to `as.Date()`.
+#' - Coerce 'pmid', 'year' / 'fiscal year' and 'citation_count' to
+#'   integer()
+#' - Remove 'group' annotation from tibbles created during
+#'   processing.
+#'
+#' @importFrom dplyr mutate across ends_with ungroup contains
 #'
 #' @examples
 #' projects <- tribble(
-#'     ~contact_pi_name, ~project_start_date,
-#'     "Ima Pi ",        "2018-07-15T12:07:00Z",
-#'     "Iman Other ",    "2021-01-14T12:01:00Z"
+#'     ~contact_pi_name, ~project_start_date,    ~pmid,
+#'     "Ima Pi ",        "2018-07-15T12:07:00Z", "123",
+#'     "Iman Other ",    "2021-01-14T12:01:00Z", "456"
 #' )
 #'
 #' clean <-
 #'     projects |>
 #'     gpc_columns_clean()
-#' clean                    # no trailing whitespace; dates as Date objects
+#' clean           # no trailing whitespace; dates as Date objects;
 #'
 #' @export
 gpc_columns_clean <-
@@ -105,8 +112,17 @@ gpc_columns_clean <-
     .data |>
         ## trim leading training whitespace
         mutate(across(is.character, trimws)) |>
-        ## coerce 'date' columns to Date
-        mutate(across(ends_with("_date"), as.Date))
+        ## coerce '_date' columns to Date
+        mutate(across(ends_with("_date"), as.Date)) |>
+        ## coerce 'pmid', 'fiscal_year' / 'year', 'citation_count' to
+        ## integer
+        mutate(across(
+            contains(c(
+                "pmid", "year", "fiscal_year", "citation_count"
+            )),
+            as.integer
+        )) |>
+        ungroup()
 }
 
 #' @rdname gpc_utilities

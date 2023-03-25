@@ -18,7 +18,7 @@ Description: The 'grantpubcite' package can be used to query the 'NIH
     can be discovered using 'iCite'.
 License: Artistic-2.0
 Depends: dplyr
-Imports: httr, jsonlite, readr, rjsoncons
+Imports: httr, jsonlite, readr, rjsoncons, memoise
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
