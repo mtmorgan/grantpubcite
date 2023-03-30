@@ -13,6 +13,8 @@ REPORTER_LIMIT <- 10000L
 #' @importFrom jsonlite unbox toJSON fromJSON
 #'
 #' @importFrom dplyr as_tibble select all_of bind_rows
+#'
+#' @importFrom memoise memoise
 
 reporter_endpoint <-
     memoise::memoise(function(url, ..., include_fields, limit, verbose)

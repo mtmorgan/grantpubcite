@@ -29,9 +29,9 @@ summarizing project activity. Columns are
 \item \code{project}: integer() number of active projects.
 \item \code{amount}: integer() award amount to active projects.
 \item \code{publications}: integer() number of publications.
-\item \code{citation_count}: integer() citations to publications in year.
-\item \code{relative_citation_ratio}: numeric() sum of relative citation
-ratios for all publications in year.
+\item \code{cite}: integer() citations to publications in year.
+\item \code{rcr}: numeric() sum of relative citation ratios for all
+publications in year.
 }
 
 \code{program_projects()} returns a tibble summarizing projects
@@ -40,17 +40,20 @@ columns are:
 \itemize{
 \item \code{foa}: character() full FOA funding the project.
 \item \code{project}: character() core project number.
-\item \code{years}: integer() fiscal years of funding; may differ from
-project duration.
-\item \code{amount}: integer() award amount across fiscal years.
+\item \code{start_date}: date() start date of project
+\item \code{end_date}: date() end date of project; maybe in the future
 \item \code{contact_pi}: character() name of most-recent contact PI for FOA
 and core project number.
 \item \code{title}: character() project title.
+\item \code{years}: integer() fiscal years of funding; may differ from
+project duration (end date - start date.
+\item \code{amount}: integer() actual award amount across fiscal years.
 }
 
 With \code{by = "project"}, columns are the same but with
-\code{amount} and most recent contact PI and project title
-summarized over all FOAs under which a project was funded.
+\code{start_date}, \code{end_date}, \code{years}, \code{amount} and most recent
+contact PI and project title summarized over all FOAs under
+which a project was funded.
 
 \code{program_publications()} returns a tibble with columns:
 \itemize{
@@ -58,10 +61,10 @@ summarized over all FOAs under which a project was funded.
 \item \code{project}: character() core project number.
 \item \code{pmid}: integer() PubMed identifier.
 \item \code{year}, \code{title}, \code{authors}, \code{journal},\code{doi}: publication information.
-\item \code{citation_count}: integer() number of publicatons citing this
+\item \code{citn}: integer() number of publicatons citing this
 publication, from \code{icite()}.
-\item \code{relative_citation_ratio}: relative citation ratio, as defined by
-\code{icite()}.
+\item \code{rcr}: relative citation ratio, as defined by \code{icite()}.
+\item \code{fcr}: field citation rate, as defined by \code{icite()}.
 }
 }
 \description{
@@ -115,14 +118,14 @@ pubs
 ## unique publications
 unique_pubs <-
     pubs |>
-    select(-c("foa", "project")) |>
+    select(-c("full_foa", "core_project_num")) |>
     distinct()
 unique_pubs
 
 ## publications per project
 pubs |>
-    count(project, sort = TRUE) |>
-    left_join(program_projects(foas, by = "project"), by = "project")
+    count(core_project_num, sort = TRUE) |>
+    left_join(program_projects(foas, by = "project"), by = "core_project_num")
 
 ## collaborations; see `?copublication`, `?cocitation`
 pubs |>

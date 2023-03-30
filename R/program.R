@@ -27,9 +27,9 @@
 #' - `project`: integer() number of active projects.
 #' - `amount`: integer() award amount to active projects.
 #' - `publications`: integer() number of publications.
-#' - `citation_count`: integer() citations to publications in year.
-#' - `relative_citation_ratio`: numeric() sum of relative citation
-#'   ratios for all publications in year.
+#' - `cite`: integer() citations to publications in year.
+#' - `rcr`: numeric() sum of relative citation ratios for all
+#'   publications in year.
 #'
 #' @examples
 #' foas <- tribble(
@@ -105,7 +105,7 @@ program_summary <-
         full_join(program_citations, by = "fiscal_year") |>
         mutate(fiscal_year = as.integer(.data$fiscal_year)) |>
         arrange(.data$fiscal_year) |>
-        gpc_colnames_standardize()
+        gpc_columns_clean()
 }
 
 ## program_projects
@@ -117,10 +117,12 @@ program_projects_by_foa <-
         arrange(.data$fiscal_year, .data$award_amount) |>
         group_by(.data$full_foa, .data$core_project_num) |>
         summarize(
+            start_date = min(.data$project_start_date),
+            end_date = max(.data$project_end_date),
+            contact_pi_name = tail(.data$contact_pi_name, 1L),
+            project_title = tail(.data$project_title, 1L),
             years = length(unique(.data$fiscal_year)),
             award_amount = sum(.data$award_amount),
-            contact_pi_name = tail(.data$contact_pi_name, 1L),
-            project_title = tail(.data$project_title, 1L)
         )
 }
 
@@ -133,10 +135,12 @@ program_projects_by_project_num <-
         group_by(.data$core_project_num) |>
         summarize(
             full_foa = tail(.data$full_foa, 1L),
-            years = length(unique(.data$fiscal_year)),
-            award_amount = sum(.data$award_amount),
+            start_date = min(.data$project_start_date),
+            end_date = max(.data$project_end_date),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
-            project_title = tail(.data$project_title, 1L)
+            project_title = tail(.data$project_title, 1L),
+            years = length(unique(.data$fiscal_year)),
+            award_amount = sum(.data$award_amount)
         ) |>
         select("full_foa", everything())
 }
@@ -163,16 +167,19 @@ program_projects_by_project_num <-
 #'
 #' - `foa`: character() full FOA funding the project.
 #' - `project`: character() core project number.
-#' - `years`: integer() fiscal years of funding; may differ from
-#'   project duration.
-#' - `amount`: integer() award amount across fiscal years.
+#' - `start_date`: date() start date of project
+#' - `end_date`: date() end date of project; maybe in the future
 #' - `contact_pi`: character() name of most-recent contact PI for FOA
 #'   and core project number.
 #' - `title`: character() project title.
+#' - `years`: integer() fiscal years of funding; may differ from
+#'   project duration (end date - start date.
+#' - `amount`: integer() actual award amount across fiscal years.
 #'
 #' @return With `by = "project"`, columns are the same but with
-#'     `amount` and most recent contact PI and project title
-#'     summarized over all FOAs under which a project was funded.
+#'     `start_date`, `end_date`, `years`, `amount` and most recent
+#'     contact PI and project title summarized over all FOAs under
+#'     which a project was funded.
 #'
 #' @examples
 #' program_projects(foas)
@@ -191,8 +198,9 @@ program_projects <-
 
     project_include_fields = c(
         "full_foa", "core_project_num",
-        "fiscal_year", "award_amount",
-        "contact_pi_name", "project_title"
+        "project_start_date", "project_end_date",
+        "contact_pi_name", "project_title",
+        "fiscal_year", "award_amount"
     )
 
     projects <- reporter_projects(
@@ -209,7 +217,7 @@ program_projects <-
     }
 
     projects |>
-        gpc_colnames_standardize()
+        gpc_columns_clean()
 }
 
 #' @rdname program
@@ -223,10 +231,10 @@ program_projects <-
 #' - `project`: character() core project number.
 #' - `pmid`: integer() PubMed identifier.
 #' - `year`, `title`, `authors`, `journal`,`doi`: publication information.
-#' - `citation_count`: integer() number of publicatons citing this
+#' - `citn`: integer() number of publicatons citing this
 #'   publication, from `icite()`.
-#' - `relative_citation_ratio`: relative citation ratio, as defined by
-#'   `icite()`.
+#' - `rcr`: relative citation ratio, as defined by `icite()`.
+#' - `fcr`: field citation rate, as defined by `icite()`.
 #'
 #' @examples
 #' pubs <- program_publications(foas)
@@ -238,14 +246,14 @@ program_projects <-
 #' ## unique publications
 #' unique_pubs <-
 #'     pubs |>
-#'     select(-c("foa", "project")) |>
+#'     select(-c("full_foa", "core_project_num")) |>
 #'     distinct()
 #' unique_pubs
 #'
 #' ## publications per project
 #' pubs |>
-#'     count(project, sort = TRUE) |>
-#'     left_join(program_projects(foas, by = "project"), by = "project")
+#'     count(core_project_num, sort = TRUE) |>
+#'     left_join(program_projects(foas, by = "project"), by = "core_project_num")
 #'
 #' ## collaborations; see `?copublication`, `?cocitation`
 #' pubs |>
@@ -259,23 +267,22 @@ program_publications <-
     ## data collection
 
     projects <- program_projects(tbl, by = "project")
-    core_project_nums <- unique(pull(projects, "project"))
+    core_project_nums <- unique(pull(projects, "core_project_num"))
     publications <-
         reporter_publications(core_project_nums = core_project_nums) |>
         select(-"applid")
 
     icite_include_fields <- c(
         "pmid", "year", "title", "authors", "journal", "doi",
-        "citation_count", "relative_citation_ratio"
+        "citation_count", "relative_citation_ratio", "field_citation_rate"
     )
     citations <- icite(publications, include_fields = icite_include_fields)
 
     ## summary
 
     publications |>
-        inner_join(projects, by = c(coreproject = "project")) |>
-        select("foa", project = "coreproject", "pmid") |>
+        inner_join(projects, by = c(coreproject = "core_project_num")) |>
+        select("full_foa", core_project_num = "coreproject", "pmid") |>
         inner_join(citations, by = "pmid") |>
-        gpc_colnames_standardize() |>
         gpc_columns_clean()
 }

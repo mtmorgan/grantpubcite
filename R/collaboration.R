@@ -1,9 +1,7 @@
-#' @importFrom memoise memoise
-#'
 #' @importFrom dplyr filter count distinct inner_join right_join n
 
 collaboration_data_collection <-
-   memoise(function(tbl)
+   function(tbl)
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
@@ -51,7 +49,7 @@ collaboration_data_collection <-
         citations = citations,
         publ_summary = publ_summary
     )
-})
+}
 
 #' @rdname collaboration
 #'
@@ -157,7 +155,7 @@ copublication <-
         left_join(n_collab_publ, by = "core_project_num") |>
         left_join(n_collab, by = "core_project_num") |>
         left_join(rcr_collab, by = "core_project_num") |>
-        gpc_colnames_standardize()
+        gpc_columns_clean()
 }
 
 #' @rdname collaboration
@@ -269,5 +267,5 @@ cocitation <-
         left_join(collab_self_summary, by = "core_project_num") |>
         left_join(collab_summary, by = "core_project_num") |>
         left_join(rcr_summary, by = "core_project_num") |>
-        gpc_colnames_standardize()
+        gpc_columns_clean()
 }

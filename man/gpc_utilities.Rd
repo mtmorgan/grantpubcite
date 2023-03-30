@@ -5,6 +5,7 @@
 \alias{gpc_columns_clean}
 \alias{gpc_colnames_standardize}
 \alias{gpc_datatable}
+\alias{gpc_shorten}
 \title{Utilities for 'grantpubcite' use in articles}
 \usage{
 gpc_camelize(x)
@@ -14,10 +15,11 @@ gpc_columns_clean(.data)
 gpc_colnames_standardize(.data = NULL)
 
 gpc_datatable(.data)
+
+gpc_shorten(x, to = 40L)
 }
 \arguments{
-\item{x}{a character vector without NA and with all non-zero-number
-of letters in each element.}
+\item{x}{character(), e.g., \code{project_title} to be truncated.}
 
 \item{.data}{A tibble, usually from an invocation of
 \code{reporter_projects()} or \code{icite()}. \code{.data} can also be NULL for
@@ -25,6 +27,9 @@ of letters in each element.}
 a tibble summarizing how column names 'from'
 \code{reporter_projects()} or \code{icite()} are translated 'to' display
 column names.}
+
+\item{to}{integer(1) maximum number of characters to retain in
+\code{x}.}
 }
 \description{
 \code{gpc_camelize()} takes an input 'snake_case' vector
@@ -40,6 +45,9 @@ contraction of table displays.
 \code{gpc_datatable()} standardizes column names for
 consistent display. In non-interactive sessions it retured a
 \code{DT::datatable()} for interactive navigation.
+
+\code{gpc_short_title()} shortens titles, e.g., for use as
+labels in interactive plots.
 }
 \details{
 \code{gpc_camelize()} is useful in standardizing the user
@@ -74,9 +82,9 @@ not code.
 gpc_camelize(c("full_foa", "core_project_num"))
 
 projects <- tribble(
-    ~contact_pi_name, ~project_start_date,    ~pmid,
-    "Ima Pi ",        "2018-07-15T12:07:00Z", "123",
-    "Iman Other ",    "2021-01-14T12:01:00Z", "456"
+    ~contact_pi_name, ~project_start_date,    ~pmid, ~project_title,
+    "Ima Pi ",        "2018-07-15T12:07:00Z", "123", "This is the title",
+    "Iman Other ",    "2021-01-14T12:01:00Z", "456", "A short title"
 )
 
 clean <-
@@ -89,5 +97,8 @@ gpc_colnames_standardize(clean) # shorter column names
 
 clean |>             # standarized colnames;
     gpc_datatable()  # datatable in non-interactive session
+
+clean |>
+    mutate(short_title = gpc_shorten(project_title, 13))
 
 }

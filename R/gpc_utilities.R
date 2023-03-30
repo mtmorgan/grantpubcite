@@ -91,9 +91,9 @@ gpc_camelize <-
 #'
 #' @examples
 #' projects <- tribble(
-#'     ~contact_pi_name, ~project_start_date,    ~pmid,
-#'     "Ima Pi ",        "2018-07-15T12:07:00Z", "123",
-#'     "Iman Other ",    "2021-01-14T12:01:00Z", "456"
+#'     ~contact_pi_name, ~project_start_date,    ~pmid, ~project_title,
+#'     "Ima Pi ",        "2018-07-15T12:07:00Z", "123", "This is the title",
+#'     "Iman Other ",    "2021-01-14T12:01:00Z", "456", "A short title"
 #' )
 #'
 #' clean <-
@@ -164,7 +164,10 @@ gpc_colnames_standardize <-
         fiscal_year = "year",
         award_amount = "amount",
         contact_pi_name = "contact_pi",
-        project_title = "title"
+        project_title = "title",
+        citation_count = "citn",
+        relative_citation_ratio = "rcr",
+        field_citation_rate = "fcr"
     )
 
     if (is.null(.data)) {
@@ -177,8 +180,6 @@ gpc_colnames_standardize <-
 }
 
 #' @rdname gpc_utilities
-#'
-#' @title Utilities for 'grantpubcite' use in articles
 #'
 #' @description `gpc_datatable()` standardizes column names for
 #'     consistent display. In non-interactive sessions it retured a
@@ -222,4 +223,35 @@ gpc_datatable <-
             )
         )
     }
+}
+
+#' @rdname gpc_utilities
+#'
+#' @description `gpc_short_title()` shortens titles, e.g., for use as
+#'     labels in interactive plots.
+#'
+#' @param x character(), e.g., `project_title` to be truncated.
+#'
+#' @param to integer(1) maximum number of characters to retain in
+#'     `x`.
+#'
+#' @examples
+#' clean |>
+#'     mutate(short_title = gpc_shorten(project_title, 13))
+#'
+#' @export
+gpc_shorten <-
+    function(x, to = 40L)
+{
+    stopifnot(
+        is_character(x, allow_NA = TRUE, allow_zchar = TRUE),
+        is_scalar_numeric(to)
+    )
+
+    to_truncate <- !is.na(x) & nzchar(x)
+    x_nzchar <- x[to_truncate]
+    truncate <- nchar(x_nzchar) > to
+    short <- substr(x_nzchar, 1L, ifelse(truncate, to - 3, to))
+    x[to_truncate] <- sprintf("%s%s", short, ifelse(truncate, "...", ""))
+    x
 }
