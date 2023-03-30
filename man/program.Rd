@@ -45,13 +45,13 @@ columns are:
 \item \code{contact_pi}: character() name of most-recent contact PI for FOA
 and core project number.
 \item \code{title}: character() project title.
-\item \code{years}: integer() fiscal years of funding; may differ from
+\item \code{year}: integer() fiscal years of funding; may differ from
 project duration (end date - start date.
 \item \code{amount}: integer() actual award amount across fiscal years.
 }
 
 With \code{by = "project"}, columns are the same but with
-\code{start_date}, \code{end_date}, \code{years}, \code{amount} and most recent
+\code{start_date}, \code{end_date}, \code{year}, \code{amount} and most recent
 contact PI and project title summarized over all FOAs under
 which a project was funded.
 

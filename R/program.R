@@ -117,11 +117,11 @@ program_projects_by_foa <-
         arrange(.data$fiscal_year, .data$award_amount) |>
         group_by(.data$full_foa, .data$core_project_num) |>
         summarize(
-            start_date = min(.data$project_start_date),
-            end_date = max(.data$project_end_date),
+            project_start_date = min(.data$project_start_date),
+            project_end_date = max(.data$project_end_date),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
             project_title = tail(.data$project_title, 1L),
-            years = length(unique(.data$fiscal_year)),
+            fiscal_year = length(unique(.data$fiscal_year)),
             award_amount = sum(.data$award_amount),
         )
 }
@@ -135,11 +135,11 @@ program_projects_by_project_num <-
         group_by(.data$core_project_num) |>
         summarize(
             full_foa = tail(.data$full_foa, 1L),
-            start_date = min(.data$project_start_date),
-            end_date = max(.data$project_end_date),
+            project_start_date = min(.data$project_start_date),
+            project_end_date = max(.data$project_end_date),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
             project_title = tail(.data$project_title, 1L),
-            years = length(unique(.data$fiscal_year)),
+            fiscal_year = length(unique(.data$fiscal_year)),
             award_amount = sum(.data$award_amount)
         ) |>
         select("full_foa", everything())
@@ -172,12 +172,12 @@ program_projects_by_project_num <-
 #' - `contact_pi`: character() name of most-recent contact PI for FOA
 #'   and core project number.
 #' - `title`: character() project title.
-#' - `years`: integer() fiscal years of funding; may differ from
+#' - `year`: integer() fiscal years of funding; may differ from
 #'   project duration (end date - start date.
 #' - `amount`: integer() actual award amount across fiscal years.
 #'
 #' @return With `by = "project"`, columns are the same but with
-#'     `start_date`, `end_date`, `years`, `amount` and most recent
+#'     `start_date`, `end_date`, `year`, `amount` and most recent
 #'     contact PI and project title summarized over all FOAs under
 #'     which a project was funded.
 #'
