@@ -94,11 +94,13 @@ operations.
 
 Load the library and other packages to be used in this article.
 
+<details>
 ```{r setup, message = FALSE}
 library(grantpubcite)
 library(ggplot2) # also plotly::ggplotly()
 library(DT)
 ```
+</details>
 
 This document is written in Rmarkdown; code chunks used to generate
 each table or figure can be shown by toggling the 'Details' widget.
@@ -165,7 +167,7 @@ foas <-
 
 ```{r, echo = FALSE}
 foas |>
-    gpc_datatable()
+    gpc_datatable(truncate_columns = FALSE)
 ```
 
 The NIH Reporter contains quite a bit of information about each
@@ -185,53 +187,16 @@ same award; these have been standardized to the most-recent name.
 
 <details>
 ```{r}
-include_fields <- c(
-    "full_foa",
-    "core_project_num",
-    "project_start_date",
-    "project_end_date",
-    "fiscal_year",
-    "award_amount",
-    "contact_pi_name",
-    "project_title"
-)
-
-projects <-
-    reporter_projects(
-        foa = foas$full_foa,
-        include_fields = include_fields
-    )
-
-## harmonize titles
-project_titles_h <-
-    projects |>
-    select(fiscal_year, core_project_num, project_title) |>
-    arrange(desc(fiscal_year)) |>
-    filter(!duplicated(core_project_num)) |>
-    select(core_project_num, project_title)
-
-## update projects to use harmonized titles
-projects <-
-    projects |>
-    select(-project_title) |>
-    left_join(project_titles_h, by = "core_project_num")
+projects <- program_projects(foas, by = "project")
 ```
 </details>
 
-Funded projects are (`contact_pi` is the most recent)
+The `r nrow(projects)` funded projects are (`contact_pi` is the most
+recent)
 
 ```{r, echo = FALSE}
 projects |>
-    arrange(fiscal_year) |>
-    group_by(core_project_num) |>
-    summarize(
-        project_start_date = min(project_start_date),
-        project_end_date = max(project_end_date),
-        years = length(unique(fiscal_year)),
-        award_amount = sum(award_amount),
-        contact_pi_name = tail(contact_pi_name, 1L),
-        project_title = unique(project_title)
-    ) |>
+    arrange(desc(fiscal_year)) |>
     gpc_datatable()
 ```
 
@@ -243,8 +208,10 @@ projects |>
     left_join(foas, by = "full_foa") |>
     group_by(foa_tag) |>
     summarize(
-        n_projects = length(unique(core_project_num)),
-        amount = sum(award_amount)
+        n = n(),
+        amount = sum(award_amount),
+        mean = as.integer(mean(award_amount)),
+        median = as.integer(median(award_amount))
     ) |>
     gpc_datatable()
 ```
@@ -267,58 +234,42 @@ The number of projects funded per fiscal year is
 ```{r, echo = FALSE}
 projects |>
     distinct(full_foa, core_project_num, fiscal_year) |>
-    count(fiscal_year) |>
+    count(years_of_funding = fiscal_year) |>
     gpc_datatable()
 ```
 
-The `r nrow(project_titles_h)` projects funded by ITCR are
+<!-- Three project numbers have been funded under more than one FOA. -->
 
-```{r, echo = FALSE}
-project_titles_h |>
-    gpc_datatable()
-```
-
-Three project numbers have been funded under more than one FOA.
-
-```{r, echo = FALSE}
-projects |>
-    distinct(full_foa, core_project_num) |>
-    count(core_project_num, sort =  TRUE) |>
-    filter(n > 1L) |>
-    left_join(project_titles_h, by = "core_project_num") |>
-    gpc_datatable()
-```
+<!-- ```{r, echo = FALSE} -->
+<!-- program_projects(foas, by = "foa") |> ungroup() |> -->
+<!--     filter(duplicated(project)) |> -->
+<!--     select(project, contact_pi, title) |> -->
+<!--     gpc_datatable() -->
+<!-- ``` -->
 
 The following summarizes project funding across years
 
+<details>
 ```{r, echo = FALSE}
-project_summaries <-
-    projects |>
-    group_by(core_project_num) |>
-    summarize(
-        n_years = length(unique(fiscal_year)),
-        amount = sum(award_amount)
-    ) |>
-    left_join(project_titles_h, by = "core_project_num") |>
-    arrange(desc(n_years))
-
 plot <-
-    project_summaries |>
-    ggplot(aes(n_years, amount, text = project_title)) +
+    projects |>
+    ggplot(aes(
+        fiscal_year, award_amount,
+        text = paste0(core_project_num, ": ", gpc_shorten(project_title))
+    )) +
     geom_point() +
     geom_smooth(
         method = "lm", formula = y ~ x,
-        inherit.aes = FALSE, aes(n_years, amount)
+        inherit.aes = FALSE, aes(fiscal_year, award_amount)
     ) +
     scale_y_continuous(labels = scales::comma) +
     scale_x_continuous(breaks = seq(1, 10), minor_breaks = NULL) +
     labs(x = "Fiscal years of award", y = "Total funding ($)")
-plotly::ggplotly(plot)
 ```
+</details>
 
 ```{r, echo = FALSE}
-project_summaries |>
-    gpc_datatable()
+plotly::ggplotly(plot)
 ```
 
 ## Maturing projects?
@@ -334,7 +285,7 @@ contact PI that have received awards from different FOA tags?
 ```{r}
 tagged_pis <-
     projects |>
-    distinct(full_foa, core_project_num, contact_pi_name) |>
+    distinct(full_foa, project_title, contact_pi_name) |>
     left_join(foas, by = "full_foa") |>
     select(foa_tag, contact_pi_name) |>
     distinct()
@@ -383,40 +334,37 @@ Grantees report publications associated with their grants, and this
 information can be retrieved from NIH reporter. Queries are formulated
 in a way similar to projects, as described on the NIH Reporter
 [publication search API][], a rich set of query criteria can be used,
-but fields included in the return are strictly limited.  We restrict
-projects to those funded in 2020.
+but fields included in the return are strictly limited.
 
 [publication search API]: https://api.reporter.nih.gov/#!/Search/Publications
 
 <details>
 ```{r}
-projects_2020 <-
-    projects |>
-    filter(fiscal_year == "2020") |>
-    left_join(project_summaries, by = c("core_project_num", "project_title")) |>
-    distinct(
-        full_foa, core_project_num,
-        n_years, amount, project_title
-    )
-
-publications <- reporter_publications(
-    core_project_nums = pull(projects_2020, "core_project_num")
-) |>
-    select(-applid) # we won't use 'applid'
-
+publications <- program_publications(foas)
+## citations: remove duplicates due to collaboration
+citations <-
+    publications |>
+    select(-c("full_foa", "core_project_num")) |>
+    distinct() |>
+    select(
+        "pmid", "citation_count", "relative_citation_ratio",
+        "field_citation_rate", everything()
+    ) |>
+        arrange(desc(citation_count))
 ```
 </details>
 
-There are `r nrow(projects_2020)` projects receiving funds in fiscal
-year 2020. Publications associated with these projects are obtained
-with
+`r publications |> distinct(core_project_num) |> NROW()` projects
+produced `r publications |> distinct(pmid) |> NROW()` publications.
+
+Projects and their associated publications and citation statistics are
+as follows; publications acknowledging more than one grant appear for
+each acknowledgment.  with these projects are obtained with
 
 ```{r, echo = FALSE}
-gpc_datatable(publications)
+publications |>
+    gpc_datatable()
 ```
-
-There are `r nrow(publications |> distinct(pmid))` distinct
-publications (not all published in 2020).
 
 ## Project publication and funding
 
@@ -426,37 +374,45 @@ The most prolific projects are
 ```{r}
 publications_by_project <-
     publications |>
-    count(coreproject, sort = TRUE) |>
+    count(core_project_num, sort = TRUE, name = "n_publ") |>
     left_join(
-        projects_2020,
-        by = c(coreproject = "core_project_num"),
-        multiple = "last"
+        projects |>
+        select(core_project_num, contact_pi_name, project_title, award_amount),
+        by = "core_project_num"
     )
 ```
 </details>
 
 ```{r, echo = FALSE}
-gpc_datatable(publications_by_project)
+publications_by_project |>
+    gpc_datatable()
 ```
 
 The large number of publications reported by projects 'U01CA239055'
 and 'U01CA248226' are apparently because the software tools developed
 by the group were immediately useful in completing projects at the
 image analysis center. The relationship between publication and
-funding period and amount are visualized as follows.
+funding amount are visualized as follows.
 
-```{r, echo = FALSE}
+<details>
+```{r}
 plot <-
     publications_by_project |>
-    mutate(short_title = sprintf("%.40s...", project_title)) |>
-    ggplot(aes(amount, n, text = short_title)) +
+    ggplot(aes(
+        award_amount, n_publ,
+        text = paste0(core_project_num, ": ", gpc_shorten(project_title))
+    )) +
     geom_point() +
     geom_smooth(
         method = "lm", formula = y ~ x,
-        inherit.aes = FALSE, aes(amount, n)
+        inherit.aes = FALSE, aes(award_amount, n_publ)
     ) +
     scale_x_continuous(labels = scales::comma) +
     labs(x = "Total funding ($)", y = "Number of publications")
+```
+</details>
+
+```{r, echo = FALSE}
 plotly::ggplotly(plot)
 ```
 
@@ -468,103 +424,101 @@ associated with more than one project number?
 
 <details>
 ```{r}
-collaborative_pmid <-
+collaborative_publications <-
     publications |>
     count(pmid, sort = TRUE, name = "n_collab") |>
-    filter(n_collab > 1)
+    filter(n_collab > 1) |>
+    left_join(
+        publications |>
+        select(-c("full_foa", "core_project_num")) |>
+        distinct(),
+        by = "pmid"
+    )
 ```
 </details>
 
 ```{r, echo = FALSE}
-collaborative_pmid |>
+collaborative_publications |>
     gpc_datatable()
 ```
 
 Which projects are collaborating through shared publication?
 
+<details>
+```{r}
+collaborative_projects <-
+    copublication(foas) |>
+    left_join(
+        projects |> select(core_project_num, contact_pi_name, project_title),
+        by = "core_project_num"
+    ) |>
+    arrange(desc(n_collab_publ))
+```
+</details>
+
 ```{r, echo = FALSE}
-collaborative_pmid |>
-    left_join(publications, multiple = "all", by = "pmid") |>
-    count(coreproject, sort = TRUE, name = "n_collab") |>
-    left_join(project_summaries, by = c(coreproject = "core_project_num")) |>
-    select(core_project_num = coreproject, n_collab, project_title) |>
-    distinct() |>
-    filter(n_collab > 1) |>
+collaborative_projects |>
     gpc_datatable()
 ```
 
 # Citations
 
-Query [iCite][] for all citations to the publications associated with
-ITCR projects funded in 2020, restricting output to include fields of
-interest.
-
-<details>
-```{r}
-include_fields <- c(
-    "pmid", "year", "citation_count", "relative_citation_ratio",
-    "year", "title", "authors", "journal", "doi"
-)
-citations <-
-    icite(publications, include_fields) |>
-    distinct()
-citations <- left_join(publications, citations, by = "pmid")
-```
-</details>
-
-The `r nrow(citations)` publications have `r pull(citations,
-citation_count) |> sum() |> as.integer()` total citations;
-`r filter(citations, citation_count == 0) |> nrow()` publications
-have not been cited; not surprisingly uncited publications are recent.
+Publications and their citation statistics are as follows:
 
 ```{r, echo = FALSE}
 citations |>
-    group_by(year) |>
-    summarize(
-        n_projects = length(unique(coreproject)),
-        n_pub = n(),
-        n_uncite = sum(citation_count == 0L),
-        citn_count = sum(citation_count)
-    ) |>
-    DT::datatable()
+    gpc_datatable()
 ```
 
-Citations follow a very familiar pattern, with a few
-publications cited frequently.
-
-```{r, echo = FALSE}
-citations |>
-    filter(citation_count > 0) |>
-    ggplot(aes(x = citation_count)) +
-    scale_x_log10() +
-    geom_density() +
-    xlab("Number of citations") + ylab("Number of publications")
-```
+The `r NROW(citations)` publications have 
+`r summarize(citations, n = sum(citation_count)) |> pull(n)` total
+citations; `r filter(citations, citation_count == 0) |> NROW()`
+publications have not been cited; not surprisingly uncited
+publications are recent.
 
 Highly cited publications are in high-impact journals, and emphasize
 science-related results rather than a software tool *per se* -- the
 tool has been used in an important study, and the authors of the study
 have acknowledged the tool.
 
+Citations follow a very familiar pattern, with a few publications
+cited frequently.
+
 ```{r, echo = FALSE}
 citations |>
-    arrange(desc(citation_count)) |>
-    select(coreproject, pmid, year, citation_count, journal, title) |>
-    gpc_datatable()
+    ggplot(aes(x = 1 + citation_count)) +
+    scale_x_log10() +
+    geom_density() +
+    xlab("Number of citations + 1") + ylab("Number of publications")
 ```
 
 Citations per project are summarized below.
 
+<details>
 ```{r, echo = FALSE}
-citations |>
-    group_by(coreproject) |>
+project_summary <-
+    projects |>
+    select(
+        core_project_num, contact_pi_name, project_title,
+        fiscal_year, award_amount
+    )
+
+project_citations <-
+    publications |>
+    group_by(core_project_num) |>
     summarize(
         n_pub = n(),
-        n_uncite = sum(citation_count == 0L),
-        citn_count = sum(citation_count)
+        n_uncite = sum(citation_count == 0L, na.rm = TRUE),
+        citation_count = sum(citation_count),
+        relative_citation_ratio = sum(relative_citation_ratio, na.rm = TRUE)
     ) |>
-    arrange(desc(citn_count)) |>
-    left_join(project_summaries, by = c(coreproject = "core_project_num")) |>
+    arrange(desc(citation_count)) |>
+    left_join(project_summary, by = "core_project_num")
+```
+</details>
+
+```{r, echo = FALSE}
+project_citations |>
     gpc_datatable()
 ```
 
@@ -577,79 +531,58 @@ that are not themselves ITCR publications.
 
 <details>
 ```{r}
-include_fields <- c("pmid", "cited_by")
-cited_by <- icite(publications, include_fields)
+cocite_data <- cocitation_data(foas)
 
-## 'cited_by' is a space-delimited character vector of pmid ids; expand these...
-cited_by_pmids <-
-    pull(cited_by, "cited_by") |>
-    lapply(strsplit, "[[:blank:]]") |>
-    unlist(recursive = FALSE)
+## ITCR publications ...
+cocite_data |>
+    distinct(pmid) |>
+    NROW()
+## ... cited by other ITCR publications
+cocite_data |>
+    distinct(cited_by) |>
+    NROW()
+## ITCR projects
+cocite_data |>
+    distinct(core_project_num) |>
+    NROW()
+## ... cited by other ITCR projects
+cocite_data |>
+    distinct(cited_by_core_project_num) |>
+    NROW()
 
-## ...construct a tibble of pmid / cited_by pmid
-pmid_cited_by_itcr <-
-    tibble(
-        pmid = rep(pull(cited_by, "pmid"), lengths(cited_by_pmids)),
-        cited_by = unlist(cited_by_pmids) |> as.integer()
-    ) |>
-    ## and exclude citations by non-ITCR publications
-    filter(cited_by %in% pmid)
+## pmid / cited_by pairs
+total_citations <- NROW(cocite_data)
 
-core_project_citations <-
-    pmid_cited_by_itcr |>
-    ## map pmid to coreproject
-    left_join(publications, multiple = "all") |>
-    rename(core_project_num = coreproject) |>
-    ## map cited_by to coreproject
-    left_join(
-        publications,
-        by = c(cited_by = "pmid"),
-        multiple = "all"
-    ) |>
-    rename(cited_by_core_project = coreproject)
-
-## project-level citations
-project_project_citations <-
-    core_project_citations |>
-    count(core_project_num, cited_by = cited_by_core_project, name = "n_citns")
+## self-citations
+core_project_num_self_citations <-
+    cocite_data |>
+    count(self_citation = core_project_num == cited_by_core_project_num) |>
+    filter(self_citation) |>
+    pull(n)
 ```
 </details>
 
-There are `r nrow(pmid_cited_by_itcr)` citations of ITCR publications
-by ITCR projects.  Self-citations are
+There are
+`r cocite_data |> distinct(pmid) |> NROW()` ITCR publications cited by
+`r cocite_data |> distinct(cited_by) |> NROW()` ITCR publications.
+The publications are from
+`r cocite_data |> distinct(core_project_num) |> NROW()` ITCR projects cited by
+`r cocite_data |> distinct(cited_by_core_project_num) |> NROW()` ITCR projects.
 
-```{r, echo = FALSE}
-project_project_citations |>
-    filter(core_project_num == cited_by) |>
-    arrange(desc(n_citns)) |>
-    left_join(project_summaries, by = "core_project_num") |>
-    select(-cited_by) |>
-    rename(self_citn = "n_citns") |>
-    gpc_datatable()
+Of the total `r total_citations` pmid / citation pairs, 
+`r core_project_num_self_citations` are projects citing their own
+project.
+
+<details>
+```{r}
+cocitation <-
+    cocitation(foas) |>
+    arrange(desc(n_self_citn))
 ```
-
-One can view collaboration as the number of projects that cite a
-particular project...
+</details>
 
 ```{r, echo = FALSE}
-project_project_citations |>
-    filter(core_project_num != cited_by) |>
-    group_by(core_project_num) |>
-    summarize(n_collaborators = length(unique(cited_by))) |>
-    arrange(desc(n_collaborators)) |>
-    left_join(project_titles_h, by = "core_project_num") |>
-    gpc_datatable()
-```
-
-...or the number of projects a project cites
-
-```{r, echo = FALSE}
-project_project_citations |>
-    filter(core_project_num != cited_by) |>
-    group_by(cited_by) |>
-    summarize(n_collaborators = length(unique(core_project_num))) |>
-    arrange(desc(n_collaborators)) |>
-    left_join(project_titles_h, by = c(cited_by = "core_project_num")) |>
+cocitation |>
     gpc_datatable()
 ```
 
@@ -659,60 +592,22 @@ All project information can be downloaded with the following table
 
 ```{r, echo = FALSE}
 projects |>
-    DT::datatable(
-        extensions = "Buttons",
-        rownames = FALSE,
-        options = list(
-            scrollX = TRUE,
-            pageLength = 5,
-            dom = 'Bftp',
-            buttons = c('copy', 'csv', 'excel')
-        )
-    )
+    gpc_datatable_download()
 ```
 
 Query [NIH Reporter][] and [iCite][] for all publications from all
 projects, and for extended citation metrics.
 
-<details>
-```{r}
-all_publications <- reporter_publications(
-    core_project_nums = pull(projects, "core_project_num") |> unique()
-) |>
-    mutate(pmid = as.integer(pmid)) |>
-    select(-applid) # we won't use 'applid'
-
-include_fields <- c(
-    "pmid", "year",
-    "citation_count", "citations_per_year", "expected_citations_per_year",
-    "field_citation_rate", "relative_citation_ratio", "nih_percentile",
-    "year", "title", "authors", "journal", "doi"
-)
-all_citations <-
-    icite(all_publications, include_fields = include_fields) |>
-    mutate(pmid = as.integer(pmid))
+```{r, echo = FALSE}
+publications |>
+    gpc_datatable_download()
 ```
-</details>
 
-The project citation data are:
+Publication ITCR citation data from [iCite][] are
 
 ```{r, echo = FALSE}
-all_publications |>
-    left_join(all_citations, by = "pmid", multiple = "all") |>
-    ## put many-authored publications at the end, to make the display
-    ## of the first few pages not too terrible -- a hack for visual
-    ## effect
-    arrange(nchar(authors)) |>
-    DT::datatable(
-        extensions = "Buttons",
-        rownames = FALSE,
-        options = list(
-            scrollX = TRUE,
-            pageLength = 5,
-            dom = 'Bftp',
-            buttons = c('copy', 'csv', 'excel')
-        )
-    )
+cocite_data |>
+    gpc_datatable_download()
 ```
 
 # Session information
