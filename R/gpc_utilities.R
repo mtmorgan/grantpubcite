@@ -167,7 +167,8 @@ gpc_colnames_standardize <-
         project_title = "title",
         citation_count = "citn",
         relative_citation_ratio = "rcr",
-        field_citation_rate = "fcr"
+        field_citation_rate = "fcr",
+        cited_by_core_project_num = "cited_by_project"
     )
 
     if (is.null(.data)) {
@@ -201,9 +202,10 @@ gpc_colnames_standardize <-
 #' clean |>             # standarized colnames;
 #'     gpc_datatable()  # datatable in non-interactive session
 #'
+#' @importFrom DT datatable formatStyle
 #' @export
 gpc_datatable <-
-    function(.data)
+    function(.data, truncate_columns = TRUE, width = 40L)
 {
     stopifnot(
         inherits(.data, "tbl_df")
@@ -214,15 +216,89 @@ gpc_datatable <-
     if (interactive()) {
         .data
     } else {
-        DT::datatable(
+        columnDefs <- gpc_datatable_columnDefs(.data, truncate_columns, width)
+        dt <- datatable(
             .data,
             rownames = FALSE,
             options = list(
                 pageLength = 5,
-                scrollX = TRUE
+                scrollX = TRUE,
+                columnDefs = columnDefs
             )
         )
+        ## vertical align all columns at top
+        ## https://stackoverflow.com/a/42909391/547331
+        dt |>
+            formatStyle(seq_along(.data) - 1L, `vertical-align` = "top")
     }
+}
+
+#' @rdname gpc_utilities
+#'
+#' @description `gpc_datatable_download()` adds download buttons to
+#'     tables
+#'
+#' @examples
+#' clean |>
+#'     gpc_datatable_download()
+#'
+#' @export
+gpc_datatable_download <-
+    function(.data, truncate_columns = FALSE, width = 40L)
+{
+    stopifnot(
+        inherits(.data, "tbl_df")
+    )
+
+    .data <- gpc_colnames_standardize(.data)
+
+    if (interactive()) {
+        .data
+    } else {
+        columnDefs <- gpc_datatable_columnDefs(.data, truncate_columns, width)
+        dt <- datatable(
+            .data,
+            extensions = "Buttons",
+            rownames = FALSE,
+            options = list(
+                scrollX = TRUE,
+                pageLength = 5,
+                dom = 'Bftp',
+                buttons = c('copy', 'csv', 'excel'),
+                columnDefs = columnDefs
+            )
+        )
+        dt |>
+            formatStyle(seq_along(.data) - 1L, `vertical-align` = "top")
+    }
+}
+
+gpc_datatable_columnDefs <-
+    function(.data, truncate_columns, width = 40)
+{
+    ## truncate display of wide columns
+    ## see section 4.4 of https://rstudio.github.io/DT/options.html
+    truncate <- vapply(
+        .data,
+        \(x) is.character(x) && any(nchar(x) > width),
+        logical(1)
+    )
+    if (!truncate_columns || !any(truncate))
+        return(list(list()))
+
+    javascript <- r"(
+        function(data, type, row, meta) {
+            test = type === 'display' && data != null && data.length > %d
+            return test ?
+                '<span title=\"' + data + '\">' + data.substr(0, %d) + '...</span>' :
+                data;
+        }
+    )"
+
+    list(list(
+        targets = which(unname(truncate)) - 1L, # no 'row numbers'
+        render = JS(sprintf(javascript, width, width))
+    ))
 }
 
 #' @rdname gpc_utilities

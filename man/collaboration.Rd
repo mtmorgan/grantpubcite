@@ -2,10 +2,13 @@
 % Please edit documentation in R/collaboration.R
 \name{copublication}
 \alias{copublication}
+\alias{cocitation_data}
 \alias{cocitation}
 \title{Program project collaboration through publication and citation}
 \usage{
 copublication(tbl)
+
+cocitation_data(tbl)
 
 cocitation(tbl)
 }
@@ -32,6 +35,18 @@ acknowledged.
 collaborative publications.
 }
 
+\code{cocitation_data()} returns a tibble with the following
+columns.
+\itemize{
+\item \code{pmid}: integer() pmid of original publication.
+\item \code{cited_by}: integer() pmid of publication citing original
+publication.
+\item \code{core_project_num}: character() project number of project
+acknowledged in original publication.
+\item \code{cited_by_core_project_num}: character() project number of
+project citing the original publication.
+}
+
 \code{cocitation()} returns a tibble with columns
 \itemize{
 \item \code{project}: character() project number associated with
@@ -56,6 +71,9 @@ collaborative cited publications.
 \code{copublication()} summarizes collaboration between
 projects at the time of publication.
 
+\code{cocitation_data()} returns a tibble enumerating all
+pmid cited by other program pmid
+
 \code{cocitation()} summarizes collaborations between
 projects through citation.
 }
@@ -69,6 +87,20 @@ foas <- tribble(
 )
 
 copublication(foas)
+
+cocite_data <- cocitation_data(foas)
+cocite_data
+
+## pmid / core_project_num (and cited_by / cited_by_core_project_num)
+## reflects the fact that a single pmid may acknowledge several
+## projects
+cocite_data |>
+    distinct(pmid, core_project_num) |>
+    count(pmid, sort = TRUE)
+
+## cocitation 'edges' between projects, and their weights
+cocite_data |>
+    count(core_project_num, cited_by_core_project_num, sort = TRUE)
 
 cocitation(foas)
 
