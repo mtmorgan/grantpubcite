@@ -5,6 +5,7 @@
 \alias{gpc_columns_clean}
 \alias{gpc_colnames_standardize}
 \alias{gpc_datatable}
+\alias{gpc_datatable_download}
 \alias{gpc_shorten}
 \title{Utilities for 'grantpubcite' use in articles}
 \usage{
@@ -14,7 +15,9 @@ gpc_columns_clean(.data)
 
 gpc_colnames_standardize(.data = NULL)
 
-gpc_datatable(.data)
+gpc_datatable(.data, truncate_columns = TRUE, width = 40L)
+
+gpc_datatable_download(.data, truncate_columns = FALSE, width = 40L)
 
 gpc_shorten(x, to = 40L)
 }
@@ -45,6 +48,9 @@ contraction of table displays.
 \code{gpc_datatable()} standardizes column names for
 consistent display. In non-interactive sessions it retured a
 \code{DT::datatable()} for interactive navigation.
+
+\code{gpc_datatable_download()} adds download buttons to
+tables
 
 \code{gpc_short_title()} shortens titles, e.g., for use as
 labels in interactive plots.
@@ -97,6 +103,9 @@ gpc_colnames_standardize(clean) # shorter column names
 
 clean |>             # standarized colnames;
     gpc_datatable()  # datatable in non-interactive session
+
+clean |>
+    gpc_datatable_download()
 
 clean |>
     mutate(short_title = gpc_shorten(project_title, 13))
