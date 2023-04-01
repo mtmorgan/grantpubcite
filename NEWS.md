@@ -2,7 +2,22 @@
 
 - (v. 0.0.1.9001) Add `gpc_*()` helper functions to standardize
   the user API, processing of reporter return values, and shorten
-  column names during display.
+  column names during display. 
+  
+- (v. 0.0.1.9001) Add `program_()` functions to provide a higher-level
+  interface to collecting program-level information on projects and
+  publications.
+  
+- (v. 0.0.1.9001) Add `copublication*()` and `cocitation*()` to
+  summarize project-level collaboratoin at the publication and
+  citation level.
+  
+- (v. 0.0.1.9001) improve datatable display with 'top' vertical
+  alignment of cells, and truncating text to a maximum of 40
+  characters.
+  
+- (v. 0.0.1.9001) Update IOTN and ITCR case studies to use new
+  functionality.
 
 # grantpubcite v0.0.1
 

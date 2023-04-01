@@ -83,7 +83,7 @@ foas <- tribble(
 </details>
 
 ```{r, echo = FALSE}
-gpc_datatable(foas)
+gpc_datatable(foas, truncate_columns = FALSE)
 ```
 
 Discover projects funded through these FOAs by querying NIH Reporter,
