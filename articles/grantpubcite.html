@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">grantpubcite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
 
     
     
-<p>Compiled: 2023-03-10</p>
+<p>Compiled: 2023-04-01</p>
 <p>The ‘grantpubcite’ package can be used to query the <a href="https://reporter.nih.gov/" class="external-link">NIH Reporter</a> database for funded
 grants and the publications associated with those grants. The citation
 history of publications can be discovered using <a href="https://icite.od.nih.gov/" class="external-link">iCite</a>.</p>
@@ -148,7 +148,7 @@ sometimes large tibbles is to use the <a href="https://cran.r-project.org/packag
 <div class="section level2">
 <h2 id="nih-reporter-projects">NIH Reporter projects<a class="anchor" aria-label="anchor" href="#nih-reporter-projects"></a>
 </h2>
-<p><code><a href="../reference/user_interface.html">reporter_projects()</a></code> queries the ‘projects’ endpoint; see
+<p><code><a href="../reference/reporter_and_icite.html">reporter_projects()</a></code> queries the ‘projects’ endpoint; see
 the technical description of the NIH Reporter <a href="https://api.reporter.nih.gov/#!/Search/Projects" class="external-link">project search
 API</a> for details, paying particular attention to the ‘schema’ present
 in the executable example..</p>
@@ -162,14 +162,14 @@ under the Information Technology in Cancer Research (<a href="https://itcr.cance
 <span>    <span class="st">"PAR-15-331"</span>, <span class="co"># ITCR Advanced Development (U24)</span></span>
 <span>    <span class="st">"PAR-15-333"</span>  <span class="co"># ITCR Sustained Support (U24)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Use <code><a href="../reference/user_interface.html">reporter_projects()</a></code> by providing criteria to be used
+<p>Use <code><a href="../reference/reporter_and_icite.html">reporter_projects()</a></code> by providing criteria to be used
 to query the NIH Reporter projects endpoint. The criteria are provided
-as named arguments to <code><a href="../reference/user_interface.html">reporter_projects()</a></code>. To query for
+as named arguments to <code><a href="../reference/reporter_and_icite.html">reporter_projects()</a></code>. To query for
 projects awarded under the FOA of interest, use the argument
 <code>foa =</code>. Initially, use the <code>limit = 1</code> argument
 to retrieve just a single record.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/user_interface.html">reporter_projects</a></span><span class="op">(</span>foa <span class="op">=</span> <span class="va">foas</span>, limit <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/reporter_and_icite.html">reporter_projects</a></span><span class="op">(</span>foa <span class="op">=</span> <span class="va">foas</span>, limit <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 1</span></span>
 <span><span class="co">#&gt; Columns: 44</span></span>
@@ -185,18 +185,18 @@ to retrieve just a single record.</p>
 <span><span class="co">#&gt; $ is_active                <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE</span></span>
 <span><span class="co">#&gt; $ project_num_split        <span style="color: #949494; font-style: italic;">&lt;df[,7]&gt;</span> &lt;data.frame[1 x 7]&gt;</span></span>
 <span><span class="co">#&gt; $ principal_investigators  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> [&lt;data.frame[1 x 8]&gt;]</span></span>
-<span><span class="co">#&gt; $ contact_pi_name          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ABYZOV, ALEXEJ "</span></span>
+<span><span class="co">#&gt; $ contact_pi_name          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ABYZOV, ALEXEJ"</span></span>
 <span><span class="co">#&gt; $ program_officers         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> [&lt;data.frame[1 x 5]&gt;]</span></span>
 <span><span class="co">#&gt; $ agency_ic_admin          <span style="color: #949494; font-style: italic;">&lt;df[,3]&gt;</span> &lt;data.frame[1 x 3]&gt;</span></span>
 <span><span class="co">#&gt; $ agency_ic_fundings       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> [&lt;data.frame[1 x 5]&gt;]</span></span>
 <span><span class="co">#&gt; $ cong_dist                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "MN-01"</span></span>
 <span><span class="co">#&gt; $ spending_categories      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> &lt;108, 132, 1393, 276, 320, 3070, 3724&gt;</span></span>
-<span><span class="co">#&gt; $ project_start_date       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2018-05-01T12:05:00Z"</span></span>
-<span><span class="co">#&gt; $ project_end_date         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2023-04-30T12:04:00Z"</span></span>
+<span><span class="co">#&gt; $ project_start_date       <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2018-05-01</span></span>
+<span><span class="co">#&gt; $ project_end_date         <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-04-30</span></span>
 <span><span class="co">#&gt; $ organization_type        <span style="color: #949494; font-style: italic;">&lt;df[,3]&gt;</span> &lt;data.frame[1 x 3]&gt;</span></span>
 <span><span class="co">#&gt; $ full_foa                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "PAR-15-331"</span></span>
 <span><span class="co">#&gt; $ full_study_section       <span style="color: #949494; font-style: italic;">&lt;df[,11]&gt;</span> &lt;data.frame[1 x 11]&gt;</span></span>
-<span><span class="co">#&gt; $ award_notice_date        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2019-05-01T12:05:00Z"</span></span>
+<span><span class="co">#&gt; $ award_notice_date        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2019-05-01</span></span>
 <span><span class="co">#&gt; $ is_new                   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> FALSE</span></span>
 <span><span class="co">#&gt; $ mechanism_code_dc        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "OR"</span></span>
 <span><span class="co">#&gt; $ core_project_num         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "U24CA220242"</span></span>
@@ -217,7 +217,7 @@ to retrieve just a single record.</p>
 <span><span class="co">#&gt; $ indirect_cost_amt        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 201159</span></span>
 <span><span class="co">#&gt; $ project_detail_url       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> NA</span></span>
 <span><span class="co">#&gt; $ date_added               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2019-05-04T07:05:16Z"</span></span></code></pre></div>
-<p>This shows that the return value of <code><a href="../reference/user_interface.html">reporter_projects()</a></code>
+<p>This shows that the return value of <code><a href="../reference/reporter_and_icite.html">reporter_projects()</a></code>
 is a <code>tibble</code> (the tidyverse representation of a
 <code>data.frame</code>) with a single row corresponding to the
 requested record, and all possible fields returned by the query.</p>
@@ -234,28 +234,28 @@ variable to reference these.</p>
 <span>    <span class="st">"project_start_date"</span>,</span>
 <span>    <span class="st">"project_end_date"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now execute the <code><a href="../reference/user_interface.html">reporter_projects()</a></code> query on all of our
+<p>Now execute the <code><a href="../reference/reporter_and_icite.html">reporter_projects()</a></code> query on all of our
 FOA of interest, including only the fields of interest in the
 response.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/user_interface.html">reporter_projects</a></span><span class="op">(</span>foa <span class="op">=</span> <span class="va">foas</span>, include_fields <span class="op">=</span> <span class="va">include_fields</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reporter_and_icite.html">reporter_projects</a></span><span class="op">(</span>foa <span class="op">=</span> <span class="va">foas</span>, include_fields <span class="op">=</span> <span class="va">include_fields</span><span class="op">)</span></span>
 <span><span class="va">projects</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 186 × 8</span></span></span>
-<span><span class="co">#&gt;    full_foa   core_project_num fiscal_…¹ award…² conta…³ proje…⁴ proje…⁵ proje…⁶</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> PAR-15-331 U24CA220242           <span style="text-decoration: underline;">2</span>019  <span style="text-decoration: underline;">550</span>158 <span style="color: #949494;">"</span>ABYZO… Detect… 2018-0… 2023-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> PAR-15-331 U24CA220242           <span style="text-decoration: underline;">2</span>022  <span style="text-decoration: underline;">561</span>369 <span style="color: #949494;">"</span>ABYZO… Detect… 2018-0… 2024-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> PAR-15-331 U24CA220242           <span style="text-decoration: underline;">2</span>021  <span style="text-decoration: underline;">572</span>828 <span style="color: #949494;">"</span>ABYZO… Detect… 2018-0… 2023-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> PAR-15-331 U24CA220242           <span style="text-decoration: underline;">2</span>018  <span style="text-decoration: underline;">559</span>916 <span style="color: #949494;">"</span>ABYZO… Detect… 2018-0… 2023-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> PAR-15-331 U24CA220242           <span style="text-decoration: underline;">2</span>020  <span style="text-decoration: underline;">383</span>715 <span style="color: #949494;">"</span>ABYZO… Detect… 2018-0… 2023-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> PAR-15-334 R21CA220352           <span style="text-decoration: underline;">2</span>019  <span style="text-decoration: underline;">156</span>788 <span style="color: #949494;">"</span>ARNOL… Predic… 2018-0… 2021-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> PAR-15-334 R21CA220352           <span style="text-decoration: underline;">2</span>018  <span style="text-decoration: underline;">195</span>568 <span style="color: #949494;">"</span>ARNOL… Predic… 2018-0… 2020-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> PAR-15-332 U01CA242871           <span style="text-decoration: underline;">2</span>019  <span style="text-decoration: underline;">378</span>519 <span style="color: #949494;">"</span>BAKAS… The Fe… 2019-0… 2022-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> PAR-15-332 U01CA242871           <span style="text-decoration: underline;">2</span>020  <span style="text-decoration: underline;">360</span>393 <span style="color: #949494;">"</span>BAKAS… The Fe… 2019-0… 2022-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> PAR-15-332 U01CA242871           <span style="text-decoration: underline;">2</span>021  <span style="text-decoration: underline;">357</span>972 <span style="color: #949494;">"</span>BAKAS… The Fe… 2019-0… 2023-0…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 176 more rows, and abbreviated variable names ¹​fiscal_year,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ²​award_amount, ³​contact_pi_name, ⁴​project_title, ⁵​project_start_date,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁶​project_end_date</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    full_foa   core_project_num fiscal_year award_amount contact_pi_name    </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">550</span>158 ABYZOV, ALEXEJ     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>022       <span style="text-decoration: underline;">561</span>369 ABYZOV, ALEXEJ     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>021       <span style="text-decoration: underline;">572</span>828 ABYZOV, ALEXEJ     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>018       <span style="text-decoration: underline;">559</span>916 ABYZOV, ALEXEJ     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>020       <span style="text-decoration: underline;">383</span>715 ABYZOV, ALEXEJ     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> PAR-15-334 R21CA220352             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">156</span>788 ARNOLD, COREY WELLS</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> PAR-15-334 R21CA220352             <span style="text-decoration: underline;">2</span>018       <span style="text-decoration: underline;">195</span>568 ARNOLD, COREY WELLS</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> PAR-15-332 U01CA242871             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">378</span>519 BAKAS, SPYRIDON    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> PAR-15-332 U01CA242871             <span style="text-decoration: underline;">2</span>020       <span style="text-decoration: underline;">360</span>393 BAKAS, SPYRIDON    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> PAR-15-332 U01CA242871             <span style="text-decoration: underline;">2</span>021       <span style="text-decoration: underline;">357</span>972 BAKAS, SPYRIDON    </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 176 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: project_title &lt;chr&gt;, project_start_date &lt;date&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   project_end_date &lt;date&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="nih-reporter-publications">NIH Reporter publications<a class="anchor" aria-label="anchor" href="#nih-reporter-publications"></a>
@@ -270,22 +270,22 @@ citations from the projects funded by current ITCR FOAs.</p>
 <code class="sourceCode R"><span><span class="va">core_project_nums</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">projects</span>, <span class="st">"core_project_num"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">publications</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/user_interface.html">reporter_publications</a></span><span class="op">(</span>core_project_nums <span class="op">=</span> <span class="va">core_project_nums</span><span class="op">)</span></span>
+<span><span class="va">publications</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reporter_and_icite.html">reporter_publications</a></span><span class="op">(</span>core_project_nums <span class="op">=</span> <span class="va">core_project_nums</span><span class="op">)</span></span>
 <span><span class="va">publications</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 869 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 876 × 3</span></span></span>
 <span><span class="co">#&gt;    coreproject     pmid   applid</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> U24CA237719 31<span style="text-decoration: underline;">907</span>209 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> U24CA237719 31<span style="text-decoration: underline;">990</span>579 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> U24CA237719 32<span style="text-decoration: underline;">191</span>543 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> U24CA237719 33<span style="text-decoration: underline;">260</span>207 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> U24CA237719 34<span style="text-decoration: underline;">341</span>766 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> U24CA237719 35<span style="text-decoration: underline;">611</span>186 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> U24CA237719 32<span style="text-decoration: underline;">180</span>547 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> U24CA237719 34<span style="text-decoration: underline;">036</span>230 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> U24CA237719 35<span style="text-decoration: underline;">072</span>136 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> U24CA237719 35<span style="text-decoration: underline;">101</span>336 10<span style="text-decoration: underline;">370</span>336</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 859 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> U24CA237719 31<span style="text-decoration: underline;">618</span>044 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> U24CA237719 33<span style="text-decoration: underline;">260</span>207 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> U24CA237719 36<span style="text-decoration: underline;">273</span>232 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> U24CA237719 31<span style="text-decoration: underline;">645</span>350 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> U24CA237719 35<span style="text-decoration: underline;">101</span>336 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> U24CA237719 36<span style="text-decoration: underline;">373</span>660 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> U24CA237719 32<span style="text-decoration: underline;">644</span>817 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> U24CA237719 33<span style="text-decoration: underline;">547</span>198 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> U24CA237719 35<span style="text-decoration: underline;">624</span>339 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> U24CA237719 31<span style="text-decoration: underline;">462</span>330 10<span style="text-decoration: underline;">370</span>336</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 866 more rows</span></span></span></code></pre></div>
 <p>Note that some projects were funded by previous ITCR FOA, so that
 publications can appear to be from ‘before’ funding under the current
 FOA.</p>
@@ -303,34 +303,34 @@ the <code>publications</code> tibble obtained from NIH Reporter.
 has a column <code>pmid</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## which fields are available in icite?</span></span>
-<span><span class="fu"><a href="../reference/user_interface.html">icite</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="va">publications</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="../reference/reporter_and_icite.html">icite</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="va">publications</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 1</span></span>
 <span><span class="co">#&gt; Columns: 24</span></span>
-<span><span class="co">#&gt; $ pmid                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 31907209</span></span>
-<span><span class="co">#&gt; $ year                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2020</span></span>
-<span><span class="co">#&gt; $ title                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "pVACtools: A Computational Toolkit to Ide…</span></span>
-<span><span class="co">#&gt; $ authors                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Jasreet Hundal, Susanna Kiwala, Joshua Mc…</span></span>
-<span><span class="co">#&gt; $ journal                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Cancer Immunol Res"</span></span>
+<span><span class="co">#&gt; $ pmid                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 31618044</span></span>
+<span><span class="co">#&gt; $ year                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2019</span></span>
+<span><span class="co">#&gt; $ title                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Open-Sourced CIViC Annotation Pipeline to…</span></span>
+<span><span class="co">#&gt; $ authors                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Erica K Barnell, Adam Waalkes, Matt C Mos…</span></span>
+<span><span class="co">#&gt; $ journal                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "JCO Clin Cancer Inform"</span></span>
 <span><span class="co">#&gt; $ is_research_article         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yes"</span></span>
-<span><span class="co">#&gt; $ relative_citation_ratio     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.68</span></span>
-<span><span class="co">#&gt; $ nih_percentile              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 92.5</span></span>
+<span><span class="co">#&gt; $ relative_citation_ratio     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.22</span></span>
+<span><span class="co">#&gt; $ nih_percentile              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11</span></span>
 <span><span class="co">#&gt; $ human                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1</span></span>
 <span><span class="co">#&gt; $ animal                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span></span>
 <span><span class="co">#&gt; $ molecular_cellular          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span></span>
-<span><span class="co">#&gt; $ apt                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.75</span></span>
+<span><span class="co">#&gt; $ apt                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.25</span></span>
 <span><span class="co">#&gt; $ is_clinical                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "No"</span></span>
-<span><span class="co">#&gt; $ citation_count              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 65</span></span>
-<span><span class="co">#&gt; $ citations_per_year          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 21.66667</span></span>
-<span><span class="co">#&gt; $ expected_citations_per_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.62826</span></span>
-<span><span class="co">#&gt; $ field_citation_rate         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 10.77414</span></span>
+<span><span class="co">#&gt; $ citation_count              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5</span></span>
+<span><span class="co">#&gt; $ citations_per_year          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.25</span></span>
+<span><span class="co">#&gt; $ expected_citations_per_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5.773813</span></span>
+<span><span class="co">#&gt; $ field_citation_rate         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 12.12365</span></span>
 <span><span class="co">#&gt; $ provisional                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "No"</span></span>
 <span><span class="co">#&gt; $ x_coord                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span></span>
 <span><span class="co">#&gt; $ y_coord                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1</span></span>
 <span><span class="co">#&gt; $ cited_by_clin               <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> NA</span></span>
-<span><span class="co">#&gt; $ cited_by                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "35646870 34075855 34927080 33262196 34529…</span></span>
-<span><span class="co">#&gt; $ references                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "23396013 29170503 31243155 19906713 28694…</span></span>
-<span><span class="co">#&gt; $ doi                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "10.1158/2326-6066.CIR-19-0401"</span></span></code></pre></div>
+<span><span class="co">#&gt; $ cited_by                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "32870722 35430670 33964451 35708776 35831…</span></span>
+<span><span class="co">#&gt; $ references                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "25222080 26772741 24055113 24234437 23788…</span></span>
+<span><span class="co">#&gt; $ doi                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "10.1200/CCI.19.00077"</span></span></code></pre></div>
 <p>Identify fields of interest, and query for all publications
 associated the</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -338,21 +338,21 @@ associated the</p>
 <span>    <span class="st">"pmid"</span>, <span class="st">"year"</span>, <span class="st">"citation_count"</span>, <span class="st">"relative_citation_ratio"</span>,</span>
 <span>    <span class="st">"doi"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/user_interface.html">icite</a></span><span class="op">(</span><span class="va">publications</span>, <span class="va">include_fields</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 819 × 5</span></span></span>
+<span><span class="fu"><a href="../reference/reporter_and_icite.html">icite</a></span><span class="op">(</span><span class="va">publications</span>, <span class="va">include_fields</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 827 × 5</span></span></span>
 <span><span class="co">#&gt;        pmid  year citation_count relative_citation_ratio doi                    </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 19<span style="text-decoration: underline;">898</span>898  <span style="text-decoration: underline;">2</span>010             32                    0.8  10.1245/s10434-009-079…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 24<span style="text-decoration: underline;">925</span>914  <span style="text-decoration: underline;">2</span>014           <span style="text-decoration: underline;">2</span>419                   76.8  10.1126/science.1254257</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 24<span style="text-decoration: underline;">931</span>973  <span style="text-decoration: underline;">2</span>014             36                    1.21 10.1093/bioinformatics…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 25<span style="text-decoration: underline;">086</span>664  <span style="text-decoration: underline;">2</span>014             91                    2.54 10.1038/ng.3051        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 24<span style="text-decoration: underline;">925</span>914  <span style="text-decoration: underline;">2</span>014           <span style="text-decoration: underline;">2</span>468                   77.7  10.1126/science.1254257</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 24<span style="text-decoration: underline;">931</span>973  <span style="text-decoration: underline;">2</span>014             36                    1.2  10.1093/bioinformatics…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 25<span style="text-decoration: underline;">086</span>664  <span style="text-decoration: underline;">2</span>014             92                    2.56 10.1038/ng.3051        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 25<span style="text-decoration: underline;">714</span>012  <span style="text-decoration: underline;">2</span>015             10                    0.37 10.18632/oncotarget.29…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 26<span style="text-decoration: underline;">083</span>491  <span style="text-decoration: underline;">2</span>015             25                    0.83 10.1371/journal.pone.0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 26<span style="text-decoration: underline;">463</span>000  <span style="text-decoration: underline;">2</span>016             33                    1.19 10.1093/bib/bbv080     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 26<span style="text-decoration: underline;">594</span>663  <span style="text-decoration: underline;">2</span>015            139                    4.62 10.1016/j.cels.2015.10…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 26<span style="text-decoration: underline;">638</span>175  <span style="text-decoration: underline;">2</span>015            139                    4.17 10.1016/j.molcel.2015.…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 26<span style="text-decoration: underline;">644</span>347  <span style="text-decoration: underline;">2</span>015             26                    0.81 10.1038/ncomms9726     </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 809 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 26<span style="text-decoration: underline;">083</span>491  <span style="text-decoration: underline;">2</span>015             25                    0.81 10.1371/journal.pone.0…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 26<span style="text-decoration: underline;">463</span>000  <span style="text-decoration: underline;">2</span>016             33                    1.17 10.1093/bib/bbv080     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 26<span style="text-decoration: underline;">594</span>663  <span style="text-decoration: underline;">2</span>015            141                    4.63 10.1016/j.cels.2015.10…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 26<span style="text-decoration: underline;">638</span>175  <span style="text-decoration: underline;">2</span>015            141                    4.19 10.1016/j.molcel.2015.…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 26<span style="text-decoration: underline;">644</span>347  <span style="text-decoration: underline;">2</span>015             26                    0.8  10.1038/ncomms9726     </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 817 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
@@ -367,7 +367,7 @@ data.</p>
 compiled.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.2.2 (2022-10-31)</span></span>
+<span><span class="co">#&gt; R version 4.2.3 (2023-03-15)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.2 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -385,23 +385,23 @@ compiled.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] grantpubcite_0.0.1 dplyr_1.1.0       </span></span>
+<span><span class="co">#&gt; [1] grantpubcite_0.0.1.9001 dplyr_1.1.1            </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] bslib_0.4.2       compiler_4.2.2    pillar_1.8.1      jquerylib_0.1.4  </span></span>
-<span><span class="co">#&gt;  [5] tools_4.2.2       bit_4.0.5         digest_0.6.31     jsonlite_1.8.4   </span></span>
-<span><span class="co">#&gt;  [9] evaluate_0.20     memoise_2.0.1     lifecycle_1.0.3   tibble_3.2.0     </span></span>
-<span><span class="co">#&gt; [13] pkgconfig_2.0.3   rlang_1.0.6       cli_3.6.0         parallel_4.2.2   </span></span>
-<span><span class="co">#&gt; [17] curl_5.0.0        yaml_2.3.7        pkgdown_2.0.7     xfun_0.37        </span></span>
-<span><span class="co">#&gt; [21] fastmap_1.1.1     withr_2.5.0       stringr_1.5.0     httr_1.4.5       </span></span>
-<span><span class="co">#&gt; [25] knitr_1.42        rjsoncons_1.0.0   hms_1.1.2         desc_1.4.2       </span></span>
-<span><span class="co">#&gt; [29] generics_0.1.3    fs_1.6.1          vctrs_0.5.2       sass_0.4.5       </span></span>
-<span><span class="co">#&gt; [33] systemfonts_1.0.4 bit64_4.0.5       rprojroot_2.0.3   tidyselect_1.2.0 </span></span>
-<span><span class="co">#&gt; [37] glue_1.6.2        R6_2.5.1          textshaping_0.3.6 fansi_1.0.4      </span></span>
-<span><span class="co">#&gt; [41] vroom_1.6.1       rmarkdown_2.20    tzdb_0.3.0        purrr_1.0.1      </span></span>
-<span><span class="co">#&gt; [45] readr_2.1.4       magrittr_2.0.3    ellipsis_0.3.2    htmltools_0.5.4  </span></span>
-<span><span class="co">#&gt; [49] ragg_1.2.5        utf8_1.2.3        stringi_1.7.12    cachem_1.0.7     </span></span>
-<span><span class="co">#&gt; [53] crayon_1.5.2</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] bslib_0.4.2       compiler_4.2.3    pillar_1.9.0      jquerylib_0.1.4  </span></span>
+<span><span class="co">#&gt;  [5] tools_4.2.3       bit_4.0.5         digest_0.6.31     jsonlite_1.8.4   </span></span>
+<span><span class="co">#&gt;  [9] evaluate_0.20     memoise_2.0.1     lifecycle_1.0.3   tibble_3.2.1     </span></span>
+<span><span class="co">#&gt; [13] pkgconfig_2.0.3   rlang_1.1.0       cli_3.6.1         parallel_4.2.3   </span></span>
+<span><span class="co">#&gt; [17] curl_5.0.0        yaml_2.3.7        pkgdown_2.0.7     xfun_0.38        </span></span>
+<span><span class="co">#&gt; [21] fastmap_1.1.1     withr_2.5.0       httr_1.4.5        stringr_1.5.0    </span></span>
+<span><span class="co">#&gt; [25] knitr_1.42        rjsoncons_1.0.0   hms_1.1.3         desc_1.4.2       </span></span>
+<span><span class="co">#&gt; [29] generics_0.1.3    fs_1.6.1          vctrs_0.6.1       sass_0.4.5       </span></span>
+<span><span class="co">#&gt; [33] htmlwidgets_1.6.2 systemfonts_1.0.4 bit64_4.0.5       rprojroot_2.0.3  </span></span>
+<span><span class="co">#&gt; [37] DT_0.27           tidyselect_1.2.0  glue_1.6.2        R6_2.5.1         </span></span>
+<span><span class="co">#&gt; [41] textshaping_0.3.6 fansi_1.0.4       vroom_1.6.1       rmarkdown_2.21   </span></span>
+<span><span class="co">#&gt; [45] tzdb_0.3.0        readr_2.1.4       purrr_1.0.1       magrittr_2.0.3   </span></span>
+<span><span class="co">#&gt; [49] htmltools_0.5.5   ragg_1.2.5        utf8_1.2.3        stringi_1.7.12   </span></span>
+<span><span class="co">#&gt; [53] cachem_1.0.7      crayon_1.5.2</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
