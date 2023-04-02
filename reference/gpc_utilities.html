@@ -7,7 +7,7 @@ gpc_colnames_standardize() transforms column names
 to shorter equivalents, primary useful for (horizontal)
 contraction of table displays.
 gpc_datatable() standardizes column names for
-consistent display. In non-interactive sessions it retured a
+consistent display. In non-interactive sessions it returned a
 DT::datatable() for interactive navigation.
 gpc_datatable_download() adds download buttons to
 tables
@@ -20,7 +20,7 @@ gpc_colnames_standardize() transforms column names
 to shorter equivalents, primary useful for (horizontal)
 contraction of table displays.
 gpc_datatable() standardizes column names for
-consistent display. In non-interactive sessions it retured a
+consistent display. In non-interactive sessions it returned a
 DT::datatable() for interactive navigation.
 gpc_datatable_download() adds download buttons to
 tables
@@ -36,7 +36,7 @@ labels in interactive plots."><!-- mathjax --><script src="https://cdnjs.cloudfl
     
     <a class="navbar-brand me-2" href="../index.html">grantpubcite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@ consistent column formatting.</p>
 to shorter equivalents, primary useful for (horizontal)
 contraction of table displays.</p>
 <p><code>gpc_datatable()</code> standardizes column names for
-consistent display. In non-interactive sessions it retured a
+consistent display. In non-interactive sessions it returned a
 <code><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">DT::datatable()</a></code> for interactive navigation.</p>
 <p><code>gpc_datatable_download()</code> adds download buttons to
 tables</p>
@@ -130,6 +130,16 @@ a tibble summarizing how column names 'from'
 column names.</p></dd>
 
 
+<dt>truncate_columns</dt>
+<dd><p>logical(1) truncate long column names
+(default: <code>TRUE</code>)?</p></dd>
+
+
+<dt>width</dt>
+<dd><p>integer(1) number of characters to truncate at;
+remaining characters are replaced by '...'.</p></dd>
+
+
 <dt>to</dt>
 <dd><p>integer(1) maximum number of characters to retain in
 <code>x</code>.</p></dd>
@@ -155,7 +165,7 @@ DT::datatable without rownames, with pageLength of 5, and
 horizontal scrolling, which means that long tables don't
 overwhelm articles or spill into margins, and (c) only
 transforms the table when not interactive.</p>
-<p>Articles typcially use <code>gpc_datatable()</code> in a code chunk
+<p>Articles typically use <code>gpc_datatable()</code> in a code chunk
 with <code>include = FALSE</code>, so that the user sees the datatable but
 not code.</p>
     </div>
@@ -205,14 +215,14 @@ not code.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Ima Pi     2018-07-15   123 This is the title</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Iman Other 2021-01-14   456 A short title    </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">clean</span> <span class="op">|&gt;</span>             <span class="co"># standarized colnames;</span></span></span>
+<span class="r-in"><span><span class="va">clean</span> <span class="op">|&gt;</span>             <span class="co"># standardized colnames;</span></span></span>
 <span class="r-in"><span>    <span class="fu">gpc_datatable</span><span class="op">(</span><span class="op">)</span>  <span class="co"># datatable in non-interactive session</span></span></span>
-<div id="htmlwidget-1cb51d97c713e759ad38" style="width:700px;height:432.632880098888px;" class="datatables html-widget "></div>
-<script type="application/json" data-for="htmlwidget-1cb51d97c713e759ad38">{"x":{"filter":"none","vertical":false,"data":[["Ima Pi","Iman Other"],["2018-07-15","2021-01-14"],[123,456],["This is the title","A short title"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>contact_pi<\/th>\n      <th>start_date<\/th>\n      <th>pmid<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[[],{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[-1]; $(this.api().cell(row, -1).node()).css({'vertical-align':'top'});\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'vertical-align':'top'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'vertical-align':'top'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'vertical-align':'top'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><span class="r-in"><span></span></span>
+<div id="htmlwidget-854a4166bbae21db8398" style="width:700px;height:432.632880098888px;" class="datatables html-widget "></div>
+<script type="application/json" data-for="htmlwidget-854a4166bbae21db8398">{"x":{"filter":"none","vertical":false,"data":[["Ima Pi","Iman Other"],["2018-07-15","2021-01-14"],[123,456],["This is the title","A short title"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>contact_pi<\/th>\n      <th>start_date<\/th>\n      <th>pmid<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[[],{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[-1]; $(this.api().cell(row, -1).node()).css({'vertical-align':'top'});\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'vertical-align':'top'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'vertical-align':'top'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'vertical-align':'top'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">clean</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">gpc_datatable_download</span><span class="op">(</span><span class="op">)</span></span></span>
-<div id="htmlwidget-097dfa167e933515a335" style="width:700px;height:432.632880098888px;" class="datatables html-widget "></div>
-<script type="application/json" data-for="htmlwidget-097dfa167e933515a335">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"data":[["Ima Pi","Iman Other"],["2018-07-15","2021-01-14"],[123,456],["This is the title","A short title"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>contact_pi<\/th>\n      <th>start_date<\/th>\n      <th>pmid<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"dom":"Bftp","buttons":["copy","csv","excel"],"columnDefs":[[],{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[-1]; $(this.api().cell(row, -1).node()).css({'vertical-align':'top'});\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'vertical-align':'top'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'vertical-align':'top'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'vertical-align':'top'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><span class="r-in"><span></span></span>
+<div id="htmlwidget-5cc3cade1d1662d9cf07" style="width:700px;height:432.632880098888px;" class="datatables html-widget "></div>
+<script type="application/json" data-for="htmlwidget-5cc3cade1d1662d9cf07">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"data":[["Ima Pi","Iman Other"],["2018-07-15","2021-01-14"],[123,456],["This is the title","A short title"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>contact_pi<\/th>\n      <th>start_date<\/th>\n      <th>pmid<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"dom":"Bftp","buttons":["copy","csv","excel"],"columnDefs":[[],{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[-1]; $(this.api().cell(row, -1).node()).css({'vertical-align':'top'});\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'vertical-align':'top'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'vertical-align':'top'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'vertical-align':'top'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">clean</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>short_title <span class="op">=</span> <span class="fu">gpc_shorten</span><span class="op">(</span><span class="va">project_title</span>, <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 5</span></span>
