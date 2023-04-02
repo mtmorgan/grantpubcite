@@ -452,7 +452,7 @@ collaborative_projects <-
         projects |> select(core_project_num, contact_pi_name, project_title),
         by = "core_project_num"
     ) |>
-    arrange(desc(n_collab_publ))
+    arrange(desc(collab))
 ```
 </details>
 

@@ -51,19 +51,85 @@ collaboration_data_collection <-
     )
 }
 
+copublication_pmid_project <-
+    function(tbl)
+{
+    stopifnot(
+        ## tbl of pmid / project pairs.
+        inherits(tbl, "tbl_df"),
+        "pmid" %in% colnames(tbl)
+    )
+
+    ## filter pmid / project publications to just the
+    ## collaborative ones
+    tbl |>
+        count(.data$pmid) |>
+        filter(.data$n > 1L) |>
+        select("pmid") |>
+        inner_join(tbl, by = "pmid")
+}
+
 #' @rdname collaboration
 #'
 #' @title Program project collaboration through publication and citation
 #'
+#' @description `copublication_data()` returns a tibble enumerating
+#'     all pmid acknowledging more than one project.
+#'
 #' @param tbl a tibble with column `full_foa` containing the Funding
 #'     Opportunity Announcements defining the projects of interest.
+#'
+#' @return `copublication_data()` returns a tibble with the following
+#'     columns.
+#'
+#' - `core_project_num.x`, `core_project_num.y`: character() pairwise
+#'   project collaboration.
+#' - `n`: intger() number of collaborations between projects.
+#'
+#' @examples
+#' foas <- tribble(
+#'     ~full_foa,       ~description,
+#'     "RFA-CA-19-039", "Early-Stage Development of ...",
+#'     "RFA-CA-19-038", "Development of Innovative ...",
+#'     "RFA-CA-19-040", "Advanced Development of ...",
+#'     "RFA-CA-19-041", "Sustained Support of ..."
+#' )
+#'
+#' copublication_data(foas)
+#'
+#' @export
+copublication_data <-
+    function(tbl)
+{
+    ## data collection
+
+    data <- collaboration_data_collection(tbl)
+    publications <- data$publications
+
+    ## summary
+
+    pmid_project <- copublication_pmid_project(publications)
+
+    collaborative_publications <-
+        pmid_project |>
+        ## outer product of collaborations
+        left_join(pmid_project, by = "pmid") |>
+        ## made unique and without 'self collaboration'
+        filter(.data$core_project_num.x < .data$core_project_num.y) |>
+        count(.data$core_project_num.x, .data$core_project_num.y, sort = TRUE)
+
+    collaborative_publications |>
+        gpc_columns_clean()
+}
+
+#' @rdname collaboration
 #'
 #' @description `copublication()` summarizes collaboration between
 #'     projects at the time of publication.
 #'
 #' @return `copublication()` returns a tibble with columns
 #'
-#' - `project`: character() project numbers involved in
+#' - `core_project_num`: character() project numbers involved in
 #'   collaboration
 #'
 #' - `n`: integer() total number of publications from the
@@ -75,24 +141,18 @@ collaboration_data_collection <-
 #' - `rcr`: numeric() total relative citation rate of project
 #'   publications.
 #'
-#' - `n_collab_publ`: integer() number of collaborative publications
-#'   (publications acknowledging more than one project for support).
+#' - `collab`: integer() number of distinct collaborators, across all
+#'   collaborative publications.
 #'
-#' - `n_collab`: integer() total number of collaborators
-#'   acknowledged.
+#' - `n_collab`: integer() number of collaborative publications.
+#'
+#' - `citn_collab`: numeric() total 'citation_count' for collaborative
+#'   publications.
 #'
 #' - `rcr_collab`: numeric() total 'relative citation ratio' for
 #'   collaborative publications.
 #'
 #' @examples
-#' foas <- tribble(
-#'     ~full_foa,       ~description,
-#'     "RFA-CA-19-039", "Early-Stage Development of ...",
-#'     "RFA-CA-19-038", "Development of Innovative ...",
-#'     "RFA-CA-19-040", "Advanced Development of ...",
-#'     "RFA-CA-19-041", "Sustained Support of ..."
-#' )
-#'
 #' copublication(foas)
 #'
 #' @export
@@ -102,66 +162,48 @@ copublication <-
     ## data collection
 
     data <- collaboration_data_collection(tbl)
-    projects <- data$projects
     publications <- data$publications
     citations <- data$citations
     publ_summary <- data$publ_summary
 
     ## summary
 
-    collaborative_publications <-
+    pmid_project <- copublication_pmid_project(publications)
         publications |>
         count(.data$pmid) |>
         filter(.data$n > 1L) |>
         select("pmid") |>
-        right_join(x = publications, by = "pmid") |>
-        arrange(.data$core_project_num)
+        inner_join(publications, by = "pmid")
 
-    collaborative_projects <-
-        collaborative_publications |>
-        ## outer product of collaborations
-        left_join(collaborative_publications, by = "pmid") |>
-        ## made unique and without 'self collaboration'
-        filter(.data$core_project_num.x < .data$core_project_num.y) |>
-        count(.data$core_project_num.x, .data$core_project_num.y, sort = TRUE)
-
-    n_collab_publ <-
-        collaborative_publications |>
-        count(.data$core_project_num, name = "n_collab_publ")
-
+    copub_data <- copublication_data(tbl)
     n_collab <-
         bind_rows(
-            select(
-                collaborative_projects,
-                core_project_num = .data$core_project_num.x
-            ),
-            select(
-                collaborative_projects,
-                core_project_num = .data$core_project_num.y
-            )
+            select(copub_data, core_project_num = .data$core_project_num.x),
+            select(copub_data, core_project_num = .data$core_project_num.y)
         ) |>
-        count(.data$core_project_num, name = "n_collab")
+        count(.data$core_project_num, name = "collab")
 
-    rcr_collab <-
-        collaborative_publications |>
+    stat_collab <-
+        pmid_project |>
         left_join(citations, by = "pmid") |>
         group_by(.data$core_project_num) |>
         summarize(
+            n_collab = n(),
+            citn_collab = sum(.data$citation_count),
             rcr_collab = sum(.data$relative_citation_ratio, na.rm = TRUE)
         )
 
     ## synthesize summaries and return
     publ_summary |>
-        left_join(n_collab_publ, by = "core_project_num") |>
         left_join(n_collab, by = "core_project_num") |>
-        left_join(rcr_collab, by = "core_project_num") |>
+        left_join(stat_collab, by = "core_project_num") |>
         gpc_columns_clean()
 }
 
 #' @rdname collaboration
 #'
 #' @description `cocitation_data()` returns a tibble enumerating all
-#'     pmid cited by other program pmid
+#'     pmid cited by other program pmid.
 #'
 #' @return `cocitation_data()` returns a tibble with the following
 #'     columns.
@@ -209,7 +251,7 @@ cocitation_data <-
         pmid = rep(citations$pmid, lengths(cited_by)),
         cited_by = as.numeric(unlist(cited_by))
     ) |>
-        filter(pmid != cited_by)
+        filter(.data$pmid != .data$cited_by)
 
     ## restrict citations to program publications, translate pmid to project
     collaborative_citations <-

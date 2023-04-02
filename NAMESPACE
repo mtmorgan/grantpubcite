@@ -3,6 +3,7 @@
 export(cocitation)
 export(cocitation_data)
 export(copublication)
+export(copublication_data)
 export(gpc_camelize)
 export(gpc_colnames_standardize)
 export(gpc_columns_clean)
