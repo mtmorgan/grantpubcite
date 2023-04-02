@@ -19,6 +19,13 @@
 - (v. 0.0.1.9001) Update IOTN and ITCR case studies to use new
   functionality.
 
+- (v 0.0.1.9002) add `copublication_data()`
+
+- (v 0.0.1.9002) change return value columns of `copublication()`
+  - `collab`: number of collaborators, across all publications
+  - `n_collab`: number of collaborative publications
+  - `citn_collab`: total citation count of collaborartive publications
+
 # grantpubcite v0.0.1
 
 - (v. 0.0.1) Initial version. Don't show case study code by default,
