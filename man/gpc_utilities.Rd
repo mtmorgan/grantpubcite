@@ -31,6 +31,12 @@ a tibble summarizing how column names 'from'
 \code{reporter_projects()} or \code{icite()} are translated 'to' display
 column names.}
 
+\item{truncate_columns}{logical(1) truncate long column names
+(default: \code{TRUE})?}
+
+\item{width}{integer(1) number of characters to truncate at;
+remaining characters are replaced by '...'.}
+
 \item{to}{integer(1) maximum number of characters to retain in
 \code{x}.}
 }
@@ -46,7 +52,7 @@ to shorter equivalents, primary useful for (horizontal)
 contraction of table displays.
 
 \code{gpc_datatable()} standardizes column names for
-consistent display. In non-interactive sessions it retured a
+consistent display. In non-interactive sessions it returned a
 \code{DT::datatable()} for interactive navigation.
 
 \code{gpc_datatable_download()} adds download buttons to
@@ -80,7 +86,7 @@ horizontal scrolling, which means that long tables don't
 overwhelm articles or spill into margins, and (c) only
 transforms the table when not interactive.
 
-Articles typcially use \code{gpc_datatable()} in a code chunk
+Articles typically use \code{gpc_datatable()} in a code chunk
 with \code{include = FALSE}, so that the user sees the datatable but
 not code.
 }
@@ -101,7 +107,7 @@ clean           # no trailing whitespace; dates as Date objects;
 gpc_colnames_standardize()      # summarize column name standardization
 gpc_colnames_standardize(clean) # shorter column names
 
-clean |>             # standarized colnames;
+clean |>             # standardized colnames;
     gpc_datatable()  # datatable in non-interactive session
 
 clean |>

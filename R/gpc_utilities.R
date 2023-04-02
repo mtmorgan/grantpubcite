@@ -183,8 +183,14 @@ gpc_colnames_standardize <-
 #' @rdname gpc_utilities
 #'
 #' @description `gpc_datatable()` standardizes column names for
-#'     consistent display. In non-interactive sessions it retured a
+#'     consistent display. In non-interactive sessions it returned a
 #'     `DT::datatable()` for interactive navigation.
+#'
+#' @param truncate_columns logical(1) truncate long column names
+#'     (default: `TRUE`)?
+#'
+#' @param width integer(1) number of characters to truncate at;
+#'     remaining characters are replaced by '...'.
 #'
 #' @details `gpc_datatable()` is a convenience function used in
 #'     vignettes to (a) standardize column names for better
@@ -194,21 +200,24 @@ gpc_colnames_standardize <-
 #'     overwhelm articles or spill into margins, and (c) only
 #'     transforms the table when not interactive.
 #'
-#' @details Articles typcially use `gpc_datatable()` in a code chunk
+#' @details Articles typically use `gpc_datatable()` in a code chunk
 #'     with `include = FALSE`, so that the user sees the datatable but
 #'     not code.
 #'
 #' @examples
-#' clean |>             # standarized colnames;
+#' clean |>             # standardized colnames;
 #'     gpc_datatable()  # datatable in non-interactive session
 #'
-#' @importFrom DT datatable formatStyle
+#' @importFrom DT datatable formatStyle JS
+#'
 #' @export
 gpc_datatable <-
     function(.data, truncate_columns = TRUE, width = 40L)
 {
     stopifnot(
-        inherits(.data, "tbl_df")
+        inherits(.data, "tbl_df"),
+        is_scalar_logical(truncate_columns),
+        is_scalar_numeric(width)
     )
 
     .data <- gpc_colnames_standardize(.data)
