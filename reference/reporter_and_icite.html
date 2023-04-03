@@ -202,8 +202,8 @@ available on the API documentation page.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">550</span>158 ABYZOV, ALEXEJ     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>022       <span style="text-decoration: underline;">561</span>369 ABYZOV, ALEXEJ     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>021       <span style="text-decoration: underline;">572</span>828 ABYZOV, ALEXEJ     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>018       <span style="text-decoration: underline;">559</span>916 ABYZOV, ALEXEJ     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>020       <span style="text-decoration: underline;">383</span>715 ABYZOV, ALEXEJ     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>020       <span style="text-decoration: underline;">383</span>715 ABYZOV, ALEXEJ     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> PAR-15-331 U24CA220242             <span style="text-decoration: underline;">2</span>018       <span style="text-decoration: underline;">559</span>916 ABYZOV, ALEXEJ     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> PAR-15-334 R21CA220352             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">156</span>788 ARNOLD, COREY WELLS</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> PAR-15-334 R21CA220352             <span style="text-decoration: underline;">2</span>018       <span style="text-decoration: underline;">195</span>568 ARNOLD, COREY WELLS</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> PAR-15-332 U01CA242871             <span style="text-decoration: underline;">2</span>019       <span style="text-decoration: underline;">378</span>519 BAKAS, SPYRIDON    </span>
@@ -216,57 +216,57 @@ available on the API documentation page.</p>
 <span class="r-in"><span><span class="va">core_project_nums</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">projects</span>, <span class="st">"core_project_num"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">publications</span> <span class="op">&lt;-</span> <span class="fu">reporter_publications</span><span class="op">(</span>core_project_nums <span class="op">=</span> <span class="va">core_project_nums</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">publications</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 876 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 878 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    coreproject     pmid   applid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> U24CA237719 31<span style="text-decoration: underline;">618</span>044 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> U24CA237719 33<span style="text-decoration: underline;">260</span>207 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> U24CA237719 36<span style="text-decoration: underline;">273</span>232 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> U24CA237719 31<span style="text-decoration: underline;">645</span>350 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> U24CA237719 32<span style="text-decoration: underline;">644</span>817 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> U24CA237719 33<span style="text-decoration: underline;">547</span>198 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> U24CA237719 35<span style="text-decoration: underline;">101</span>336 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> U24CA237719 35<span style="text-decoration: underline;">624</span>339 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> U24CA237719 36<span style="text-decoration: underline;">373</span>660 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> U24CA237719 31<span style="text-decoration: underline;">462</span>330 10<span style="text-decoration: underline;">370</span>336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 866 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> U24CA237719 31<span style="text-decoration: underline;">796</span>060 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> U24CA237719 32<span style="text-decoration: underline;">246</span>132 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> U24CA237719 34<span style="text-decoration: underline;">341</span>766 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> U24CA237719 35<span style="text-decoration: underline;">311</span>178 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> U24CA237719 35<span style="text-decoration: underline;">366</span>592 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> U24CA237719 35<span style="text-decoration: underline;">611</span>186 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> U24CA237719 30<span style="text-decoration: underline;">287</span>923 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> U24CA237719 31<span style="text-decoration: underline;">779</span>674 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> U24CA237719 31<span style="text-decoration: underline;">907</span>209 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> U24CA237719 32<span style="text-decoration: underline;">191</span>543 10<span style="text-decoration: underline;">620</span>674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 868 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## which fields are available in icite?</span></span></span>
 <span class="r-in"><span><span class="fu">icite</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="va">publications</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ pmid                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 31618044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ pmid                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 31796060</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ year                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ title                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Open-Sourced CIViC Annotation Pipeline to…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ authors                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Erica K Barnell, Adam Waalkes, Matt C Mos…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ journal                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "JCO Clin Cancer Inform"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ title                       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Text-mining clinically relevant cancer bi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ authors                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Jake Lever, Martin R Jones, Arpad M Danos…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ journal                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Genome Med"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ is_research_article         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Yes"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ relative_citation_ratio     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ nih_percentile              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ relative_citation_ratio     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ nih_percentile              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 54.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ human                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ animal                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ molecular_cellular          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ apt                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ apt                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.75</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ is_clinical                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "No"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ citation_count              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ citations_per_year          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ expected_citations_per_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 5.773813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ field_citation_rate         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 12.12365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ citation_count              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ citations_per_year          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ expected_citations_per_year <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 4.048145</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ field_citation_rate         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 8.344309</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ provisional                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "No"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ x_coord                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ y_coord                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ cited_by_clin               <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ cited_by                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "32870722 35430670 33964451 35708776 35831…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ references                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "25222080 26772741 24055113 24234437 23788…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ doi                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "10.1200/CCI.19.00077"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ cited_by                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "36058206 33756233 32644817 36699388 35342…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ references                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "25222080 22080554 27924014 26772741 25223…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ doi                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "10.1186/s13073-019-0686-y"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">include_fields</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"pmid"</span>, <span class="st">"year"</span>, <span class="st">"citation_count"</span>, <span class="st">"relative_citation_ratio"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"doi"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">icite</span><span class="op">(</span><span class="va">publications</span>, <span class="va">include_fields</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 827 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 828 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        pmid  year citation_count relative_citation_ratio doi                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 19<span style="text-decoration: underline;">898</span>898  <span style="text-decoration: underline;">2</span>010             32                    0.8  10.1245/s10434-009-079…</span>
@@ -279,7 +279,7 @@ available on the API documentation page.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 26<span style="text-decoration: underline;">594</span>663  <span style="text-decoration: underline;">2</span>015            141                    4.63 10.1016/j.cels.2015.10…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 26<span style="text-decoration: underline;">638</span>175  <span style="text-decoration: underline;">2</span>015            141                    4.19 10.1016/j.molcel.2015.…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 26<span style="text-decoration: underline;">644</span>347  <span style="text-decoration: underline;">2</span>015             26                    0.8  10.1038/ncomms9726     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 817 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 818 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
