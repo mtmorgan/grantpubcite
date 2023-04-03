@@ -25,6 +25,8 @@
   - `collab`: number of collaborators, across all publications
   - `n_collab`: number of collaborative publications
   - `citn_collab`: total citation count of collaborartive publications
+  
+- (v 0.0.1.9003) add co-publication network to ITCR case study.
 
 # grantpubcite v0.0.1
 
