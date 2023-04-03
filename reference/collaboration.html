@@ -24,7 +24,7 @@ projects through citation."><!-- mathjax --><script src="https://cdnjs.cloudflar
     
     <a class="navbar-brand me-2" href="../index.html">grantpubcite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@ projects through citation.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">copublication_data</span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">copublication_data</span><span class="op">(</span><span class="va">tbl</span>, exclude <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">copublication</span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span>
 <span></span>
@@ -98,6 +98,10 @@ projects through citation.</p>
     <dl><dt>tbl</dt>
 <dd><p>a tibble with column <code>full_foa</code> containing the Funding
 Opportunity Announcements defining the projects of interest.</p></dd>
+
+
+<dt>exclude</dt>
+<dd><p>character() pmid to exclude from summary.</p></dd>
 
 </dl></div>
     <div class="section level2">
