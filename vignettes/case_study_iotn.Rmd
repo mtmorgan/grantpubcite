@@ -51,6 +51,7 @@ Load the library and other packages to be used in this case study.
 library(grantpubcite)
 library(ggplot2)
 library(DT)
+library(visNetwork)
 ```
 
 This document is written in Rmarkdown; code chunks used to generate
@@ -65,12 +66,12 @@ Funding Opportunity Announcements for IOTN are as follows:
 foas <- tribble(
     ~full_foa,       ~tag,      ~description,
     "RFA-CA-19-044", "U01",     "Advancing Cancer Immunotherapy by Mitigating Immune-Related Adverse Events (irAE) (U01 Clinical Trial Not Allowed)",
-
+    ##
     "RFA-CA-19-012", "UG3/UH3", "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (UG3/UH3 Clinical Trials Not Allowed)",
     "RFA-CA-19-013", "U54",     "Immuno-Oncology Translation Network (IOTN): Immuno-engineering to Improve Immunotherapy (i3) Centers (U54 Clinical Trial Not Allowed)",
     "RFA-CA-19-014", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (U01 Clinical Trial Not Allowed)",
     "RFA-CA-19-015", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunotherapy Research Projects (U01 Clinical Trial Not Allowed)",
-
+    ##
     "RFA-CA-17-045", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunotherapy Research Projects (U01)",
     "RFA-CA-17-046", "U01",     "Immuno-Oncology Translation Network (IOTN): Cancer Immunoprevention Research Projects (U01)",
     "RFA-CA-17-047", "DMRC",    "Immuno-Oncology Translation Network (IOTN): Data Management and Resource-Sharing Center (DMRC) (U24)",
@@ -159,12 +160,60 @@ publications |>
     gpc_datatable()
 ```
 
-About 10% of publications involved collaboration between projects; one
+About 13% of publications involved collaboration between projects; one
 publication represented an extensive collaboration.
 
 ```{r, echo = FALSE}
 collaboration_summary |>
     gpc_datatable()
+```
+
+The network below show collaborations between projects, excluding the
+extensive colloration. Hover over nodes to see project number and
+title. The width of edges is proportional to the square root of the
+number of co-publications; dashed lines indicate a single
+copublication.
+
+<details>
+```{r}
+## pubs <- program_publications(foas)
+## pubs |> count(pmid) # pmid 32554617 is highly collaborative
+copub_data <- copublication_data(foas, exclude = "32554617")
+
+nodes <-
+    copub_data |>
+    ## exclude
+    tidyr::pivot_longer(dplyr::starts_with("core_project_num")) |>
+    distinct(id = value) |>
+    left_join(
+        project_summary |>
+        select(id = "core_project_num", project_title) |>
+        distinct(),
+        by = "id"
+    ) |>
+    mutate(
+        size = 10,
+        title = paste0(id, ": ", .data$project_title)
+    )
+
+edges <-
+    copub_data |>
+    mutate(
+        from = core_project_num.x,
+        to = core_project_num.y,
+        width = 3 * sqrt(n),
+        smooth = FALSE,
+        dashes = n == 1L
+    )
+
+network <-
+    visNetwork(nodes, edges) |>
+    visLayout(randomSeed = 123)
+```
+</details>
+
+```{r, echo = FALSE}
+network
 ```
 
 The figure below shows publications per year...

@@ -1,6 +1,6 @@
 Package: grantpubcite
 Title: Query 'NIH Reporter' and 'iCite' for Grant and Publication Information
-Version: 0.0.1.9003
+Version: 0.0.1.9005
 Authors@R: c(
     person(
         "Martin", "Morgan",
@@ -28,7 +28,8 @@ Suggests:
     ggplot2,
     scales,
     plotly,
-    visNetwork
+    visNetwork,
+    tidyr
 VignetteBuilder: knitr
 URL: https://mtmorgan.github.io/grantpubcite/
 BugReports: https://github.com/mtmorgan/grantpubcite/issues

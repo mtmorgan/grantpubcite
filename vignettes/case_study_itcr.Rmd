@@ -462,11 +462,11 @@ collaborative_projects |>
     gpc_datatable()
 ```
 
-Relationships can be visualized as a network graph. Hover over nodes
-to see project number and title. The width of edges is proportional to
-the square root of the number of co-publications; dashed lines
-indicate a single copublication. The strongest relationships are
-'self-copublicaton' between grants from the same PI or institution.
+Relationships are visualized as a network. Hover over nodes to see
+project number and title. The width of edges is proportional to the
+square root of the number of co-publications; dashed lines indicate a
+single copublication. The strongest relationships are
+'self-copublication' between grants from the same PI or institution.
 
 <details>
 ```{r}

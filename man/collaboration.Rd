@@ -7,7 +7,7 @@
 \alias{cocitation}
 \title{Program project collaboration through publication and citation}
 \usage{
-copublication_data(tbl)
+copublication_data(tbl, exclude = NULL)
 
 copublication(tbl)
 
@@ -18,6 +18,8 @@ cocitation(tbl)
 \arguments{
 \item{tbl}{a tibble with column \code{full_foa} containing the Funding
 Opportunity Announcements defining the projects of interest.}
+
+\item{exclude}{character() pmid to exclude from summary.}
 }
 \value{
 \code{copublication_data()} returns a tibble with the following

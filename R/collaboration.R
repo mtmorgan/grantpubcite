@@ -79,6 +79,8 @@ copublication_pmid_project <-
 #' @param tbl a tibble with column `full_foa` containing the Funding
 #'     Opportunity Announcements defining the projects of interest.
 #'
+#' @param exclude character() pmid to exclude from summary.
+#'
 #' @return `copublication_data()` returns a tibble with the following
 #'     columns.
 #'
@@ -99,8 +101,11 @@ copublication_pmid_project <-
 #'
 #' @export
 copublication_data <-
-    function(tbl)
+    function(tbl, exclude = NULL)
 {
+    stopifnot(
+        is.null(exclude) || is_character(exclude)
+    )
     ## data collection
 
     data <- collaboration_data_collection(tbl)
@@ -108,7 +113,9 @@ copublication_data <-
 
     ## summary
 
-    pmid_project <- copublication_pmid_project(publications)
+    pmid_project <-
+        copublication_pmid_project(publications) |>
+        filter(!.data$pmid %in% exclude)
 
     collaborative_publications <-
         pmid_project |>
