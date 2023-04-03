@@ -27,7 +27,8 @@ Suggests:
     rmarkdown,
     ggplot2,
     scales,
-    plotly
+    plotly,
+    visNetwork
 VignetteBuilder: knitr
 URL: https://mtmorgan.github.io/grantpubcite/
 BugReports: https://github.com/mtmorgan/grantpubcite/issues

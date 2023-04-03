@@ -99,6 +99,7 @@ Load the library and other packages to be used in this article.
 library(grantpubcite)
 library(ggplot2) # also plotly::ggplotly()
 library(DT)
+library(visNetwork)
 ```
 </details>
 
@@ -459,6 +460,49 @@ collaborative_projects <-
 ```{r, echo = FALSE}
 collaborative_projects |>
     gpc_datatable()
+```
+
+Relationships can be visualized as a network graph. Hover over nodes
+to see project number and title. The width of edges is proportional to
+the square root of the number of co-publications; dashed lines
+indicate a single copublication. The strongest relationships are
+'self-copublicaton' between grants from the same PI or institution.
+
+<details>
+```{r}
+copub_data <- copublication_data(foas)
+nodes <-
+    copub_data |>
+    tidyr::pivot_longer(dplyr::starts_with("core_project_num")) |>
+    distinct(id = value) |>
+    left_join(
+        projects |> select(id = "core_project_num", project_title) |> distinct(),
+        by = "id"
+    ) |>
+    mutate(
+        size = 10,
+        title = paste0(id, ": ", .data$project_title)
+    )
+
+edges <-
+    copub_data |>
+    mutate(
+        from = core_project_num.x,
+        to = core_project_num.y,
+        width = 3 * sqrt(n),
+        smooth = FALSE,
+        dashes = n == 1L
+    )
+
+copub_network <-
+    visNetwork(nodes, edges) |>
+    ## set random seed for reproducibility
+    visLayout(randomSeed = 123)
+```
+</details>
+
+```{r, echo = FALSE}
+copub_network
 ```
 
 # Citations
