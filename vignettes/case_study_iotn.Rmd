@@ -194,7 +194,8 @@ nodes <-
     mutate(
         size = 10,
         title = paste0(id, ": ", .data$project_title)
-    )
+    ) |>
+    arrange(id)
 
 edges <-
     copub_data |>
@@ -208,7 +209,8 @@ edges <-
 
 network <-
     visNetwork(nodes, edges) |>
-    visLayout(randomSeed = 123)
+    visLayout(randomSeed = 123) |>
+    visOptions(highlightNearest = TRUE)
 ```
 </details>
 

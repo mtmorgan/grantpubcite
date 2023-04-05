@@ -497,7 +497,11 @@ edges <-
 copub_network <-
     visNetwork(nodes, edges) |>
     ## set random seed for reproducibility
-    visLayout(randomSeed = 123)
+    visLayout(randomSeed = 123) |>
+    visOptions(
+        selectedBy = list(variable = "id", highlight = TRUE),
+        highlightNearest = list(enabled = TRUE, algorithm = "all")
+    )
 ```
 </details>
 
