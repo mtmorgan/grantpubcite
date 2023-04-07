@@ -48,7 +48,8 @@ reporter_endpoint <-
             message(full_query)
 
         response <- post(url, full_query, httr::content_type_json())
-        if (verbose) {
+        total <- .jmespath(response, "meta.total")
+        if (verbose && total != 0L) {
             txt <- paste0(
                 "fields in first record: ",
                 paste(.jmespath(response, "keys(results[0])"), collapse = ", ")
@@ -57,13 +58,13 @@ reporter_endpoint <-
                 message(paste(strwrap(txt, exdent = 4L), collapse = "\n"))
             message(
                 offset + .jmespath(response, "length(results)"), " of ",
-                .jmespath(response, "meta.total"), " records"
+                total, " records"
             )
         }
-        too_many_records <-
-            ## first iteration only
-            offset == 0L &&
-            .jmespath(response, "meta.total") > REPORTER_LIMIT
+
+        ## first iteration only
+        too_many_records <- offset == 0L && total > REPORTER_LIMIT
+        no_records <- offset == 0L && total == 0L
         if (too_many_records) {
             txt <- paste0(
                 "More than ", REPORTER_LIMIT, " records would be returned by ",
@@ -76,9 +77,18 @@ reporter_endpoint <-
                 paste(strwrap(txt, exdent = 4L), collapse = "\n"),
                 call. = FALSE
             )
+        } else if (no_records) {
+            txt <- paste0(
+                "No records returned by this query; are the FOA correct? ",
+                if (!verbose)
+                    "Using `verbose = TRUE` may help to understand the query."
+            )
+            stop(
+                paste(strwrap(txt, exdent = 4L), collapse = "\n"),
+                call. = FALSE
+            )
         }
 
-        total <- .jmespath(response, "meta.total")
         tbl <- fromJSON(response)$results |> as_tibble()
         if (!is.null(include_fields))
             tbl <- select(tbl, all_of(include_fields))

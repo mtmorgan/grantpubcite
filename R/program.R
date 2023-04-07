@@ -155,6 +155,9 @@ program_projects_by_project_num <-
 #'     FOA are reported for each FOA, or `project` so that the summary
 #'     is by project number across FOA.
 #'
+#' @param verbose logical(1) report additional detail about progress
+#'     of reporter and icite queries.
+#'
 #' @details `program_projects()` provides a single row for each
 #'     project. It chooses as `full_foa` the most recent FOA under
 #'     which the project was funded. It chooses as `contact_pi_name`
@@ -186,11 +189,12 @@ program_projects_by_project_num <-
 #'
 #' @export
 program_projects <-
-    function(tbl, by = c("foa", "project"))
+    function(tbl, by = c("foa", "project"), verbose = FALSE)
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
-        "full_foa" %in% colnames(tbl)
+        "full_foa" %in% colnames(tbl),
+        is_scalar_logical(verbose)
     )
     by <- match.arg(by)
 
@@ -205,7 +209,8 @@ program_projects <-
 
     projects <- reporter_projects(
         foa = tbl$full_foa,
-        include_fields = project_include_fields
+        include_fields = project_include_fields,
+        verbose = verbose
     )
 
     ## summary
@@ -262,21 +267,28 @@ program_projects <-
 #'
 #' @export
 program_publications <-
-    function(tbl)
+    function(tbl, verbose = FALSE)
 {
     ## data collection
 
-    projects <- program_projects(tbl, by = "project")
+    projects <- program_projects(tbl, by = "project", verbose = verbose)
     core_project_nums <- unique(pull(projects, "core_project_num"))
     publications <-
-        reporter_publications(core_project_nums = core_project_nums) |>
+        reporter_publications(
+            core_project_nums = core_project_nums,
+            verbose = verbose
+        ) |>
         select(-"applid")
 
     icite_include_fields <- c(
         "pmid", "year", "title", "authors", "journal", "doi",
         "citation_count", "relative_citation_ratio", "field_citation_rate"
     )
-    citations <- icite(publications, include_fields = icite_include_fields)
+    citations <- icite(
+        publications,
+        include_fields = icite_include_fields,
+        verbose = verbose
+    )
 
     ## summary
 

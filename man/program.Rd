@@ -8,9 +8,9 @@
 \usage{
 program_summary(tbl)
 
-program_projects(tbl, by = c("foa", "project"))
+program_projects(tbl, by = c("foa", "project"), verbose = FALSE)
 
-program_publications(tbl)
+program_publications(tbl, verbose = FALSE)
 }
 \arguments{
 \item{tbl}{A tibble with column \code{full_foa} giving the FOAs that
@@ -20,6 +20,9 @@ define the program.}
 summarized -- by \code{foa} so that projects funded by more than one
 FOA are reported for each FOA, or \code{project} so that the summary
 is by project number across FOA.}
+
+\item{verbose}{logical(1) report additional detail about progress
+of reporter and icite queries.}
 }
 \value{
 \code{program_summary()} returns a tibble ordered by fiscal year
