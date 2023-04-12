@@ -117,12 +117,12 @@ program_projects_by_foa <-
         arrange(.data$fiscal_year, .data$award_amount) |>
         group_by(.data$full_foa, .data$core_project_num) |>
         summarize(
-            project_start_date = min(.data$project_start_date),
-            project_end_date = max(.data$project_end_date),
+            project_start_date = min(.data$project_start_date, na.rm = TRUE),
+            project_end_date = max(.data$project_end_date, na.rm = TRUE),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
             project_title = tail(.data$project_title, 1L),
             fiscal_year = length(unique(.data$fiscal_year)),
-            award_amount = sum(.data$award_amount),
+            award_amount = sum(.data$award_amount, na.rm = TRUE),
         )
 }
 
@@ -135,12 +135,12 @@ program_projects_by_project_num <-
         group_by(.data$core_project_num) |>
         summarize(
             full_foa = tail(.data$full_foa, 1L),
-            project_start_date = min(.data$project_start_date),
-            project_end_date = max(.data$project_end_date),
+            project_start_date = min(.data$project_start_date, na.rm = TRUE),
+            project_end_date = max(.data$project_end_date, na.rm = TRUE),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
             project_title = tail(.data$project_title, 1L),
             fiscal_year = length(unique(.data$fiscal_year)),
-            award_amount = sum(.data$award_amount)
+            award_amount = sum(.data$award_amount, na.rm = TRUE)
         ) |>
         select("full_foa", everything())
 }
