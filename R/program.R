@@ -201,7 +201,7 @@ program_projects <-
     ## data collection
 
     project_include_fields = c(
-        "full_foa", "core_project_num",
+        "full_foa", "core_project_num", "subproject_id",
         "project_start_date", "project_end_date",
         "contact_pi_name", "project_title",
         "fiscal_year", "award_amount"
@@ -212,6 +212,14 @@ program_projects <-
         include_fields = project_include_fields,
         verbose = verbose
     )
+
+    ## sub-project award amounts are included in core project award
+    ## amounts
+
+    projects <-
+        projects |>
+        filter(is.na(.data$subproject_id)) |>
+        select(-("subproject_id"))
 
     ## summary
 
