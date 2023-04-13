@@ -33,6 +33,9 @@
 
 - (v 0.0.1.9007) add project summary and award amount information
   across programs.
+  
+- (v 0.0.1.9008) add IMAT case study
+
 
 # grantpubcite v0.0.1
 

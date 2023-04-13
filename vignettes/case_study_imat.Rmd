@@ -1,0 +1,327 @@
+---
+title: "Case study: IMAT"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case study: IMAT}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Compile: `r Sys.Date()`
+
+Note that this is way outside my area of expertise, so I have
+undoubtedly made terrible blunders.
+
+# Introduction
+
+The 'grantpubcite' package can be used to query the [NIH Reporter][]
+database for funded grants, and the publications associated with those
+grants. The citation history of publications can be discovered using
+[iCite][].
+
+[NIH Reporter]: https://reporter.nih.gov/
+[iCite]: https://icite.od.nih.gov/
+
+In this case study we look at The Innovative Molecular Analysis
+Technologies ([IMAT][]) Program aimed at the development and
+integration of novel and emerging technologies in the support of
+cancer research, diagnosis, and treatment. We track funding
+opportunities from 2012 onward.
+
+[IMAT]: https://imat.cancer.gov/funding-opportunities/funding-overview
+
+# Getting started
+
+See the [Introduction to 'grantpubcite'][grantpubcite] article for
+installation, basic use, and a brief introduction to 'tidyverse'
+operations.
+
+[grantpubcite]: ./grantpubcite.html
+
+Load the library and other packages to be used in this case study.
+
+```{r setup, message = FALSE}
+library(grantpubcite)
+library(ggplot2)
+library(DT)
+library(visNetwork)
+```
+
+This document is written in Rmarkdown; code chunks used to generate
+each table or figure can be shown by toggling the 'Details' widget.
+
+# Projects
+
+Funding Opportunity Announcements for IMAT since 2012 are summarized as follows:
+
+<details>
+```{r imat-foas}
+foa1 <- tribble(
+    ~year, ~`R61 Mol Analysis`, ~`R33 Mol Analysis`, ~`R61 Biospec`, ~`R33 Biospec`, ~`SBIR`,
+    2023, "RFA-CA-23-002", "RFA-CA-23-003", "RFA-CA-23-004", "RFA-CA-23-005", NA,
+    2022, "RFA-CA-22-001", "RFA-CA-22-002", "RFA-CA-22-003", "RFA-CA-22-004", NA,
+    2021, "RFA-CA-21-003", "RFA-CA-21-004", "RFA-CA-21-005", "RFA-CA-21-006", NA,
+    2020, "RFA-CA-20-017", "RFA-CA-20-018", "RFA-CA-20-019", "RFA-CA-20-020", NA,
+    2019, "RFA-CA-19-019", "RFA-CA-19-020", "RFA-CA-19-021", "RFA-CA-19-022", NA,
+    2018, "RFA-CA-18-002", "RFA-CA-18-003", "RFA-CA-18-004", "RFA-CA-18-005", "PAR-18-303",
+    2017, "RFA-CA-17-010", "RFA-CA-17-011", "RFA-CA-17-012", "RFA-CA-17-013", NA,
+    2016, "RFA-CA-16-001", "RFA-CA-16-002", "RFA-CA-16-003", "RFA-CA-16-004", NA,
+    2015, "RFA-CA-15-002", "RFA-CA-15-003", "RFA-CA-15-004", "RFA-CA-15-005", NA,
+    2014, "RFA-CA-14-003", "RFA-CA-14-004", "RFA-CA-14-005", "RFA-CA-14-006", NA,
+    2013, "RFA-CA-13-001", "RFA-CA-13-002", "RFA-CA-13-003", "RFA-CA-13-004", "PAR-13-327",
+    2012, "RFA-CA-12-002", "RFA-CA-12-003", "RFA-CA-12-004", "RFA-CA-12-005", NA
+) |>
+    tidyr::pivot_longer(-1, names_to = "full_tag", values_to = "full_foa") |>
+    mutate(
+        tag = sub(" .*", "", full_tag),
+        description = sub("^[^ ]+ ", "", full_tag)
+    )
+
+
+foa2 <- tribble(
+    ~year, ~R01,           ~U01,            ~U54,            ~P01,            ~P50,            ~U2C,
+    2023, "RFA-CA-23-006", "RFA-CA-23-007", "RFA-CA-23-008", "RFA-CA-23-009", "RFA-CA-23-010", "RFA-CA-23-011",
+    2022, "RFA-CA-22-005", "RFA-CA-22-006", "RFA-CA-22-007", "RFA-CA-22-008", "RFA-CA-22-009", "RFA-CA-22-010",
+    2021, "RFA-CA-21-007", "RFA-CA-21-008", "RFA-CA-21-009", "RFA-CA-21-011", "RFA-CA-21-012", "RFA-CA-21-010",
+    2020, "RFA-CA-20-021", "RFA-CA-20-022", "RFA-CA-20-023", "RFA-CA-20-024", "RFA-CA-20-025", "RFA-CA-20-026",
+    2019, "RFA-CA-19-023", "RFA-CA-19-024", "RFA-CA-19-025", "RFA-CA-19-026", "RFA-CA-19-027", "RFA-CA-19-028",
+    2018, "RFA-CA-18-006", "RFA-CA-18-007", "RFA-CA-18-008", "RFA-CA-18-009", "RFA-CA-18-010", NA
+) |>
+    tidyr::pivot_longer(-1, names_to = "full_tag", values_to = "full_foa")
+
+full_tag_levels <- c(
+    "R61 Mol Analysis", "R61 Biospec",
+    "R33 Mol Analysis", "R33 Biospec",
+    "SBIR",
+    "R01", "U01", "P01", "P50", "U54", "U2C"
+)
+foas <-
+    bind_rows(foa1, foa2) |>
+    filter(!is.na(full_foa)) |>
+    mutate(full_tag = factor(full_tag, levels = full_tag_levels))
+
+foa_full_tag_count <-
+    foas |>
+    count(full_tag, name = "n_foa")
+```
+</details>
+
+```{r echo = FALSE}
+foa_full_tag_count
+```
+
+Discover projects funded through these FOAs by querying NIH Reporter,
+and use the information returned by a the query to summarize the
+projects.
+
+<details>
+```{r}
+project_summary <- program_projects(foas)
+
+project_foa_full_tag_count <-
+    project_summary |>
+    left_join(foas, by = "full_foa") |>
+    count(full_tag, name = "n_project")
+
+foa_awards <-
+    left_join(foa_full_tag_count, project_foa_full_tag_count, by = "full_tag") |>
+    mutate(n_project = ifelse(is.na(n_project), 0L, n_project))
+```
+</details>
+
+There are `r nrow(project_summary)` projects.
+
+```{r, echo = FALSE}
+project_summary |>
+    gpc_datatable()
+```
+
+Some FOAs have not yet funded projects.
+
+```{r, echo = FALSE}
+foa_awards |> gpc_datatable()
+```
+
+Award amounts are summarized below.
+
+<details>
+```{r}
+plot <-
+    project_summary |>
+    left_join(foas, by = "full_foa") |>
+    ggplot(aes(full_tag, award_amount)) +
+    theme(axis.text.x = element_text(angle = 15, vjust = 1, hjust=1)) +
+    scale_y_continuous(labels = scales::comma) +
+    geom_boxplot(outlier.color = NA) +
+    geom_jitter() +
+    xlab("Funding type") + ylab("Amount ($)")
+```
+</details>
+
+```{r, echo = FALSE}
+plot
+```
+
+# Publications and citations
+
+Publications associated with projects are discovered using [NIH
+Reporter][]. Citations are from [iCite][].
+
+<details>
+```{r}
+program_publications <- program_publications(foas)
+
+publications <-
+    program_publications |>
+    select(-c("full_foa", "core_project_num")) |>
+    distinct() |>
+    arrange(desc(citation_count))
+
+publications_per_project <-
+    program_publications |>
+    count(core_project_num, name = "n_pub") |>
+    left_join(project_summary, by = "core_project_num") |>
+    select(-c("full_foa", "project_title", "fiscal_year")) |>
+    arrange(desc(n_pub))
+
+collaboration_summary <-
+    program_publications |>
+    count(pmid, name = "n_collaborators") |>
+    count(n_collaborators, name = "n_publications")
+```
+</details>
+
+There are `r publications |> NROW()` publications. One challenge with
+is that a large project (e.g., U54MD000538) may have been funded
+throughf IMAT for only a small amount of money or short period of time
+as a subproject. Nonetheless, publications reflect the publication of
+the large project, including activities not funded by IMAT.
+
+```{r, echo = FALSE, warning = FALSE}
+publications |>
+    gpc_datatable()
+```
+
+The figure below shows publications per year...
+
+<details>
+```{r}
+plot <-
+    publications |>
+    ggplot(aes(factor(year))) +
+    geom_bar() +
+    xlab("Year") + ylab("Number of publications")
+```
+</details>
+
+```{r, echo = FALSE}
+plot
+```
+
+...and the distribution of citations per publication
+
+<details>
+```{r}
+plot <-
+    publications |>
+    filter(citation_count > 0) |>
+    ggplot(aes(citation_count)) +
+    scale_x_log10() +
+    geom_density() +
+    xlab("Number of citations") + ylab("Number of publications")
+```
+</details>
+
+```{r, echo = FALSE}
+plot
+```
+
+
+Project-level citations are summarized by the number of publications,
+the total citation count, and the sum of the 'relative citation
+index', a measure provided by iCite standardizing the impact of
+publications by year and field of study.
+
+<details>
+```{r}
+citations_by_project <-
+    program_publications |>
+    group_by(core_project_num) |>
+    summarize(
+        n_pub = n(),
+        n_citn = sum(citation_count),
+        total_rcr = sum(relative_citation_ratio, na.rm = TRUE)
+    ) |>
+    left_join(project_summary, by = "core_project_num") |>
+    arrange(desc(total_rcr))
+```
+</details>
+
+```{r, echo = FALSE}
+citations_by_project |>
+    gpc_datatable()
+```
+
+## Collaboration
+
+The network below show collaboration between projects, as reflected in
+publications acknowledging more than one project. Hover over nodes to
+see project number and title. The width of edges is proportional to
+the square root of the number of co-publications, dashed lines
+indicate a single copublication; hover over edges to see the number of
+collaborations.
+
+<details>
+```{r}
+## pubs <- program_publications(foas)
+## pubs |> count(pmid) # pmid 32554617 is highly collaborative
+copub_data <- copublication_data(foas, exclude = "32554617")
+
+nodes <-
+    copub_data |>
+    ## exclude
+    tidyr::pivot_longer(dplyr::starts_with("core_project_num")) |>
+    distinct(id = value) |>
+    left_join(
+        project_summary |>
+        select(id = "core_project_num", project_title) |>
+        distinct(),
+        by = "id"
+    ) |>
+    mutate(
+        size = 10,
+        title = paste0(id, ": ", .data$project_title)
+    ) |>
+    arrange(id)
+
+edges <-
+    copub_data |>
+    mutate(
+        from = core_project_num.x,
+        to = core_project_num.y,
+        width = 3 * sqrt(n),
+        smooth = FALSE,
+        dashes = n == 1L,
+        title = n
+    )
+
+network <-
+    visNetwork(nodes, edges) |>
+    visLayout(randomSeed = 123) |>
+    visOptions(highlightNearest = TRUE)
+```
+</details>
+
+```{r, echo = FALSE}
+network
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
