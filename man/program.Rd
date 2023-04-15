@@ -6,7 +6,7 @@
 \alias{program_publications}
 \title{Program-level queries and summaries}
 \usage{
-program_summary(tbl)
+program_summary(tbl, verbose = FALSE)
 
 program_projects(tbl, by = c("foa", "project"), verbose = FALSE)
 
@@ -16,52 +16,55 @@ program_publications(tbl, verbose = FALSE)
 \item{tbl}{A tibble with column \code{full_foa} giving the FOAs that
 define the program.}
 
+\item{verbose}{logical(1) report additional detail about progress
+of reporter and icite queries.}
+
 \item{by}{character(1) indicating how program projects are
 summarized -- by \code{foa} so that projects funded by more than one
 FOA are reported for each FOA, or \code{project} so that the summary
 is by project number across FOA.}
-
-\item{verbose}{logical(1) report additional detail about progress
-of reporter and icite queries.}
 }
 \value{
 \code{program_summary()} returns a tibble ordered by fiscal year
 summarizing project activity. Columns are
 \itemize{
-\item \code{year}: integer() year of program.
-\item \code{project}: integer() number of active projects.
-\item \code{amount}: integer() award amount to active projects.
+\item \code{fiscal_year}: integer() year of program.
+\item \code{program}: integer() number of active projects funded by this program.
+\item \code{project}: integer() number of projects funded by any program.
+\item \code{program_amount}: integer() award amount to active projects from
+this program.
+\item \code{project_amount}: integer() award amount across all programs.
 \item \code{publications}: integer() number of publications.
-\item \code{cite}: integer() citations to publications in year.
-\item \code{rcr}: numeric() sum of relative citation ratios for all
-publications in year.
+\item \code{citation_count}: integer() citations to publications in year.
+\item \code{relative_citation_ratio}: numeric() sum of relative citation
+ratios for all publications in year.
 }
 
 \code{program_projects()} returns a tibble summarizing projects
 funded under the FOAs. With \code{by = "full_foa"} (default),
 columns are:
 \itemize{
-\item \code{foa}: character() full FOA funding the project.
-\item \code{project}: character() core project number.
-\item \code{start_date}: date() start date of project
-\item \code{end_date}: date() end date of project; maybe in the future
-\item \code{contact_pi}: character() name of most-recent contact PI for FOA
+\item \code{full_foa}: character() full FOA funding the project.
+\item \code{core_project_num}: character() core project number.
+\item \code{project_start_date}: date() start date of project
+\item \code{project_end_date}: date() end date of project; maybe in the future
+\item \code{contact_pi_name}: character() name of most-recent contact PI for FOA
 and core project number.
-\item \code{title}: character() project title.
-\item \code{year}: integer() fiscal years of funding; may differ from
+\item \code{project_title}: character() project title.
+\item \code{fiscal_year}: integer() fiscal years of funding; may differ from
 project duration (end date - start date.
-\item \code{amount}: integer() actual award amount across fiscal years.
+\item \code{award_amount}: integer() award amount through programs in the FOAs.
 }
 
 With \code{by = "project"}, columns are the same but with
-\code{start_date}, \code{end_date}, \code{year}, \code{amount} and most recent
-contact PI and project title summarized over all FOAs under
-which a project was funded.
+\code{project_start_date}, \code{project_end_date}, \code{fiscal_year},
+\code{award_amount} and most recent contact PI and project title
+summarized over all FOAs under which a project was funded.
 
 \code{program_publications()} returns a tibble with columns:
 \itemize{
-\item \code{foa}: character() full FOA funding the project.
-\item \code{project}: character() core project number.
+\item \code{full_foa}: character() full FOA funding the project.
+\item \code{core_project_num}: character() core project number.
 \item \code{pmid}: integer() PubMed identifier.
 \item \code{year}, \code{title}, \code{authors}, \code{journal},\code{doi}: publication information.
 \item \code{citn}: integer() number of publicatons citing this
@@ -86,12 +89,13 @@ for all projects in the program.
 \details{
 \code{program_summary()} can return rows corresponding to years
 before and after the years the FOAs were active. Values before
-the FOA activity usually represent a grantee assigning credit
-to the FOA for a citation published prior to the start of the
-FOA, or to a project funded by FOAs not included in the input
-\code{tbl} but with the same core project number as a funded
-project. Values after the end of the FOA represent publications
-that acknowledge the FOA after the termination of the grant.
+the FOA activity represent either a project funded through
+other programs, or a grantee assigning credit to the FOA for a
+citation published prior to the start of the FOA, or to a
+project funded by FOAs not included in the input \code{tbl} but with
+the same core project number as a funded project. Values after
+the end of the FOA represent publications that acknowledge the
+FOA after the termination of the grant.
 
 \code{program_projects()} provides a single row for each
 project. It chooses as \code{full_foa} the most recent FOA under

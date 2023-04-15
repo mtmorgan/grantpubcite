@@ -11,25 +11,33 @@
 #' @param tbl A tibble with column `full_foa` giving the FOAs that
 #'     define the program.
 #'
+#' @param verbose logical(1) report additional detail about progress
+#'     of reporter and icite queries.
+#'
 #' @details `program_summary()` can return rows corresponding to years
 #'     before and after the years the FOAs were active. Values before
-#'     the FOA activity usually represent a grantee assigning credit
-#'     to the FOA for a citation published prior to the start of the
-#'     FOA, or to a project funded by FOAs not included in the input
-#'     `tbl` but with the same core project number as a funded
-#'     project. Values after the end of the FOA represent publications
-#'     that acknowledge the FOA after the termination of the grant.
+#'     the FOA activity represent either a project funded through
+#'     other programs, or a grantee assigning credit to the FOA for a
+#'     citation published prior to the start of the FOA, or to a
+#'     project funded by FOAs not included in the input `tbl` but with
+#'     the same core project number as a funded project. Values after
+#'     the end of the FOA represent publications that acknowledge the
+#'     FOA after the termination of the grant.
 #'
 #' @return `program_summary()` returns a tibble ordered by fiscal year
 #'     summarizing project activity. Columns are
 #'
-#' - `year`: integer() year of program.
-#' - `project`: integer() number of active projects.
-#' - `amount`: integer() award amount to active projects.
+#' - `fiscal_year`: integer() year of program.
+#' - `program`: integer() number of active projects funded by this program.
+#' - `project`: integer() number of projects funded by any program.
+#'
+#' - `program_amount`: integer() award amount to active projects from
+#'   this program.
+#' - `project_amount`: integer() award amount across all programs.
 #' - `publications`: integer() number of publications.
-#' - `cite`: integer() citations to publications in year.
-#' - `rcr`: numeric() sum of relative citation ratios for all
-#'   publications in year.
+#' - `citation_count`: integer() citations to publications in year.
+#' - `relative_citation_ratio`: numeric() sum of relative citation
+#'   ratios for all publications in year.
 #'
 #' @examples
 #' foas <- tribble(
@@ -49,7 +57,7 @@
 #'
 #' @export
 program_summary <-
-    function(tbl)
+    function(tbl, verbose = FALSE)
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
@@ -63,30 +71,44 @@ program_summary <-
     )
     projects <- reporter_projects(
         foa = tbl$full_foa,
-        include_fields = project_include_fields
+        include_fields = project_include_fields,
+        verbose = verbose
     )
 
-    core_project_num <-
-        pull(projects, "core_project_num") |>
-        unique()
-    publications <- reporter_publications(core_project_nums = core_project_num)
-
-    icite_include_fields <- c(
-        "pmid", "year", "citation_count", "relative_citation_ratio"
+    ## publications in NIH Reporter
+    project_nums <-
+        projects |>
+        distinct(.data$core_project_num) |>
+        pull()
+    publications <- reporter_publications(
+        core_project_nums = project_nums,
+        verbose = verbose
     )
+
+    ## citations in iCite
+    icite_include_fields <-
+        c("pmid", "year", "citation_count", "relative_citation_ratio")
     citations <-
-        icite(publications, include_fields = icite_include_fields) |>
+        icite(
+            publications,
+            include_fields = icite_include_fields,
+            verbose = verbose
+        ) |>
         rename(fiscal_year = "year")
 
     ## summary
 
-    program_awards <-
+    project_summary <-
+        projects |>
+        project_summary()
+
+    program_amount <-
         projects |>
         group_by(.data$full_foa, .data$core_project_num, .data$fiscal_year) |>
         summarize(award_amount = sum(.data$award_amount)) |>
         group_by(.data$fiscal_year) |>
         summarize(
-            project = length(unique(.data$core_project_num)),
+            program = length(unique(.data$core_project_num)),
             award_amount = sum(.data$award_amount)
         )
 
@@ -99,12 +121,25 @@ program_summary <-
             citation_count = as.integer(sum(.data$citation_count)),
             relative_citation_ratio =
                 sum(.data$relative_citation_ratio, na.rm = TRUE)
-        )
+        ) |>
+        ## remove records where NIH Reporter has a pmid, but iCite does not
+        filter(!is.na(fiscal_year))
 
-    program_awards |>
+    fiscal_year <-
+        program_amount |>
         full_join(program_citations, by = "fiscal_year") |>
         mutate(fiscal_year = as.integer(.data$fiscal_year)) |>
-        arrange(.data$fiscal_year) |>
+        arrange(.data$fiscal_year)
+
+    fiscal_year |>
+        full_join(project_summary, by = "fiscal_year") |>
+        select(
+            "fiscal_year",
+            "program", "project",
+            program_amount = "award_amount", "project_amount",
+            everything()
+        ) |>
+        arrange(fiscal_year) |>
         gpc_columns_clean()
 }
 
@@ -155,9 +190,6 @@ program_projects_by_project_num <-
 #'     FOA are reported for each FOA, or `project` so that the summary
 #'     is by project number across FOA.
 #'
-#' @param verbose logical(1) report additional detail about progress
-#'     of reporter and icite queries.
-#'
 #' @details `program_projects()` provides a single row for each
 #'     project. It chooses as `full_foa` the most recent FOA under
 #'     which the project was funded. It chooses as `contact_pi_name`
@@ -168,21 +200,22 @@ program_projects_by_project_num <-
 #'     funded under the FOAs. With `by = "full_foa"` (default),
 #'     columns are:
 #'
-#' - `foa`: character() full FOA funding the project.
-#' - `project`: character() core project number.
-#' - `start_date`: date() start date of project
-#' - `end_date`: date() end date of project; maybe in the future
-#' - `contact_pi`: character() name of most-recent contact PI for FOA
+#' - `full_foa`: character() full FOA funding the project.
+#' - `core_project_num`: character() core project number.
+#' - `project_start_date`: date() start date of project
+#' - `project_end_date`: date() end date of project; maybe in the future
+#' - `contact_pi_name`: character() name of most-recent contact PI for FOA
 #'   and core project number.
-#' - `title`: character() project title.
-#' - `year`: integer() fiscal years of funding; may differ from
+#' - `project_title`: character() project title.
+#' - `fiscal_year`: integer() fiscal years of funding; may differ from
 #'   project duration (end date - start date.
-#' - `amount`: integer() actual award amount across fiscal years.
+#' - `award_amount`: integer() award amount through programs in the FOAs.
+#" - `project_amount`: integer() total award amount across all funding sources.
 #'
 #' @return With `by = "project"`, columns are the same but with
-#'     `start_date`, `end_date`, `year`, `amount` and most recent
-#'     contact PI and project title summarized over all FOAs under
-#'     which a project was funded.
+#'     `project_start_date`, `project_end_date`, `fiscal_year`,
+#'     `award_amount` and most recent contact PI and project title
+#'     summarized over all FOAs under which a project was funded.
 #'
 #' @examples
 #' program_projects(foas)
@@ -214,20 +247,26 @@ program_projects <-
     )
 
     ## sub-project award amounts are included in core project award
-    ## amounts
-
+    ## amount; include only main award amount (!is.na(subproject_id)).
     projects <-
         projects |>
         filter(is.na(.data$subproject_id)) |>
         select(-("subproject_id"))
 
     ## summary
-
     if (identical(by, "foa")) {
         projects <- program_projects_by_foa(projects)
     } else {
         projects <- program_projects_by_project_num(projects)
     }
+
+    ## project funding across all programs
+    project_amount <- project_amount(projects, verbose)
+
+    projects <-
+        ## append 'project_amount' to 'projects'
+        projects |>
+        left_join(project_amount, by = "core_project_num")
 
     projects |>
         gpc_columns_clean()
@@ -240,8 +279,8 @@ program_projects <-
 #'
 #' @return `program_publications()` returns a tibble with columns:
 #'
-#' - `foa`: character() full FOA funding the project.
-#' - `project`: character() core project number.
+#' - `full_foa`: character() full FOA funding the project.
+#' - `core_project_num`: character() core project number.
 #' - `pmid`: integer() PubMed identifier.
 #' - `year`, `title`, `authors`, `journal`,`doi`: publication information.
 #' - `citn`: integer() number of publicatons citing this
