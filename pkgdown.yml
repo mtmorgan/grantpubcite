@@ -2,12 +2,13 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  case_study_imat: case_study_imat.html
   case_study_iotn: case_study_iotn.html
   case_study_itcr: case_study_itcr.html
   case_study_project_nums_quick: case_study_project_nums_quick.html
   grantpubcite: grantpubcite.html
   implementation_notes: implementation_notes.html
-last_built: 2023-04-07T18:57Z
+last_built: 2023-04-15T15:18Z
 urls:
   reference: https://mtmorgan.github.io/grantpubcite/reference
   article: https://mtmorgan.github.io/grantpubcite/articles
