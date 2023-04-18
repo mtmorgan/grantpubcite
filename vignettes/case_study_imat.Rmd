@@ -26,8 +26,8 @@ grants. The citation history of publications can be discovered using
 [NIH Reporter]: https://reporter.nih.gov/
 [iCite]: https://icite.od.nih.gov/
 
-In this case study we look at The Innovative Molecular Analysis
-Technologies ([IMAT][]) Program aimed at the development and
+In this case study we look at the Innovative Molecular Analysis
+Technologies ([IMAT][]) program aimed at the development andb
 integration of novel and emerging technologies in the support of
 cancer research, diagnosis, and treatment. We track funding
 opportunities from 2012 onward.
@@ -60,49 +60,7 @@ Funding Opportunity Announcements for IMAT since 2012 are summarized as follows:
 
 <details>
 ```{r imat-foas}
-foa1 <- tribble(
-    ~year, ~`R61 Mol Analysis`, ~`R33 Mol Analysis`, ~`R61 Biospec`, ~`R33 Biospec`, ~`SBIR`,
-    2023, "RFA-CA-23-002", "RFA-CA-23-003", "RFA-CA-23-004", "RFA-CA-23-005", NA,
-    2022, "RFA-CA-22-001", "RFA-CA-22-002", "RFA-CA-22-003", "RFA-CA-22-004", NA,
-    2021, "RFA-CA-21-003", "RFA-CA-21-004", "RFA-CA-21-005", "RFA-CA-21-006", NA,
-    2020, "RFA-CA-20-017", "RFA-CA-20-018", "RFA-CA-20-019", "RFA-CA-20-020", NA,
-    2019, "RFA-CA-19-019", "RFA-CA-19-020", "RFA-CA-19-021", "RFA-CA-19-022", NA,
-    2018, "RFA-CA-18-002", "RFA-CA-18-003", "RFA-CA-18-004", "RFA-CA-18-005", "PAR-18-303",
-    2017, "RFA-CA-17-010", "RFA-CA-17-011", "RFA-CA-17-012", "RFA-CA-17-013", NA,
-    2016, "RFA-CA-16-001", "RFA-CA-16-002", "RFA-CA-16-003", "RFA-CA-16-004", NA,
-    2015, "RFA-CA-15-002", "RFA-CA-15-003", "RFA-CA-15-004", "RFA-CA-15-005", NA,
-    2014, "RFA-CA-14-003", "RFA-CA-14-004", "RFA-CA-14-005", "RFA-CA-14-006", NA,
-    2013, "RFA-CA-13-001", "RFA-CA-13-002", "RFA-CA-13-003", "RFA-CA-13-004", "PAR-13-327",
-    2012, "RFA-CA-12-002", "RFA-CA-12-003", "RFA-CA-12-004", "RFA-CA-12-005", NA
-) |>
-    tidyr::pivot_longer(-1, names_to = "full_tag", values_to = "full_foa") |>
-    mutate(
-        tag = sub(" .*", "", full_tag),
-        description = sub("^[^ ]+ ", "", full_tag)
-    )
-
-
-foa2 <- tribble(
-    ~year, ~R01,           ~U01,            ~U54,            ~P01,            ~P50,            ~U2C,
-    2023, "RFA-CA-23-006", "RFA-CA-23-007", "RFA-CA-23-008", "RFA-CA-23-009", "RFA-CA-23-010", "RFA-CA-23-011",
-    2022, "RFA-CA-22-005", "RFA-CA-22-006", "RFA-CA-22-007", "RFA-CA-22-008", "RFA-CA-22-009", "RFA-CA-22-010",
-    2021, "RFA-CA-21-007", "RFA-CA-21-008", "RFA-CA-21-009", "RFA-CA-21-011", "RFA-CA-21-012", "RFA-CA-21-010",
-    2020, "RFA-CA-20-021", "RFA-CA-20-022", "RFA-CA-20-023", "RFA-CA-20-024", "RFA-CA-20-025", "RFA-CA-20-026",
-    2019, "RFA-CA-19-023", "RFA-CA-19-024", "RFA-CA-19-025", "RFA-CA-19-026", "RFA-CA-19-027", "RFA-CA-19-028",
-    2018, "RFA-CA-18-006", "RFA-CA-18-007", "RFA-CA-18-008", "RFA-CA-18-009", "RFA-CA-18-010", NA
-) |>
-    tidyr::pivot_longer(-1, names_to = "full_tag", values_to = "full_foa")
-
-full_tag_levels <- c(
-    "R61 Mol Analysis", "R61 Biospec",
-    "R33 Mol Analysis", "R33 Biospec",
-    "SBIR",
-    "R01", "U01", "P01", "P50", "U54", "U2C"
-)
-foas <-
-    bind_rows(foa1, foa2) |>
-    filter(!is.na(full_foa)) |>
-    mutate(full_tag = factor(full_tag, levels = full_tag_levels))
+foas <- case_study_foa_imat()
 
 foa_full_tag_count <-
     foas |>

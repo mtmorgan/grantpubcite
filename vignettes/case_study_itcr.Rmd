@@ -112,57 +112,7 @@ The relevant funding opportunity announcements (FOA) are as follows.
 
 <details>
 ```{r}
-foas <- tribble(
-    ~full_foa,       ~reissue_of,     ~foa_tag,      ~description,
-    ## current PARs
-    "PAR-15-334",    NA,              "Innovative",  "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21)",
-    "PAR-15-332",    "PAR-12-288",    "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management (U01)",
-    "PAR-15-331",    "PAR-13-294",    "Advanced",    "Advanced Development of Informatics Technologies for Cancer Research and Management (U24)",
-    "PAR-15-333",    NA,              "Sustained",   "Sustained Support for Informatics Resources for Cancer Research and Management (U24)",
-    ## RFAs
-    "RFA-CA-23-014", "RFA-CA-22-021", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
-    "RFA-CA-23-015", "RFA-CA-22-022", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
-    "RFA-CA-23-016", "RFA-CA-22-023", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-23-017", "RFA-CA-22-024", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    ## 
-    "RFA-CA-22-021", "RFA-CA-21-013", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
-    "RFA-CA-22-022", "RFA-CA-21-014", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
-    "RFA-CA-22-023", "RFA-CA-21-015", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-22-024", "RFA-CA-21-016", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    ## 
-    "RFA-CA-21-013", "RFA-CA-20-007", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
-    "RFA-CA-21-014", "RFA-CA-20-008", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
-    "RFA-CA-21-015", "RFA-CA-20-009", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-21-016", "RFA-CA-20-010", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    ## 
-    "RFA-CA-20-008", "RFA-CA-19-039", "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
-    "RFA-CA-20-007", "RFA-CA-19-038", "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
-    "RFA-CA-20-009", "RFA-CA-19-040", "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-20-010", "RFA-CA-19-041", "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    ## 
-    "RFA-CA-19-039", NA,              "Early-Stage", "Early-Stage Development of Informatics Technologies for Cancer Research and Management  (U01 Clinical Trial Optional)",
-    "RFA-CA-19-038", NA,              "Innovative", "Development of Innovative Informatics Methods and Algorithms for Cancer Research and Management (R21 Clinical Trial Optional)",
-    "RFA-CA-19-040", NA,              "Advanced", "Advanced Development of Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-19-041", NA,              "Sustained", "Sustained Support for Informatics Technologies for Cancer Research and Management (U24 Clinical Trial Optional)",
-    "RFA-CA-19-042", NA,              "Education", "Informatics Technology for Cancer Research Education Resource (UE5 Clinical Trial Not Allowed)",
-    ## earlier PARs
-    "PAR-13-294",    "PAR-12-287",    "Advanced",    "Advanced Development of Informatics Technology (U24)",
-    "PAR-12-287",    NA,              "Advanced",    "Advanced Development of Informatics Technology (U24)",
-    "PAR-12-288",    NA,              "Early-Stage", "Early-Stage Development of Informatics Technology (U01)"
-    ## FIXME: add 'Revsion of...' FOAs
-)
-foas <-
-    foas |>
-    select(-reissue_of) |> # drop 'reissue_of' for clarity
-    mutate(
-        foa_tag = factor(
-            foa_tag,
-            levels = c(
-                "Innovative", "Early-Stage", "Advanced", "Sustained",
-                "Education"
-            )
-        )
-    )
+foas <- case_study_foa_itcr()
 ```
 </details>
 

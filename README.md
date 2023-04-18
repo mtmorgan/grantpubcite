@@ -30,25 +30,29 @@ library(grantpubcite)
 
 See
 
--   [Get started](articles/grantpubcite.html) for an introduction to the
-    package.
--   [Case study: ITCR](articles/case_study_itcr.html) for an
-    illustration of package use analysing grants in the NIH Information
-    Technology in Cancer Research portfolio of grants. The ITCR is
-    particularly interesting because of it’s focus on ‘dry-lab’
-    technology / software, multi-year duration, and sequence of grants
-    representing a progression from small grants emphasizing innovation
-    to large grants to sustain essential resources.
--   [Case study: IOTN](articles/case_study_iotn.html) looks at the NIH
-    NCI Immuno-Oncology Translation Network portfolio of grants; the
-    IOTN servers as an interesting ‘wet-lab’ comparison for ITCR.
--   [Case study: specific
-    projects](articles/case_study_project_nums_quick.html) provides a
-    quick explorartion of publications and citations arising from two
-    related grants.
--   [Implementation notes](articles/implementation_notes.html) provides
-    brief notes on implementation, to highligth the great packages &
-    people contributing indirectly to the package.
+- [Get started](articles/grantpubcite.html) for an introduction to the
+  package.
+- [Case study: IMAT](articles/case_study_imat.html) looks at the NIH
+  Innovative Molecular Analysis Technologies Program aimed at the
+  development and integration of novel and emerging technologies in the
+  support of cancer research, diagnosis, and treatment.
+- [Case study: IOTN](articles/case_study_iotn.html) looks at the NIH NCI
+  Immuno-Oncology Translation Network portfolio of grants; the IOTN
+  servers as an interesting ‘wet-lab’ comparison for ITCR.
+- [Case study: ITCR](articles/case_study_itcr.html) for an illustration
+  of package use analysing grants in the NIH Information Technology in
+  Cancer Research portfolio of grants. The ITCR is particularly
+  interesting because of it’s focus on ‘dry-lab’ technology / software,
+  multi-year duration, and sequence of grants representing a progression
+  from small grants emphasizing innovation to large grants to sustain
+  essential resources.
+- [Case study: specific
+  projects](articles/case_study_project_nums_quick.html) provides a
+  quick explorartion of publications and citations arising from two
+  related grants.
+- [Implementation notes](articles/implementation_notes.html) provides
+  brief notes on implementation, to highligth the great packages &
+  people contributing indirectly to the package.
 
 Please note that I am not experienced in this sort of analysis, so any
 conclusions should be viewed with great skepticism.
