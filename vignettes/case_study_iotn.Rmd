@@ -77,7 +77,13 @@ projects.
 
 <details>
 ```{r}
-project_summary <- program_projects(foas)
+## not all projects funded by these FOAs are part of the IOTN
+excluded_core_project_num <- c(
+    "U01CA247548", "U01CA247576", "UH3CA244687", "UH3CA244697"
+)
+project_summary <-
+    program_projects(foas) |>
+    filter(!(core_project_num %in% excluded_core_project_num))
 ```
 </details>
 
@@ -114,7 +120,9 @@ Reporter][]. Citations are from [iCite][].
 
 <details>
 ```{r}
-program_publications <- program_publications(foas)
+program_publications <-
+    program_publications(foas) |>
+    filter(!(core_project_num %in% excluded_core_project_num))
 
 publications <-
     program_publications |>
@@ -162,7 +170,12 @@ copublication.
 ```{r}
 ## pubs <- program_publications(foas)
 ## pubs |> count(pmid) # pmid 32554617 is highly collaborative
-copub_data <- copublication_data(foas, exclude = "32554617")
+copub_data <-
+    copublication_data(foas, exclude = "32554617") |>
+    filter(!(
+        (core_project_num.x %in% excluded_core_project_num) |
+        (core_project_num.y %in% excluded_core_project_num)
+    ))
 
 nodes <-
     copub_data |>
