@@ -10,6 +10,8 @@ REPORTER_PUBLICATIONS <- paste0(REPORTER_URL, "/v2/publications/search")
 
 REPORTER_LIMIT <- 10000L
 
+#' @importFrom rjsoncons jmespath
+#'
 #' @importFrom jsonlite unbox toJSON fromJSON
 #'
 #' @importFrom dplyr as_tibble select all_of bind_rows
@@ -46,16 +48,19 @@ reporter_endpoint <-
             message(full_query)
 
         response <- post(url, full_query, httr::content_type_json())
-        total <- .jmespath(response, "meta.total")
+        total <- jmespath(response, "meta.total", as = "R")
         if (verbose && total != 0L) {
             txt <- paste0(
                 "fields in first record: ",
-                paste(.jmespath(response, "keys(results[0])"), collapse = ", ")
+                paste(
+                    jmespath(response, "keys(results[0])", as = "R"),
+                    collapse = ", "
+                )
             )
             if (offset == 0L)
                 message(paste(strwrap(txt, exdent = 4L), collapse = "\n"))
             message(
-                offset + .jmespath(response, "length(results)"), " of ",
+                offset + jmespath(response, "length(results)", as = "R"), " of ",
                 total, " records"
             )
         }
