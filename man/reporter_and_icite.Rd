@@ -66,7 +66,7 @@ reporter_projects(foa = foas, limit = 1L) |>
 
 ## select fields of interest
 include_fields <- c(
-    "full_foa",
+    "opportunity_number",
     "core_project_num",
     "fiscal_year",
     "award_amount",

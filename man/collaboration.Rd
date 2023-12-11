@@ -16,8 +16,9 @@ cocitation_data(tbl)
 cocitation(tbl)
 }
 \arguments{
-\item{tbl}{a tibble with column \code{full_foa} containing the Funding
-Opportunity Announcements defining the projects of interest.}
+\item{tbl}{a tibble with column \code{opportunity_number} containing the
+Funding Opportunity Announcements defining the projects of
+interest.}
 
 \item{exclude}{character() pmid to exclude from summary.}
 }
@@ -96,7 +97,7 @@ projects through citation.
 }
 \examples{
 foas <- tribble(
-    ~full_foa,       ~description,
+    ~opportunity_number,       ~description,
     "RFA-CA-19-039", "Early-Stage Development of ...",
     "RFA-CA-19-038", "Development of Innovative ...",
     "RFA-CA-19-040", "Advanced Development of ...",

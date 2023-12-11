@@ -58,7 +58,7 @@ is_scalar_numeric <-
 #'     to interact with the API using a consistent `snake_case` style.
 #'
 #' @examples
-#' gpc_camelize(c("full_foa", "core_project_num"))
+#' gpc_camelize(c("opportunity_number", "core_project_num"))
 #'
 #' @export
 gpc_camelize <-
@@ -156,7 +156,7 @@ gpc_colnames_standardize <-
 
     ## map, entries are `from = "to"`
     map <- c(
-        full_foa = "foa",
+        opportunity_number = "foa",
         core_project_num = "project",
         coreproject = "project",
         project_start_date = "start_date",

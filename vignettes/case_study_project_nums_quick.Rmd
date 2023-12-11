@@ -52,7 +52,7 @@ which they were active.
 projects |>
     group_by(core_project_num) |>
     summarize(
-        foa = unique(full_foa),
+        foa = unique(opportunity_number),
         first_year = min(fiscal_year),
         last_year = max(fiscal_year),
         project_title = unique(project_title)

@@ -100,7 +100,7 @@ UG3 awards.
 ```{r}
 plot <-
     project_summary |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     ggplot(aes(tag, award_amount)) +
     scale_y_continuous(labels = scales::comma) +
     geom_boxplot(outlier.color = NA) +
@@ -126,7 +126,7 @@ program_publications <-
 
 publications <-
     program_publications |>
-    select(-c("full_foa", "core_project_num")) |>
+    select(-c("opportunity_number", "core_project_num")) |>
     distinct() |>
     arrange(desc(citation_count))
 
@@ -134,7 +134,7 @@ publications_per_project <-
     program_publications |>
     count(core_project_num, name = "n_pub") |>
     left_join(project_summary, by = "core_project_num") |>
-    select(-c("full_foa", "project_title", "fiscal_year")) |>
+    select(-c("opportunity_number", "project_title", "fiscal_year")) |>
     arrange(desc(n_pub))
 
 collaboration_summary <-
