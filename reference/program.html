@@ -7,7 +7,7 @@ citation ratio.
 program_projects() returns a tibble of project
 numbers and standardized contact PI name and project title.
 program_publications() retrieves basic information
-for all projects in the program."><title>Program-level queries and summaries — program_summary • grantpubcite</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Program-level queries and summaries — program_summary"><meta property="og:description" content="program_summary() finds all projects, publications,
+for all projects in the program."><title>Program-level queries and summaries — program_summary • grantpubcite</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Program-level queries and summaries — program_summary"><meta property="og:description" content="program_summary() finds all projects, publications,
 and citations funded by the Funding Opportunity Announcements
 (FOAs) in tbl, and summarizes by year the number of projects,
 total award ammount, publications, citation count, and relative
@@ -26,7 +26,7 @@ for all projects in the program."><!-- mathjax --><script src="https://cdnjs.clo
     
     <a class="navbar-brand me-2" href="../index.html">grantpubcite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2.9010</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,8 +98,8 @@ for all projects in the program.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>tbl</dt>
-<dd><p>A tibble with column <code>full_foa</code> giving the FOAs that
-define the program.</p></dd>
+<dd><p>A tibble with column <code>opportunity_number</code> giving the
+FOAs that define the program.</p></dd>
 
 
 <dt>verbose</dt>
@@ -130,8 +130,8 @@ this program.</p></li>
 <li><p><code>relative_citation_ratio</code>: numeric() sum of relative citation
 ratios for all publications in year.</p></li>
 </ul><p><code>program_projects()</code> returns a tibble summarizing projects
-funded under the FOAs. With <code>by = "full_foa"</code> (default),
-columns are:</p><ul><li><p><code>full_foa</code>: character() full FOA funding the project.</p></li>
+funded under the FOAs. With <code>by = "foa"</code> (default), columns
+are:</p><ul><li><p><code>opportunity_number</code>: character() full FOA funding the project.</p></li>
 <li><p><code>core_project_num</code>: character() core project number.</p></li>
 <li><p><code>project_start_date</code>: date() start date of project</p></li>
 <li><p><code>project_end_date</code>: date() end date of project; maybe in the future</p></li>
@@ -147,7 +147,7 @@ project duration (end date - start date.</p></li>
 summarized over all FOAs under which a project was funded.</p>
 
 
-<p><code>program_publications()</code> returns a tibble with columns:</p><ul><li><p><code>full_foa</code>: character() full FOA funding the project.</p></li>
+<p><code>program_publications()</code> returns a tibble with columns:</p><ul><li><p><code>opportunity_number</code>: character() full FOA funding the project.</p></li>
 <li><p><code>core_project_num</code>: character() core project number.</p></li>
 <li><p><code>pmid</code>: integer() PubMed identifier.</p></li>
 <li><p><code>year</code>, <code>title</code>, <code>authors</code>, <code>journal</code>,<code>doi</code>: publication information.</p></li>
@@ -168,91 +168,101 @@ the same core project number as a funded project. Values after
 the end of the FOA represent publications that acknowledge the
 FOA after the termination of the grant.</p>
 <p><code>program_projects()</code> provides a single row for each
-project. It chooses as <code>full_foa</code> the most recent FOA under
-which the project was funded. It chooses as <code>contact_pi_name</code>
-and <code>project_title</code> the name of the contact PI and project
-title of the largest award in the most recent year of funding.</p>
+project. It chooses as <code>opportunity_number</code> the most recent FOA
+under which the project was funded. It chooses as
+<code>contact_pi_name</code> and <code>project_title</code> the name of the contact
+PI and project title of the largest award in the most recent
+year of funding.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">foas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="op">~</span><span class="va">full_foa</span>,       <span class="op">~</span><span class="va">description</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"RFA-CA-19-039"</span>, <span class="st">"Early-Stage Development of ..."</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"RFA-CA-19-038"</span>, <span class="st">"Development of Innovative ..."</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"RFA-CA-19-040"</span>, <span class="st">"Advanced Development of ..."</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"RFA-CA-19-041"</span>, <span class="st">"Sustained Support of..."</span></span></span>
+<span class="r-in"><span>    <span class="op">~</span><span class="va">opportunity_number</span>, <span class="op">~</span><span class="va">description</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RFA-CA-19-039"</span>,     <span class="st">"Early-Stage Development of ..."</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RFA-CA-19-038"</span>,     <span class="st">"Development of Innovative ..."</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RFA-CA-19-040"</span>,     <span class="st">"Advanced Development of ..."</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RFA-CA-19-041"</span>,     <span class="st">"Sustained Support of..."</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">program_summary</span><span class="op">(</span><span class="va">foas</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in project_summary(projects):</span> object 'projects' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   fiscal_year program project program_amount project_amount publication</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        <span style="text-decoration: underline;">2</span>018      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span>           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        <span style="text-decoration: underline;">2</span>019      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span>           7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        <span style="text-decoration: underline;">2</span>020      17      18        9<span style="text-decoration: underline;">688</span>464        9<span style="text-decoration: underline;">870</span>795          31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        <span style="text-decoration: underline;">2</span>021      14      16        8<span style="text-decoration: underline;">376</span>100        8<span style="text-decoration: underline;">532</span>608          81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        <span style="text-decoration: underline;">2</span>022      13      16        7<span style="text-decoration: underline;">924</span>287        8<span style="text-decoration: underline;">427</span>808          70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>        <span style="text-decoration: underline;">2</span>023       8       8        5<span style="text-decoration: underline;">809</span>339        5<span style="text-decoration: underline;">809</span>339          70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: citation_count &lt;int&gt;, relative_citation_ratio &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">program_projects</span><span class="op">(</span><span class="va">foas</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    full_foa core_project_num project_start_date project_end_date contact_pi_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> RFA-CA-… R21CA248118      2020-08-01         2022-11-17       GRASSBERGER, C…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> RFA-CA-… R21CA248122      2020-05-15         2023-04-30       DE, SUBHAJYOTI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> RFA-CA-… R21CA253408      2020-09-01         2023-08-31       FROST, HILDRET…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> RFA-CA-… R21CA253498      2020-09-01         2023-08-31       BEANE, JENNIFE…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> RFA-CA-… U01CA247760      2020-09-01         2024-05-31       CHEN, KEN      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> RFA-CA-… U01CA248226      2020-07-01         2023-06-30       VISWANATH, SAT…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> RFA-CA-… U01CA248235      2020-08-01         2023-07-31       GRIFFITH, MALA…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> RFA-CA-… U01CA253403      2020-09-01         2024-08-31       FERTIG, ELANA …</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> RFA-CA-… U01CA253511      2020-08-15         2023-07-31       RANDLES, AMAND…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> RFA-CA-… U24CA248010      2020-09-24         2025-08-31       SAVOVA, GUERGA…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> RFA-CA-… U24CA248265      2020-07-01         2025-06-30       EDDY, JAMES A  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> RFA-CA-… U24CA248453      2020-09-24         2025-08-31       RAPHAEL, BENJA…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> RFA-CA-… U24CA248454      2020-07-15         2025-06-30       CAPORASO, JAME…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> RFA-CA-… U24CA248455      2020-09-03         2025-08-31       MONTGOMERY, PH…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> RFA-CA-… U24CA253531      2020-09-01         2025-08-31       SHOGHI, KOORES…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> RFA-CA-… U24CA253539      2020-09-10         2025-08-31       PARKINSON, HEL…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> RFA-CA-… U24CA248457      2020-06-01         2025-05-31       MESIROV, JILL …</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: project_title &lt;chr&gt;, fiscal_year &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   award_amount &lt;int&gt;, project_amount &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    opportunity_number core_project_num project_start_date project_end_date</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> RFA-CA-19-038      R21CA248118      2020-08-01         2022-11-17      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> RFA-CA-19-038      R21CA248122      2020-05-15         2023-04-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> RFA-CA-19-038      R21CA253408      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> RFA-CA-19-038      R21CA253498      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> RFA-CA-19-039      U01CA247760      2020-09-01         2024-05-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> RFA-CA-19-039      U01CA248226      2020-07-01         2024-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> RFA-CA-19-039      U01CA248235      2020-08-01         2024-07-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> RFA-CA-19-039      U01CA253403      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> RFA-CA-19-039      U01CA253511      2020-08-15         2023-07-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> RFA-CA-19-040      U24CA248010      2020-09-24         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> RFA-CA-19-040      U24CA248265      2020-07-01         2025-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> RFA-CA-19-040      U24CA248453      2020-09-24         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> RFA-CA-19-040      U24CA248454      2020-07-15         2025-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> RFA-CA-19-040      U24CA248455      2020-09-03         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> RFA-CA-19-040      U24CA253531      2020-09-01         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> RFA-CA-19-040      U24CA253539      2020-09-10         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> RFA-CA-19-041      U24CA248457      2020-06-01         2025-05-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: contact_pi_name &lt;chr&gt;, project_title &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   fiscal_year &lt;int&gt;, award_amount &lt;int&gt;, project_amount &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pubs</span> <span class="op">&lt;-</span> <span class="fu">program_publications</span><span class="op">(</span><span class="va">foas</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## note that individual publications can be represented by more</span></span></span>
 <span class="r-in"><span><span class="co">## than one project</span></span></span>
 <span class="r-in"><span><span class="va">pubs</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 231 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    full_foa      core_project_num     pmid  year title     authors journal doi  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> RFA-CA-19-040 U24CA253539      36<span style="text-decoration: underline;">399</span>494  <span style="text-decoration: underline;">2</span>023 PDCM Fin… Zinaid… Nuclei… 10.1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> RFA-CA-19-040 U24CA253531      36<span style="text-decoration: underline;">828</span>382  <span style="text-decoration: underline;">2</span>023 Evaluati… Dariya… Tomogr… 10.3…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> RFA-CA-19-040 U24CA253531      37<span style="text-decoration: underline;">218</span>941  <span style="text-decoration: underline;">2</span>023 Co-Clini… Stephe… Tomogr… 10.3…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> RFA-CA-19-040 U24CA253531      34<span style="text-decoration: underline;">359</span>696  <span style="text-decoration: underline;">2</span>021 Deep Lea… Kaushi… Cancer… 10.3…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> RFA-CA-19-040 U24CA253531      37<span style="text-decoration: underline;">104</span>131  <span style="text-decoration: underline;">2</span>023 An Onlin… Seth T… Tomogr… 10.3…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> RFA-CA-19-040 U24CA253531      34<span style="text-decoration: underline;">328</span>530  <span style="text-decoration: underline;">2</span>022 Co-clini… Sudipt… Eur J … 10.1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> RFA-CA-19-040 U24CA253531      36<span style="text-decoration: underline;">961</span>012  <span style="text-decoration: underline;">2</span>023 Animal M… Donna … Tomogr… 10.3…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> RFA-CA-19-041 U24CA248457      31<span style="text-decoration: underline;">292</span>160  <span style="text-decoration: underline;">2</span>019 Metformi… Xingyu… Cancer… 10.1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> RFA-CA-19-041 U24CA248457      32<span style="text-decoration: underline;">383</span>980  <span style="text-decoration: underline;">2</span>020 Imaging-… Olivie… JCO Cl… 10.1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> RFA-CA-19-041 U24CA248457      33<span style="text-decoration: underline;">046</span>443  <span style="text-decoration: underline;">2</span>020 Function… Jessic… Cancer… 10.1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 221 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 262 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    opportunity_number core_project_num    pmid  year title authors journal doi  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> RFA-CA-19-040      U24CA253539       3.64<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>023 PDCM… Zinaid… Nuclei… 10.1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> RFA-CA-19-040      U24CA253531       3.68<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>023 Eval… Dariya… Tomogr… 10.3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> RFA-CA-19-040      U24CA253531       3.70<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>023 Anim… Donna … Tomogr… 10.3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> RFA-CA-19-040      U24CA253531       3.72<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>023 Co-C… Stephe… Tomogr… 10.3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> RFA-CA-19-040      U24CA253531       3.44<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>021 Deep… Kaushi… Cancer… 10.3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> RFA-CA-19-040      U24CA253531       3.43<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>022 Co-c… Sudipt… Eur J … 10.1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> RFA-CA-19-040      U24CA253531       3.71<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>023 An O… Seth T… Tomogr… 10.3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> RFA-CA-19-041      U24CA248457       3.13<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>019 Metf… Xingyu… Cancer… 10.1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> RFA-CA-19-041      U24CA248457       3.19<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>020 STRI… Jong W… Elife   10.7…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> RFA-CA-19-041      U24CA248457       3.21<span style="color: #949494;">e</span>7  <span style="text-decoration: underline;">2</span>020 TEAD… Jingti… J Inve… 10.1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 252 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: citation_count &lt;int&gt;, relative_citation_ratio &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   field_citation_rate &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## unique publications</span></span></span>
 <span class="r-in"><span><span class="va">unique_pubs</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>    <span class="va">pubs</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"full_foa"</span>, <span class="st">"core_project_num"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"opportunity_number"</span>, <span class="st">"core_project_num"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">unique_pubs</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 231 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 262 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        pmid  year title                     authors journal doi   citation_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 36<span style="text-decoration: underline;">399</span>494  <span style="text-decoration: underline;">2</span>023 PDCM Finder: an open glo… Zinaid… Nuclei… 10.1…              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 36<span style="text-decoration: underline;">828</span>382  <span style="text-decoration: underline;">2</span>023 Evaluation of Apparent D… Dariya… Tomogr… 10.3…              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 37<span style="text-decoration: underline;">218</span>941  <span style="text-decoration: underline;">2</span>023 Co-Clinical Imaging Meta… Stephe… Tomogr… 10.3…              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 34<span style="text-decoration: underline;">359</span>696  <span style="text-decoration: underline;">2</span>021 Deep Learning Segmentati… Kaushi… Cancer… 10.3…             16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 37<span style="text-decoration: underline;">104</span>131  <span style="text-decoration: underline;">2</span>023 An Online Repository for… Seth T… Tomogr… 10.3…              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 34<span style="text-decoration: underline;">328</span>530  <span style="text-decoration: underline;">2</span>022 Co-clinical FDG-PET radi… Sudipt… Eur J … 10.1…             27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 36<span style="text-decoration: underline;">961</span>012  <span style="text-decoration: underline;">2</span>023 Animal Models and Their … Donna … Tomogr… 10.3…              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 31<span style="text-decoration: underline;">292</span>160  <span style="text-decoration: underline;">2</span>019 Metformin Inhibits Progr… Xingyu… Cancer… 10.1…             25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 32<span style="text-decoration: underline;">383</span>980  <span style="text-decoration: underline;">2</span>020 Imaging-AMARETTO: An Ima… Olivie… JCO Cl… 10.1…              6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 33<span style="text-decoration: underline;">046</span>443  <span style="text-decoration: underline;">2</span>020 Functional Precision Med… Jessic… Cancer… 10.1…             22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 221 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 36<span style="text-decoration: underline;">399</span>494  <span style="text-decoration: underline;">2</span>023 PDCM Finder: an open glo… Zinaid… Nuclei… 10.1…              3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 36<span style="text-decoration: underline;">828</span>382  <span style="text-decoration: underline;">2</span>023 Evaluation of Apparent D… Dariya… Tomogr… 10.3…              3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 36<span style="text-decoration: underline;">961</span>012  <span style="text-decoration: underline;">2</span>023 Animal Models and Their … Donna … Tomogr… 10.3…              2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 37<span style="text-decoration: underline;">218</span>941  <span style="text-decoration: underline;">2</span>023 Co-Clinical Imaging Meta… Stephe… Tomogr… 10.3…              2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 34<span style="text-decoration: underline;">359</span>696  <span style="text-decoration: underline;">2</span>021 Deep Learning Segmentati… Kaushi… Cancer… 10.3…             17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 34<span style="text-decoration: underline;">328</span>530  <span style="text-decoration: underline;">2</span>022 Co-clinical FDG-PET radi… Sudipt… Eur J … 10.1…             31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 37<span style="text-decoration: underline;">104</span>131  <span style="text-decoration: underline;">2</span>023 An Online Repository for… Seth T… Tomogr… 10.3…              2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 31<span style="text-decoration: underline;">292</span>160  <span style="text-decoration: underline;">2</span>019 Metformin Inhibits Progr… Xingyu… Cancer… 10.1…             27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 31<span style="text-decoration: underline;">913</span>126  <span style="text-decoration: underline;">2</span>020 STRIPAK directs PP2A act… Jong W… Elife   10.7…             32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 32<span style="text-decoration: underline;">142</span>794  <span style="text-decoration: underline;">2</span>020 TEAD1 and TEAD3 Play Red… Jingti… J Inve… 10.1…             12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 252 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: relative_citation_ratio &lt;dbl&gt;, field_citation_rate &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## publications per project</span></span></span>
@@ -260,24 +270,24 @@ title of the largest award in the most recent year of funding.</p>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">core_project_num</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="fu">program_projects</span><span class="op">(</span><span class="va">foas</span>, by <span class="op">=</span> <span class="st">"project"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"core_project_num"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    core_project_num     n full_foa      project_start_date project_end_date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> U01CA248226         60 RFA-CA-19-039 2020-07-01         2023-06-30      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> U24CA248457         33 RFA-CA-19-041 2020-06-01         2025-05-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> U01CA253403         19 RFA-CA-19-039 2020-09-01         2024-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R21CA253498         18 RFA-CA-19-038 2020-09-01         2023-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> U24CA248265         18 RFA-CA-19-040 2020-07-01         2025-06-30      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> U24CA248454         14 RFA-CA-19-040 2020-07-15         2025-06-30      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R21CA253408         11 RFA-CA-19-038 2020-09-01         2023-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> U24CA248453         11 RFA-CA-19-040 2020-09-24         2025-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> U01CA247760          9 RFA-CA-19-039 2020-09-01         2024-05-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> U01CA248235          9 RFA-CA-19-039 2020-08-01         2023-07-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> R21CA248122          8 RFA-CA-19-038 2020-05-15         2023-04-30      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> R21CA248118          6 RFA-CA-19-038 2020-08-01         2022-11-17      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> U24CA253531          6 RFA-CA-19-040 2020-09-01         2025-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> U01CA253511          5 RFA-CA-19-039 2020-08-15         2023-07-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> U24CA248010          3 RFA-CA-19-040 2020-09-24         2025-08-31      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> U24CA253539          1 RFA-CA-19-040 2020-09-10         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    core_project_num     n opportunity_number project_start_date project_end_date</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> U01CA248226         74 RFA-CA-19-039      2020-07-01         2024-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> U24CA248457         35 RFA-CA-19-041      2020-06-01         2025-05-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> U01CA253403         24 RFA-CA-19-039      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> U24CA248265         18 RFA-CA-19-040      2020-07-01         2025-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R21CA253498         16 RFA-CA-19-038      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> U24CA248454         15 RFA-CA-19-040      2020-07-15         2025-06-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> U24CA248453         14 RFA-CA-19-040      2020-09-24         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R21CA253408         12 RFA-CA-19-038      2020-09-01         2024-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> U01CA248235         12 RFA-CA-19-039      2020-08-01         2024-07-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> U01CA247760         10 RFA-CA-19-039      2020-09-01         2024-05-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> R21CA248122          9 RFA-CA-19-038      2020-05-15         2023-04-30      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> R21CA248118          6 RFA-CA-19-038      2020-08-01         2022-11-17      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> U24CA253531          6 RFA-CA-19-040      2020-09-01         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> U01CA253511          5 RFA-CA-19-039      2020-08-15         2023-07-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> U24CA248010          5 RFA-CA-19-040      2020-09-24         2025-08-31      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> U24CA253539          1 RFA-CA-19-040      2020-09-10         2025-08-31      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: contact_pi_name &lt;chr&gt;, project_title &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   fiscal_year &lt;int&gt;, award_amount &lt;int&gt;, project_amount &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -285,20 +295,20 @@ title of the largest award in the most recent year of funding.</p>
 <span class="r-in"><span><span class="va">pubs</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">pmid</span>, sort <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"n_collab"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">unique_pubs</span>, by <span class="op">=</span> <span class="st">"pmid"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 231 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 262 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        pmid n_collab  year title            authors journal doi   citation_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 29<span style="text-decoration: underline;">985</span>391        1  <span style="text-decoration: underline;">2</span>018 Assembly and ac… Daniel… Nat Co… 10.1…             94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 30<span style="text-decoration: underline;">563</span>849        1  <span style="text-decoration: underline;">2</span>019 A Curated Resou… Karste… Mol Ce… 10.1…            106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 29<span style="text-decoration: underline;">985</span>391        1  <span style="text-decoration: underline;">2</span>018 Assembly and ac… Daniel… Nat Co… 10.1…            101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 30<span style="text-decoration: underline;">563</span>849        1  <span style="text-decoration: underline;">2</span>019 A Curated Resou… Karste… Mol Ce… 10.1…            127</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 30<span style="text-decoration: underline;">583</span>461        1  <span style="text-decoration: underline;">2</span>018 Comprehensive G… Natali… Cancer… 10.3…             20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 30<span style="text-decoration: underline;">723</span>579        1  <span style="text-decoration: underline;">2</span>018 APOBEC-related … Amélie… Oncoim… 10.1…             42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 30<span style="text-decoration: underline;">773</span>340        1  <span style="text-decoration: underline;">2</span>019 A Platform of S… Xiaodo… Cancer… 10.1…            125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 31<span style="text-decoration: underline;">171</span>722        1  <span style="text-decoration: underline;">2</span>019 Illuminating th… Victor… J Biol… 10.1…             99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 31<span style="text-decoration: underline;">292</span>160        1  <span style="text-decoration: underline;">2</span>019 Metformin Inhib… Xingyu… Cancer… 10.1…             25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 31<span style="text-decoration: underline;">395</span>609        1  <span style="text-decoration: underline;">2</span>019 Use of Natural … Guerga… Cancer… 10.1…             46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 31<span style="text-decoration: underline;">513</span>970        1  <span style="text-decoration: underline;">2</span>019 Cyclin E Overex… Servan… iScien… 10.1…              2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 31<span style="text-decoration: underline;">695</span>841        1  <span style="text-decoration: underline;">2</span>019 The multikinase… Sean M… Oncota… 10.1…              5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 221 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 30<span style="text-decoration: underline;">723</span>579        1  <span style="text-decoration: underline;">2</span>018 APOBEC-related … Amélie… Oncoim… 10.1…             48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 30<span style="text-decoration: underline;">773</span>340        1  <span style="text-decoration: underline;">2</span>019 A Platform of S… Xiaodo… Cancer… 10.1…            134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 31<span style="text-decoration: underline;">171</span>722        1  <span style="text-decoration: underline;">2</span>019 Illuminating th… Victor… J Biol… 10.1…            109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 31<span style="text-decoration: underline;">292</span>160        1  <span style="text-decoration: underline;">2</span>019 Metformin Inhib… Xingyu… Cancer… 10.1…             27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 31<span style="text-decoration: underline;">395</span>609        1  <span style="text-decoration: underline;">2</span>019 Use of Natural … Guerga… Cancer… 10.1…             54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 31<span style="text-decoration: underline;">513</span>970        1  <span style="text-decoration: underline;">2</span>019 Cyclin E Overex… Servan… iScien… 10.1…              3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 31<span style="text-decoration: underline;">695</span>841        1  <span style="text-decoration: underline;">2</span>019 The multikinase… Sean M… Oncota… 10.1…              8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 252 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: relative_citation_ratio &lt;dbl&gt;, field_citation_rate &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
