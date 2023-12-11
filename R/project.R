@@ -62,7 +62,7 @@ project_summary <-
     )
 
     project_summary |>
-        filter(is.na(subproject_id)) |>
+        filter(is.na(.data$subproject_id)) |>
         group_by(.data$fiscal_year) |>
         summarize(
             project = n(),
