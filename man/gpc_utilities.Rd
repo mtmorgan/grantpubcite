@@ -91,7 +91,7 @@ with \code{include = FALSE}, so that the user sees the datatable but
 not code.
 }
 \examples{
-gpc_camelize(c("full_foa", "core_project_num"))
+gpc_camelize(c("opportunity_number", "core_project_num"))
 
 projects <- tribble(
     ~contact_pi_name, ~project_start_date,    ~pmid, ~project_title,

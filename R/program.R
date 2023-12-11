@@ -8,8 +8,8 @@
 #'     total award ammount, publications, citation count, and relative
 #'     citation ratio.
 #'
-#' @param tbl A tibble with column `full_foa` giving the FOAs that
-#'     define the program.
+#' @param tbl A tibble with column `opportunity_number` giving the
+#'     FOAs that define the program.
 #'
 #' @param verbose logical(1) report additional detail about progress
 #'     of reporter and icite queries.
@@ -41,11 +41,11 @@
 #'
 #' @examples
 #' foas <- tribble(
-#'     ~full_foa,       ~description,
-#'     "RFA-CA-19-039", "Early-Stage Development of ...",
-#'     "RFA-CA-19-038", "Development of Innovative ...",
-#'     "RFA-CA-19-040", "Advanced Development of ...",
-#'     "RFA-CA-19-041", "Sustained Support of..."
+#'     ~opportunity_number, ~description,
+#'     "RFA-CA-19-039",     "Early-Stage Development of ...",
+#'     "RFA-CA-19-038",     "Development of Innovative ...",
+#'     "RFA-CA-19-040",     "Advanced Development of ...",
+#'     "RFA-CA-19-041",     "Sustained Support of..."
 #' )
 #'
 #' program_summary(foas)
@@ -61,16 +61,16 @@ program_summary <-
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
-        "full_foa" %in% colnames(tbl)
+        "opportunity_number" %in% colnames(tbl)
     )
 
     ## data collection
 
     project_include_fields <- c(
-        "full_foa", "core_project_num", "fiscal_year", "award_amount"
+        "opportunity_number", "core_project_num", "fiscal_year", "award_amount"
     )
     projects <- reporter_projects(
-        foa = tbl$full_foa,
+        foa = tbl$opportunity_number,
         include_fields = project_include_fields,
         verbose = verbose
     )
@@ -104,7 +104,9 @@ program_summary <-
 
     program_amount <-
         projects |>
-        group_by(.data$full_foa, .data$core_project_num, .data$fiscal_year) |>
+        group_by(
+            .data$opportunity_number, .data$core_project_num, .data$fiscal_year
+        ) |>
         summarize(award_amount = sum(.data$award_amount)) |>
         group_by(.data$fiscal_year) |>
         summarize(
@@ -150,7 +152,7 @@ program_projects_by_foa <-
 {
     projects |>
         arrange(.data$fiscal_year, .data$award_amount) |>
-        group_by(.data$full_foa, .data$core_project_num) |>
+        group_by(.data$opportunity_number, .data$core_project_num) |>
         summarize(
             project_start_date = min(.data$project_start_date, na.rm = TRUE),
             project_end_date = max(.data$project_end_date, na.rm = TRUE),
@@ -169,7 +171,7 @@ program_projects_by_project_num <-
         arrange(.data$fiscal_year, .data$award_amount) |>
         group_by(.data$core_project_num) |>
         summarize(
-            full_foa = tail(.data$full_foa, 1L),
+            opportunity_number = tail(.data$opportunity_number, 1L),
             project_start_date = min(.data$project_start_date, na.rm = TRUE),
             project_end_date = max(.data$project_end_date, na.rm = TRUE),
             contact_pi_name = tail(.data$contact_pi_name, 1L),
@@ -177,7 +179,7 @@ program_projects_by_project_num <-
             fiscal_year = length(unique(.data$fiscal_year)),
             award_amount = sum(.data$award_amount, na.rm = TRUE)
         ) |>
-        select("full_foa", everything())
+        select("opportunity_number", everything())
 }
 
 #' @rdname program
@@ -191,16 +193,17 @@ program_projects_by_project_num <-
 #'     is by project number across FOA.
 #'
 #' @details `program_projects()` provides a single row for each
-#'     project. It chooses as `full_foa` the most recent FOA under
-#'     which the project was funded. It chooses as `contact_pi_name`
-#'     and `project_title` the name of the contact PI and project
-#'     title of the largest award in the most recent year of funding.
+#'     project. It chooses as `opportunity_number` the most recent FOA
+#'     under which the project was funded. It chooses as
+#'     `contact_pi_name` and `project_title` the name of the contact
+#'     PI and project title of the largest award in the most recent
+#'     year of funding.
 #'
 #' @return `program_projects()` returns a tibble summarizing projects
-#'     funded under the FOAs. With `by = "full_foa"` (default),
-#'     columns are:
+#'     funded under the FOAs. With `by = "foa"` (default), columns
+#'     are:
 #'
-#' - `full_foa`: character() full FOA funding the project.
+#' - `opportunity_number`: character() full FOA funding the project.
 #' - `core_project_num`: character() core project number.
 #' - `project_start_date`: date() start date of project
 #' - `project_end_date`: date() end date of project; maybe in the future
@@ -226,7 +229,7 @@ program_projects <-
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
-        "full_foa" %in% colnames(tbl),
+        "opportunity_number" %in% colnames(tbl),
         is_scalar_logical(verbose)
     )
     by <- match.arg(by)
@@ -234,14 +237,14 @@ program_projects <-
     ## data collection
 
     project_include_fields = c(
-        "full_foa", "core_project_num", "subproject_id",
+        "opportunity_number", "core_project_num", "subproject_id",
         "project_start_date", "project_end_date",
         "contact_pi_name", "project_title",
         "fiscal_year", "award_amount"
     )
 
     projects <- reporter_projects(
-        foa = tbl$full_foa,
+        foa = tbl$opportunity_number,
         include_fields = project_include_fields,
         verbose = verbose
     )
@@ -279,7 +282,7 @@ program_projects <-
 #'
 #' @return `program_publications()` returns a tibble with columns:
 #'
-#' - `full_foa`: character() full FOA funding the project.
+#' - `opportunity_number`: character() full FOA funding the project.
 #' - `core_project_num`: character() core project number.
 #' - `pmid`: integer() PubMed identifier.
 #' - `year`, `title`, `authors`, `journal`,`doi`: publication information.
@@ -298,7 +301,7 @@ program_projects <-
 #' ## unique publications
 #' unique_pubs <-
 #'     pubs |>
-#'     select(-c("full_foa", "core_project_num")) |>
+#'     select(-c("opportunity_number", "core_project_num")) |>
 #'     distinct()
 #' unique_pubs
 #'
@@ -341,7 +344,7 @@ program_publications <-
 
     publications |>
         inner_join(projects, by = c(coreproject = "core_project_num")) |>
-        select("full_foa", core_project_num = "coreproject", "pmid") |>
+        select("opportunity_number", core_project_num = "coreproject", "pmid") |>
         inner_join(citations, by = "pmid") |>
         gpc_columns_clean()
 }

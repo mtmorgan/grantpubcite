@@ -156,7 +156,7 @@ amount allcoated to date, is
 
 ```{r, echo = FALSE}
 projects |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     group_by(foa_tag) |>
     summarize(
         n = n(),
@@ -169,7 +169,7 @@ projects |>
 
 ```{r, echo = FALSE}
 projects |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     ## filter(foa_tag != "Education") |>
     group_by(foa_tag, core_project_num) |>
     summarize(amount = sum(award_amount), .groups = "drop") |>
@@ -184,7 +184,7 @@ The number of projects funded per fiscal year is
 
 ```{r, echo = FALSE}
 projects |>
-    distinct(full_foa, core_project_num, fiscal_year) |>
+    distinct(opportunity_number, core_project_num, fiscal_year) |>
     count(years_of_funding = fiscal_year) |>
     gpc_datatable()
 ```
@@ -236,8 +236,8 @@ contact PI that have received awards from different FOA tags?
 ```{r}
 tagged_pis <-
     projects |>
-    distinct(full_foa, project_title, contact_pi_name) |>
-    left_join(foas, by = "full_foa") |>
+    distinct(opportunity_number, project_title, contact_pi_name) |>
+    left_join(foas, by = "opportunity_number") |>
     select(foa_tag, contact_pi_name) |>
     distinct()
 
@@ -248,11 +248,13 @@ maturing_pis <-
     select(-n) |>
     left_join(
         projects |>
-        distinct(full_foa, core_project_num, contact_pi_name, project_title),
+        distinct(
+            opportunity_number, core_project_num, contact_pi_name, project_title
+        ),
         by = "contact_pi_name",
         multiple = "all"
     ) |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     select(contact_pi_name, project_title, foa_tag) |>
     arrange(contact_pi_name, project_title, foa_tag)
 ```
@@ -295,7 +297,7 @@ publications <- program_publications(foas)
 ## citations: remove duplicates due to collaboration
 citations <-
     publications |>
-    select(-c("full_foa", "core_project_num")) |>
+    select(-c("opportunity_number", "core_project_num")) |>
     distinct() |>
     select(
         "pmid", "citation_count", "relative_citation_ratio",
@@ -381,7 +383,7 @@ collaborative_publications <-
     filter(n_collab > 1) |>
     left_join(
         publications |>
-        select(-c("full_foa", "core_project_num")) |>
+        select(-c("opportunity_number", "core_project_num")) |>
         distinct(),
         by = "pmid"
     )

@@ -82,7 +82,7 @@ project_summary <- program_projects(foas)
 
 project_foa_full_tag_count <-
     project_summary |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     count(full_tag, name = "n_project")
 
 foa_awards <-
@@ -110,7 +110,7 @@ Award amounts are summarized below.
 ```{r}
 plot <-
     project_summary |>
-    left_join(foas, by = "full_foa") |>
+    left_join(foas, by = "opportunity_number") |>
     ggplot(aes(full_tag, award_amount)) +
     theme(axis.text.x = element_text(angle = 15, vjust = 1, hjust=1)) +
     scale_y_continuous(labels = scales::comma) +
@@ -135,7 +135,7 @@ program_publications <- program_publications(foas)
 
 publications <-
     program_publications |>
-    select(-c("full_foa", "core_project_num")) |>
+    select(-c("opportunity_number", "core_project_num")) |>
     distinct() |>
     arrange(desc(citation_count))
 
@@ -143,7 +143,7 @@ publications_per_project <-
     program_publications |>
     count(core_project_num, name = "n_pub") |>
     left_join(project_summary, by = "core_project_num") |>
-    select(-c("full_foa", "project_title", "fiscal_year")) |>
+    select(-c("opportunity_number", "project_title", "fiscal_year")) |>
     arrange(desc(n_pub))
 
 collaboration_summary <-

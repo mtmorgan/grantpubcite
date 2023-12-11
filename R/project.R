@@ -47,7 +47,7 @@ project_summary <-
 
     project_nums <-
         ## distinct project numbers
-        projects |>
+        tbl |>
         distinct(.data$core_project_num) |>
         pull()
 

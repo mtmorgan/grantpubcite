@@ -5,13 +5,13 @@ collaboration_data_collection <-
 {
     stopifnot(
         inherits(tbl, "tbl_df"),
-        "full_foa" %in% colnames(tbl)
+        "opportunity_number" %in% colnames(tbl)
     )
 
     ## data collection
 
     projects <- reporter_projects(
-        foa = pull(tbl, "full_foa"),
+        foa = pull(tbl, "opportunity_number"),
         include_fields = "core_project_num"
     )
 
@@ -76,8 +76,9 @@ copublication_pmid_project <-
 #' @description `copublication_data()` returns a tibble enumerating
 #'     all pmid acknowledging more than one project.
 #'
-#' @param tbl a tibble with column `full_foa` containing the Funding
-#'     Opportunity Announcements defining the projects of interest.
+#' @param tbl a tibble with column `opportunity_number` containing the
+#'     Funding Opportunity Announcements defining the projects of
+#'     interest.
 #'
 #' @param exclude character() pmid to exclude from summary.
 #'
@@ -90,7 +91,7 @@ copublication_pmid_project <-
 #'
 #' @examples
 #' foas <- tribble(
-#'     ~full_foa,       ~description,
+#'     ~opportunity_number,       ~description,
 #'     "RFA-CA-19-039", "Early-Stage Development of ...",
 #'     "RFA-CA-19-038", "Development of Innovative ...",
 #'     "RFA-CA-19-040", "Advanced Development of ...",

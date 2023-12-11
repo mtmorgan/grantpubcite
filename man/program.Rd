@@ -13,8 +13,8 @@ program_projects(tbl, by = c("foa", "project"), verbose = FALSE)
 program_publications(tbl, verbose = FALSE)
 }
 \arguments{
-\item{tbl}{A tibble with column \code{full_foa} giving the FOAs that
-define the program.}
+\item{tbl}{A tibble with column \code{opportunity_number} giving the
+FOAs that define the program.}
 
 \item{verbose}{logical(1) report additional detail about progress
 of reporter and icite queries.}
@@ -41,10 +41,10 @@ ratios for all publications in year.
 }
 
 \code{program_projects()} returns a tibble summarizing projects
-funded under the FOAs. With \code{by = "full_foa"} (default),
-columns are:
+funded under the FOAs. With \code{by = "foa"} (default), columns
+are:
 \itemize{
-\item \code{full_foa}: character() full FOA funding the project.
+\item \code{opportunity_number}: character() full FOA funding the project.
 \item \code{core_project_num}: character() core project number.
 \item \code{project_start_date}: date() start date of project
 \item \code{project_end_date}: date() end date of project; maybe in the future
@@ -63,7 +63,7 @@ summarized over all FOAs under which a project was funded.
 
 \code{program_publications()} returns a tibble with columns:
 \itemize{
-\item \code{full_foa}: character() full FOA funding the project.
+\item \code{opportunity_number}: character() full FOA funding the project.
 \item \code{core_project_num}: character() core project number.
 \item \code{pmid}: integer() PubMed identifier.
 \item \code{year}, \code{title}, \code{authors}, \code{journal},\code{doi}: publication information.
@@ -98,18 +98,19 @@ the end of the FOA represent publications that acknowledge the
 FOA after the termination of the grant.
 
 \code{program_projects()} provides a single row for each
-project. It chooses as \code{full_foa} the most recent FOA under
-which the project was funded. It chooses as \code{contact_pi_name}
-and \code{project_title} the name of the contact PI and project
-title of the largest award in the most recent year of funding.
+project. It chooses as \code{opportunity_number} the most recent FOA
+under which the project was funded. It chooses as
+\code{contact_pi_name} and \code{project_title} the name of the contact
+PI and project title of the largest award in the most recent
+year of funding.
 }
 \examples{
 foas <- tribble(
-    ~full_foa,       ~description,
-    "RFA-CA-19-039", "Early-Stage Development of ...",
-    "RFA-CA-19-038", "Development of Innovative ...",
-    "RFA-CA-19-040", "Advanced Development of ...",
-    "RFA-CA-19-041", "Sustained Support of..."
+    ~opportunity_number, ~description,
+    "RFA-CA-19-039",     "Early-Stage Development of ...",
+    "RFA-CA-19-038",     "Development of Innovative ...",
+    "RFA-CA-19-040",     "Advanced Development of ...",
+    "RFA-CA-19-041",     "Sustained Support of..."
 )
 
 program_summary(foas)
@@ -125,7 +126,7 @@ pubs
 ## unique publications
 unique_pubs <-
     pubs |>
-    select(-c("full_foa", "core_project_num")) |>
+    select(-c("opportunity_number", "core_project_num")) |>
     distinct()
 unique_pubs
 
