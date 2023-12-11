@@ -13,11 +13,9 @@ REPORTER_LIMIT <- 10000L
 #' @importFrom jsonlite unbox toJSON fromJSON
 #'
 #' @importFrom dplyr as_tibble select all_of bind_rows
-#'
-#' @importFrom memoise memoise
 
 reporter_endpoint <-
-    memoise::memoise(function(url, ..., include_fields, limit, verbose)
+    function(url, ..., include_fields, limit, verbose)
 {
     stopifnot(
         `all '...' arguments must be named` =
@@ -101,7 +99,7 @@ reporter_endpoint <-
 
     result |>
         gpc_columns_clean()
-})
+}
 
 #' @rdname reporter_and_icite
 #'
@@ -195,7 +193,7 @@ ICITE_PUBS <- paste0(ICITE_URL, "/pubs")
 #' @importFrom readr read_csv
 
 icite_one_chunk <-
-    memoise::memoise(function(pmids, include_fields, verbose)
+    function(pmids, include_fields, verbose)
 {
     ## formulate query
     fl <- ifelse (is.null(include_fields), "", "&fl=")
@@ -213,7 +211,7 @@ icite_one_chunk <-
         tbl <- select(tbl, all_of(include_fields))
 
     tbl
-})
+}
 
 #' @rdname reporter_and_icite
 #'
