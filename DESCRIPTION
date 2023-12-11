@@ -29,7 +29,9 @@ Suggests:
     scales,
     plotly,
     visNetwork,
-    tidyr
+    tidyr,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://mtmorgan.github.io/grantpubcite/
 BugReports: https://github.com/mtmorgan/grantpubcite/issues
+Config/testthat/edition: 3
