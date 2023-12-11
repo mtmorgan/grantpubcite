@@ -1,5 +1,8 @@
 # grantpubcite v0.0.3
 
+- (v. 0.0.2.9020) Internal changes for more robust code. Updated
+  requirement for rjsoncons (>= 1.0.1).
+
 - (v. 0.0.2.9010) Use `opportunity_number` instead of `full_foa`
   throughout, to reflect changes in NIH Reporter API.
 

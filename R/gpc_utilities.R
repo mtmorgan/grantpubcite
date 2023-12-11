@@ -32,15 +32,6 @@ is_scalar_numeric <-
     is_numeric(x) && length(x) == 1L
 }
 
-#' @importFrom rjsoncons jmespath
-#'
-#' @importFrom jsonlite fromJSON
-.jmespath <-
-    function(x, path)
-{
-    jmespath(x, path) |> fromJSON()
-}
-
 #' @rdname gpc_utilities
 #'
 #' @title Utilities for 'grantpubcite' use in articles

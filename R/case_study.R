@@ -33,7 +33,7 @@ case_study_foa_imat <-
         "R01", "U01", "P01", "P50", "U54", "U2C"
     )
     case_study_foa("imat") |>
-        mutate(full_tag = factor(full_tag, levels = full_tag_levels))
+        mutate(full_tag = factor(.data$full_tag, levels = full_tag_levels))
 }
 
 #' @rdname case_study
@@ -49,7 +49,7 @@ case_study_foa_iotn <-
 {
     tag_levels <- c("UG3/UH3", "U01", "DMRC", "CIDR", "U54")
     case_study_foa("iotn") |>
-        mutate(tag = factor(tag, levels = tag_levels))
+        mutate(tag = factor(.data$tag, levels = tag_levels))
 }
 
 #' @rdname case_study
@@ -67,5 +67,5 @@ case_study_foa_itcr <-
         "Innovative", "Early-Stage", "Advanced", "Sustained", "Education"
     )
     case_study_foa("itcr") |>
-        mutate(foa_tag = factor(foa_tag, levels = tag_levels))
+        mutate(foa_tag = factor(.data$foa_tag, levels = tag_levels))
 }
