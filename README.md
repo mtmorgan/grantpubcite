@@ -13,6 +13,9 @@ citation history of publications can discovered using
 [iCite](https://icite.od.nih.gov/). The ‘grantpubcite’ package help
 pages and resources make extensive use of ‘tidyverse’ concepts.
 
+Version 0.0.3 changed `full_foa` to `opportunity_number` throughout, for
+consistency with the NIH Reporter interface.
+
 Install the development version of grantpubcite from
 [github](https://github.com/mtmorgan/grantpubcite).
 

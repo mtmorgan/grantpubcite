@@ -1,21 +1,29 @@
+# grantpubcite v0.0.3
+
+- (v. 0.0.2.9010) Use `opportunity_number` instead of `full_foa`
+  throughout, to reflect changes in NIH Reporter API.
+
+- (v. 0.0.2.9000) Bug fix: `project_summary()` operated on a global table
+  `projects`, rather than on it's first argument.
+
 # grantpubcite v0.0.2
 
 - (v. 0.0.1.9001) Add `gpc_*()` helper functions to standardize
   the user API, processing of reporter return values, and shorten
-  column names during display. 
-  
+  column names during display.
+
 - (v. 0.0.1.9001) Add `program_()` functions to provide a higher-level
   interface to collecting program-level information on projects and
   publications.
-  
+
 - (v. 0.0.1.9001) Add `copublication*()` and `cocitation*()` to
   summarize project-level collaboratoin at the publication and
   citation level.
-  
+
 - (v. 0.0.1.9001) improve datatable display with 'top' vertical
   alignment of cells, and truncating text to a maximum of 40
   characters.
-  
+
 - (v. 0.0.1.9001) Update IOTN and ITCR case studies to use new
   functionality.
 
@@ -26,14 +34,14 @@
   - `collab`: number of collaborators, across all publications
   - `n_collab`: number of collaborative publications
   - `citn_collab`: total citation count of collaborartive publications
-  
+
 - (v 0.0.1.9003) add co-publication network to ITCR case study.
 
 - (v 0.0.1.9004) add co-publication network to IOTN case study.
 
 - (v 0.0.1.9007) add project summary and award amount information
   across programs.
-  
+
 - (v 0.0.1.9008) add IMAT case study
 
 
