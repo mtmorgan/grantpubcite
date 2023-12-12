@@ -1,6 +1,6 @@
 Package: grantpubcite
 Title: Query 'NIH Reporter' and 'iCite' for Grant and Publication Information
-Version: 0.0.2.9020
+Version: 0.0.3
 Authors@R: c(
     person(
         "Martin", "Morgan",
@@ -10,6 +10,14 @@ Authors@R: c(
     ),
     person(
         "NIH NCI ITCR U24CA180996",
+        role = "fnd"
+    ),
+    person(
+        "NIH NHGRI U24HG004059",
+        role = "fnd"
+    ),
+    person(
+        "NIH NCI IOTN U24CA232979",
         role = "fnd"
     ))
 Description: The 'grantpubcite' package can be used to query the 'NIH
